@@ -94,15 +94,6 @@ Begin VB.Form frmOldPersonaje
       Top             =   3105
       Width           =   960
    End
-   Begin VB.Image Image1 
-      Height          =   495
-      Index           =   2
-      Left            =   3120
-      MouseIcon       =   "frmOldPersonaje.frx":02A4
-      MousePointer    =   99  'Custom
-      Top             =   3090
-      Width           =   960
-   End
 End
 Attribute VB_Name = "frmOldPersonaje"
 Attribute VB_GlobalNameSpace = False
@@ -157,10 +148,9 @@ Next
 
 NameTxt.Text = ""
 PasswordTxt.Text = ""
-'Me.Picture = LoadPicture(App.path & "\Graficos\oldcaracter.jpg")
-'Image1(1).Picture = LoadPicture(App.path & "\Graficos\bvolver.jpg")
-'Image1(0).Picture = LoadPicture(App.path & "\Graficos\bsiguiente.jpg")
-'Image1(2).Picture = LoadPicture(App.path & "\Graficos\bteclas.jpg")
+Me.Picture = LoadPicture(App.path & "\Graficos\oldcaracter.jpg")
+Image1(1).Picture = LoadPicture(App.path & "\Graficos\bvolver.jpg")
+Image1(0).Picture = LoadPicture(App.path & "\Graficos\bsiguiente.jpg")
 
 
 
@@ -179,12 +169,6 @@ If Image1(1).Tag = "1" Then
             Image1(1).Tag = "0"
             Image1(1).Picture = LoadPicture(App.path & "\Graficos\bvolver.jpg")
 End If
-If Image1(2).Tag = "1" Then
-            Me.lblInfo.Visible = False
-            Me.lblInfo.Caption = vbNullString
-            Image1(2).Tag = "0"
-            Image1(2).Picture = LoadPicture(App.path & "\Graficos\bteclas.jpg")
-End If
 
 End Sub
 
@@ -194,50 +178,24 @@ Call Audio.PlayWave(SND_CLICK)
 
 Select Case index
     Case 0
-       
-#If UsarWrench = 1 Then
-        If frmMain.Socket1.Connected Then
-            frmMain.Socket1.Disconnect
-            frmMain.Socket1.Cleanup
-            DoEvents
-        End If
-#Else
-        If frmMain.Winsock1.State <> sckClosed Then
-            frmMain.Winsock1.Close
-            DoEvents
-        End If
-#End If
-        
+
         'update user info
         UserName = NameTxt.Text
         Dim aux As String
         aux = PasswordTxt.Text
-#If SeguridadAlkon Then
-        UserPassword = MD5.GetMD5String(aux)
-        Call MD5.MD5Reset
-#Else
         UserPassword = aux
-#End If
+
         If CheckUserData(False) = True Then
             EstadoLogin = Normal
+
+
+            Call modEngine.NetConnect(CurServerIp, CurServerPort)
             
-#If UsarWrench = 1 Then
-            frmMain.Socket1.HostName = CurServerIp
-            frmMain.Socket1.RemotePort = CurServerPort
-            frmMain.Socket1.Connect
-#Else
-            frmMain.Winsock1.Connect CurServerIp, CurServerPort
-#End If
         End If
         
     Case 1
         Me.Visible = False
-    Case 2
-        Load frmKeypad
-        frmKeypad.Show vbModal
-        Unload frmKeypad
-        Me.PasswordTxt.SetFocus
-        
+
 End Select
 End Sub
 

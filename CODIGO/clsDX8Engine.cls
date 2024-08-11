@@ -332,7 +332,7 @@ End Function
 
 
 Public Sub Text_Render(ByVal font As D3DXFont, ByVal Text As String, ByVal Top As Long, ByVal Left As Long, _
-                                ByVal width As Long, ByVal height As Long, ByVal color As Long, ByVal format As Long, Optional ByVal shadow As Boolean = False)
+                                ByVal Width As Long, ByVal Height As Long, ByVal color As Long, ByVal format As Long, Optional ByVal shadow As Boolean = False)
 '*****************************************************
 '****** Coded by Menduz (lord.yo.wo@gmail.com) *******
 '*****************************************************
@@ -341,25 +341,25 @@ Public Sub Text_Render(ByVal font As D3DXFont, ByVal Text As String, ByVal Top A
     
     TextRect.Top = Top
     TextRect.Left = Left
-    TextRect.bottom = Top + height
-    TextRect.Right = Left + width
+    TextRect.bottom = Top + Height
+    TextRect.Right = Left + Width
     
     If shadow Then
         ShadowRect.Top = Top - 1
         ShadowRect.Left = Left - 2
-        ShadowRect.bottom = (Top + height) - 1
-        ShadowRect.Right = (Left + width) - 2
+        ShadowRect.bottom = (Top + Height) - 1
+        ShadowRect.Right = (Left + Width) - 2
         D3DX.DrawText font, &HFF000000, Text, ShadowRect, format
     End If
     
     D3DX.DrawText font, color, Text, TextRect, format
 End Sub
 Public Sub Text_Render_ext(ByVal Text As String, ByVal Top As Long, ByVal Left As Long, _
-                                ByVal width As Long, ByVal height As Long, ByVal color As Long, Optional ByVal shadow As Boolean = False, Optional ByVal center As Boolean = False)
+                                ByVal Width As Long, ByVal Height As Long, ByVal color As Long, Optional ByVal shadow As Boolean = False, Optional ByVal center As Boolean = False)
     If center = True Then
-        Call Text_Render(font_list(1), Text, Top, Left, width, height, color, fa_center, shadow)
+        Call Text_Render(font_list(1), Text, Top, Left, Width, Height, color, fa_center, shadow)
     Else
-        Call Text_Render(font_list(1), Text, Top, Left, width, height, color, DT_TOP Or DT_LEFT, shadow)
+        Call Text_Render(font_list(1), Text, Top, Left, Width, Height, color, DT_TOP Or DT_LEFT, shadow)
     End If
 End Sub
 
@@ -1575,7 +1575,7 @@ vertList(3).tu = 1
 vertList(3).tv = 1
 
 Do While prgRun
-Call FlushBuffer
+
 If frmMain.WindowState <> vbMinimized And frmMain.Visible = True Then
     CheckKeys
     engine.Render
@@ -1591,6 +1591,8 @@ DoEvents
     'While GetTickCount - lFrameLimiter < 55
     '   Sleep 5
     'Wend
+    
+Call modEngine.Tick
 Loop
 engine.Engine_Deinit
 Call CloseClient
@@ -2370,7 +2372,7 @@ Public Sub DrawInv()
     D3DDevice.Present re, ByVal 0, frmMain.picInv.hWnd, ByVal 0
 End Sub
 
-Public Sub Draw_FilledBox(ByVal x As Integer, ByVal y As Integer, ByVal width As Integer, ByVal height As Integer, color As Long, outlinecolor As Long)
+Public Sub Draw_FilledBox(ByVal x As Integer, ByVal y As Integer, ByVal Width As Integer, ByVal Height As Integer, color As Long, outlinecolor As Long)
 
     Static box_rect As RECT
     Static Outline As RECT
@@ -2390,16 +2392,16 @@ Public Sub Draw_FilledBox(ByVal x As Integer, ByVal y As Integer, ByVal width As
     rgb_list2(3) = outlinecolor
     
     With box_rect
-        .bottom = y + height
+        .bottom = y + Height
         .Left = x
-        .Right = x + width
+        .Right = x + Width
         .Top = y
     End With
     
     With Outline
-        .bottom = y + height + 2
+        .bottom = y + Height + 2
         .Left = x - 2
-        .Right = x + width + 2
+        .Right = x + Width + 2
         .Top = y - 2
     End With
     

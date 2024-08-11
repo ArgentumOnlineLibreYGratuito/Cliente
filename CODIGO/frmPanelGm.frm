@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.ocx"
 Begin VB.Form frmPanelGm 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Panel GM"
@@ -1137,7 +1137,7 @@ End Sub
 
 Private Sub cmdHORA_Click()
     '/HORA
-    Call Protocol.WriteServerTime
+    Call WriteServerTime
 End Sub
 
 Private Sub cmdIGNORADO_Click()
@@ -1558,7 +1558,6 @@ End Sub
 
 Private Sub cmdActualiza_Click()
     Call WriteRequestUserList
-    Call FlushBuffer
 End Sub
 
 Private Sub cmdCerrar_Click()

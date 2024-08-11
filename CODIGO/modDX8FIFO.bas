@@ -130,30 +130,6 @@ Sub CargarFxs()
     Close #N
 End Sub
 
-Sub CargarTips()
-    Dim N As Integer
-    Dim i As Long
-    Dim NumTips As Integer
-    
-    N = FreeFile
-    Open App.path & "\init\Tips.ayu" For Binary Access Read As #N
-    
-    'cabecera
-    Get #N, , MiCabecera
-    
-    'num de cabezas
-    Get #N, , NumTips
-    
-    'Resize array
-    ReDim Tips(1 To NumTips) As String * 255
-    
-    For i = 1 To NumTips
-        Get #N, , Tips(i)
-    Next i
-    
-    Close #N
-End Sub
-
 Sub CargarArrayLluvia()
     Dim N As Integer
     Dim i As Long
@@ -183,29 +159,29 @@ On Error GoTo ErrorHandler
     Dim Grh As Long
     Dim Frame As Long
     Dim grhCount As Long
-    Dim handle As Integer
+    Dim Handle As Integer
     Dim fileVersion As Long
     
     'Open files
-    handle = FreeFile()
-    Open App.path & "\INIT\Graficos.ind" For Binary Access Read As handle
+    Handle = FreeFile()
+    Open App.path & "\INIT\Graficos.ind" For Binary Access Read As Handle
     Seek #1, 1
     
     'Get file version
-    Get handle, , fileVersion
+    Get Handle, , fileVersion
     
     'Get number of grhs
-    Get handle, , grhCount
+    Get Handle, , grhCount
     
     'Resize arrays
     ReDim GrhData(1 To grhCount) As GrhData
     
-    While Not EOF(handle)
-        Get handle, , Grh
+    While Not EOF(Handle)
+        Get Handle, , Grh
         
         With GrhData(Grh)
             'Get number of frames
-            Get handle, , .NumFrames
+            Get Handle, , .NumFrames
             If .NumFrames <= 0 Then GoTo ErrorHandler
             
             ReDim .Frames(1 To GrhData(Grh).NumFrames)
@@ -213,13 +189,13 @@ On Error GoTo ErrorHandler
             If .NumFrames > 1 Then
                 'Read a animation GRH set
                 For Frame = 1 To .NumFrames
-                    Get handle, , .Frames(Frame)
+                    Get Handle, , .Frames(Frame)
                     If .Frames(Frame) <= 0 Or .Frames(Frame) > grhCount Then
                         GoTo ErrorHandler
                     End If
                 Next Frame
                 
-                Get handle, , .Speed
+                Get Handle, , .Speed
                 
                 If .Speed <= 0 Then GoTo ErrorHandler
                 
@@ -237,19 +213,19 @@ On Error GoTo ErrorHandler
                 If .TileHeight <= 0 Then GoTo ErrorHandler
             Else
                 'Read in normal GRH data
-                Get handle, , .FileNum
+                Get Handle, , .FileNum
                 If .FileNum <= 0 Then GoTo ErrorHandler
                 
-                Get handle, , GrhData(Grh).sX
+                Get Handle, , GrhData(Grh).sX
                 If .sX < 0 Then GoTo ErrorHandler
                 
-                Get handle, , .sY
+                Get Handle, , .sY
                 If .sY < 0 Then GoTo ErrorHandler
                 
-                Get handle, , .pixelWidth
+                Get Handle, , .pixelWidth
                 If .pixelWidth <= 0 Then GoTo ErrorHandler
                 
-                Get handle, , .pixelHeight
+                Get Handle, , .pixelHeight
                 If .pixelHeight <= 0 Then GoTo ErrorHandler
                 
                 'Compute width and height
@@ -261,7 +237,7 @@ On Error GoTo ErrorHandler
         End With
     Wend
     
-    Close handle
+    Close Handle
     
     LoadGrhData = True
 Exit Function

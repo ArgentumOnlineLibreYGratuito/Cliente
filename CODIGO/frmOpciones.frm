@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "Mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.ocx"
 Begin VB.Form frmOpciones 
    BackColor       =   &H00000000&
    BorderStyle     =   3  'Fixed Dialog
@@ -29,7 +29,7 @@ Begin VB.Form frmOpciones
       Caption         =   "Cambiar Contraseña"
       Height          =   375
       Left            =   960
-      TabIndex        =   15
+      TabIndex        =   14
       Top             =   3600
       Width           =   2775
    End
@@ -37,7 +37,7 @@ Begin VB.Form frmOpciones
       Caption         =   "Configurar Teclas"
       Height          =   375
       Left            =   960
-      TabIndex        =   14
+      TabIndex        =   13
       Top             =   3120
       Width           =   2775
    End
@@ -45,16 +45,8 @@ Begin VB.Form frmOpciones
       Caption         =   "Mensajes Personalizados"
       Height          =   375
       Left            =   960
-      TabIndex        =   13
-      Top             =   2640
-      Width           =   2775
-   End
-   Begin VB.CommandButton cmdManual 
-      Caption         =   "Manual de Argentum Online"
-      Height          =   375
-      Left            =   960
       TabIndex        =   12
-      Top             =   4320
+      Top             =   2640
       Width           =   2775
    End
    Begin VB.Frame Frame2 
@@ -273,17 +265,12 @@ End Sub
 Private Sub cmdCustomKeys_Click()
     If Not loading Then _
         Call Audio.PlayWave(SND_CLICK)
-    Call frmCustomKeys.Show(vbModal, Me)
+    Call frmCustomKeys.Show(, Me)
 End Sub
 
-Private Sub cmdManual_Click()
-    If Not loading Then _
-        Call Audio.PlayWave(SND_CLICK)
-    Call ShellExecute(0, "Open", "http://ao.alkon.com.ar/aomanual/", "", App.path, 0)
-End Sub
 
 Private Sub cmdChangePassword_Click()
-    Call frmNewPassword.Show(vbModal, Me)
+    Call frmNewPassword.Show(, Me)
 End Sub
 
 Private Sub Command2_Click()

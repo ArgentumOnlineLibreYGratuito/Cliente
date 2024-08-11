@@ -42,6 +42,158 @@ Public bLluvia() As Byte ' Array para determinar si
 
 Private lFrameTimer As Long
 
+Private Type tFont
+    red As Byte
+    green As Byte
+    blue As Byte
+    bold As Boolean
+    italic As Boolean
+End Type
+
+Public Enum FontTypeNames
+    FONTTYPE_TALK
+    FONTTYPE_FIGHT
+    FONTTYPE_WARNING
+    FONTTYPE_INFO
+    FONTTYPE_INFOBOLD
+    FONTTYPE_EJECUCION
+    FONTTYPE_PARTY
+    FONTTYPE_VENENO
+    FONTTYPE_GUILD
+    FONTTYPE_SERVER
+    FONTTYPE_GUILDMSG
+    FONTTYPE_CONSEJO
+    FONTTYPE_CONSEJOCAOS
+    FONTTYPE_CONSEJOVesA
+    FONTTYPE_CONSEJOCAOSVesA
+    FONTTYPE_CENTINELA
+    FONTTYPE_GMMSG
+    FONTTYPE_GM
+    FONTTYPE_CITIZEN
+End Enum
+
+Public FontTypes(18) As tFont
+
+''
+' Initializes the fonts array
+
+Public Sub InitFonts()
+'***************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 05/17/06
+'
+'***************************************************
+    With FontTypes(FontTypeNames.FONTTYPE_TALK)
+        .red = 255
+        .green = 255
+        .blue = 255
+    End With
+    
+    With FontTypes(FontTypeNames.FONTTYPE_FIGHT)
+        .red = 255
+        .bold = 1
+    End With
+    
+    With FontTypes(FontTypeNames.FONTTYPE_WARNING)
+        .red = 32
+        .green = 51
+        .blue = 223
+        .bold = 1
+        .italic = 1
+    End With
+    
+    With FontTypes(FontTypeNames.FONTTYPE_INFO)
+        .red = 65
+        .green = 190
+        .blue = 156
+    End With
+    
+    With FontTypes(FontTypeNames.FONTTYPE_INFOBOLD)
+        .red = 65
+        .green = 190
+        .blue = 156
+        .bold = 1
+    End With
+    
+    With FontTypes(FontTypeNames.FONTTYPE_EJECUCION)
+        .red = 130
+        .green = 130
+        .blue = 130
+        .bold = 1
+    End With
+    
+    With FontTypes(FontTypeNames.FONTTYPE_PARTY)
+        .red = 255
+        .green = 180
+        .blue = 250
+    End With
+    
+    FontTypes(FontTypeNames.FONTTYPE_VENENO).green = 255
+    
+    With FontTypes(FontTypeNames.FONTTYPE_GUILD)
+        .red = 255
+        .green = 255
+        .blue = 255
+        .bold = 1
+    End With
+    
+    FontTypes(FontTypeNames.FONTTYPE_SERVER).green = 185
+    
+    With FontTypes(FontTypeNames.FONTTYPE_GUILDMSG)
+        .red = 228
+        .green = 199
+        .blue = 27
+    End With
+    
+    With FontTypes(FontTypeNames.FONTTYPE_CONSEJO)
+        .red = 130
+        .green = 130
+        .blue = 255
+        .bold = 1
+    End With
+    
+    With FontTypes(FontTypeNames.FONTTYPE_CONSEJOCAOS)
+        .red = 255
+        .green = 60
+        .bold = 1
+    End With
+    
+    With FontTypes(FontTypeNames.FONTTYPE_CONSEJOVesA)
+        .green = 200
+        .blue = 255
+        .bold = 1
+    End With
+    
+    With FontTypes(FontTypeNames.FONTTYPE_CONSEJOCAOSVesA)
+        .red = 255
+        .green = 50
+        .bold = 1
+    End With
+    
+    With FontTypes(FontTypeNames.FONTTYPE_CENTINELA)
+        .green = 255
+        .bold = 1
+    End With
+    
+    With FontTypes(FontTypeNames.FONTTYPE_GMMSG)
+        .red = 255
+        .green = 255
+        .blue = 255
+        .italic = 1
+    End With
+    
+    With FontTypes(FontTypeNames.FONTTYPE_GM)
+        .green = 185
+        .bold = 1
+    End With
+    
+    With FontTypes(FontTypeNames.FONTTYPE_CITIZEN)
+        .blue = 200
+        .bold = 1
+    End With
+End Sub
+
+
 Public Function DirGraficos() As String
     DirGraficos = App.path & "\" & Config_Inicio.DirGraficos & "\"
 End Function
@@ -129,26 +281,6 @@ On Error Resume Next
     ColoresPJ(49).g = CByte(GetVar(archivoC, "CI", "G"))
     ColoresPJ(49).b = CByte(GetVar(archivoC, "CI", "B"))
 End Sub
-
-#If SeguridadAlkon Then
-Sub InitMI()
-    Dim alternativos As Integer
-    Dim CualMITemp As Integer
-    
-    alternativos = RandomNumber(1, 7368)
-    CualMITemp = RandomNumber(1, 1233)
-    
-
-    Set MI(CualMITemp) = New clsManagerInvisibles
-    Call MI(CualMITemp).Inicializar(alternativos, 10000)
-    
-    If CualMI <> 0 Then
-        Call MI(CualMITemp).CopyFrom(MI(CualMI))
-        Set MI(CualMI) = Nothing
-    End If
-    CualMI = CualMITemp
-End Sub
-#End If
 
 Sub CargarAnimEscudos()
 On Error Resume Next
@@ -289,10 +421,6 @@ End Function
 Sub UnloadAllForms()
 On Error Resume Next
 
-#If SeguridadAlkon Then
-    Call UnprotectForm
-#End If
-
     Dim mifrm As Form
     
     For Each mifrm In Forms
@@ -337,11 +465,6 @@ Sub SetConnected()
     
     Call SaveGameini
     
-#If SeguridadAlkon Then
-    'Unprotect character creation form
-    Call UnprotectForm
-#End If
-    
     'Unload the connect form
     Unload frmConnect
     Unload frmPasswd
@@ -350,19 +473,7 @@ Sub SetConnected()
     frmMain.Label8.Caption = UserName
     'Load main form
     frmMain.Visible = True
-    
-#If SeguridadAlkon Then
-    'Protect the main form
-    Call ProtectForm(frmMain)
-#End If
 
-End Sub
-
-Sub CargarTip()
-    Dim N As Integer
-    N = RandomNumber(1, UBound(Tips))
-    
-    frmtip.tip.Caption = Tips(N)
 End Sub
 
 Sub MoveTo(ByVal Direccion As E_Heading)
@@ -666,6 +777,8 @@ Public Function CurServerPort() As Integer
 End Function
 
 Sub Main()
+    Call modEngine.Initialize
+    
     Call WriteClientVer
     
     'Load config file
@@ -698,21 +811,8 @@ Sub Main()
     ChDrive App.path
     ChDir App.path
 
-#If SeguridadAlkon Then
-    'Obtener el HushMD5
-    Dim fMD5HushYo As String * 32
-    
-    fMD5HushYo = MD5.GetMD5File(App.path & "\" & App.EXEName & ".exe")
-    Call MD5.MD5Reset
-    MD5HushYo = txtOffset(hexMd52Asc(fMD5HushYo), 55)
-    
-    Debug.Print fMD5HushYo
-#Else
     MD5HushYo = "0123456789abcdef"  'We aren't using a real MD5
-#End If
-    
-    tipf = Config_Inicio.tip
-    
+
     'Set resolution BEFORE the loading form is displayed, therefore it will be centered.
     Call Resolution.SetResolution
     
@@ -732,7 +832,7 @@ Sub Main()
     Call InicializarNombres
     Call CargarParticulas
     ' Initialize FONTTYPES
-    Call Protocol.InitFonts
+    Call InitFonts
     
     frmOldPersonaje.NameTxt.Text = Config_Inicio.Name
     frmOldPersonaje.PasswordTxt.Text = ""
@@ -754,9 +854,7 @@ Sub Main()
     AddtoRichTextBox frmCargando.status, "Hecho", , , , 1
     
     Call AddtoRichTextBox(frmCargando.status, "Creando animaciones extra... ", , , , , , 1)
-    
-    Call CargarTips
-    
+
 UserMap = 1
     
     Call CargarArrayLluvia
@@ -773,7 +871,7 @@ UserMap = 1
     Call Audio.Initialize(frmMain.hWnd, App.path & "\" & Config_Inicio.DirSonidos & "\", App.path & "\" & Config_Inicio.DirMusica & "\")
     
     'Enable / Disable audio
-    Audio.MusicActivated = Not ClientSetup.bNoMusic
+    Audio.MusicActivated = False 'TODO Not ClientSetup.bNoMusic
     Audio.SoundActivated = Not ClientSetup.bNoSound
     
     'Inicializamos el inventario gráfico
@@ -782,31 +880,13 @@ UserMap = 1
     Call Audio.PlayMIDI(MIdi_Inicio & ".mid")
     
     AddtoRichTextBox frmCargando.status, "Hecho", , , , 1, , False
-    
-#If SeguridadAlkon Then
-    CualMI = 0
-    Call InitMI
-#End If
-    
     AddtoRichTextBox frmCargando.status, "                    ¡Bienvenido a Argentum Online!", , , , 1
-    
-    'Give the user enough time to read the welcome text
-    Call Sleep(1750)
-    
-    Unload frmCargando
-    
 
-'    frmPres.Picture = LoadPicture(App.path & "\Graficos\bosquefinal.jpg")
-    frmPres.Show vbModal    'Es modal, así que se detiene la ejecución de Main hasta que se desaparece
-    
-#If UsarWrench = 1 Then
-    frmMain.Socket1.Startup
-#End If
+    Unload frmCargando
 
     frmConnect.Visible = True
     
     'Inicialización de variables globales
-    PrimeraVez = True
     prgRun = True
     pausa = False
     
@@ -836,11 +916,7 @@ UserMap = 1
     'Set the dialog's font
     Dialogos.font = frmMain.font
     DialogosClanes.font = frmMain.font
-    
-    
-    ' Load the form for screenshots
-    Call Load(frmScreenshots)
-    
+
 jojoparticulas
     
 engine.Start
@@ -1069,18 +1145,8 @@ Public Sub CloseClient()
     Set Audio = Nothing
     Set Inventario = Nothing
     Set MainTimer = Nothing
-    Set incomingData = Nothing
-    Set outgoingData = Nothing
-    
-#If SeguridadAlkon Then
-    Set MD5 = Nothing
-#End If
-    
+
     Call UnloadAllForms
-    
-    'Actualizar tip
-    Config_Inicio.tip = tipf
-    Call EscribirGameIni(Config_Inicio)
     
     End
 End Sub
@@ -1094,35 +1160,35 @@ Sub SwitchMap(ByVal map As Integer)
     Dim x As Long
     Dim tempint As Integer
     Dim ByFlags As Byte
-    Dim handle As Integer
+    Dim Handle As Integer
     
-    handle = FreeFile()
+    Handle = FreeFile()
     
-    Open DirMapas & "Mapa" & map & ".map" For Binary As handle
-    Seek handle, 1
+    Open DirMapas & "Mapa" & map & ".map" For Binary As Handle
+    Seek Handle, 1
             
     'map Header
-    Get handle, , MapInfo.MapVersion
-    Get handle, , MiCabecera
-    Get handle, , tempint
-    Get handle, , tempint
-    Get handle, , tempint
-    Get handle, , tempint
+    Get Handle, , MapInfo.MapVersion
+    Get Handle, , MiCabecera
+    Get Handle, , tempint
+    Get Handle, , tempint
+    Get Handle, , tempint
+    Get Handle, , tempint
     
     'Load arrays
     For y = YMinMapSize To YMaxMapSize
         For x = XMinMapSize To XMaxMapSize
-            Get handle, , ByFlags
+            Get Handle, , ByFlags
             MapData(x, y).luz = 0
             MapData(x, y).particle_group = 0
             MapData(x, y).Blocked = (ByFlags And 1)
             
-            Get handle, , MapData(x, y).Graphic(1).grhindex
+            Get Handle, , MapData(x, y).Graphic(1).grhindex
             InitGrh MapData(x, y).Graphic(1), MapData(x, y).Graphic(1).grhindex
             
             'Layer 2 used?
             If ByFlags And 2 Then
-                Get handle, , MapData(x, y).Graphic(2).grhindex
+                Get Handle, , MapData(x, y).Graphic(2).grhindex
                 InitGrh MapData(x, y).Graphic(2), MapData(x, y).Graphic(2).grhindex
             Else
                 MapData(x, y).Graphic(2).grhindex = 0
@@ -1130,7 +1196,7 @@ Sub SwitchMap(ByVal map As Integer)
                 
             'Layer 3 used?
             If ByFlags And 4 Then
-                Get handle, , MapData(x, y).Graphic(3).grhindex
+                Get Handle, , MapData(x, y).Graphic(3).grhindex
                 InitGrh MapData(x, y).Graphic(3), MapData(x, y).Graphic(3).grhindex
             Else
                 MapData(x, y).Graphic(3).grhindex = 0
@@ -1138,7 +1204,7 @@ Sub SwitchMap(ByVal map As Integer)
                 
             'Layer 4 used?
             If ByFlags And 8 Then
-                Get handle, , MapData(x, y).Graphic(4).grhindex
+                Get Handle, , MapData(x, y).Graphic(4).grhindex
                 InitGrh MapData(x, y).Graphic(4), MapData(x, y).Graphic(4).grhindex
             Else
                 MapData(x, y).Graphic(4).grhindex = 0
@@ -1146,7 +1212,7 @@ Sub SwitchMap(ByVal map As Integer)
             
             'Trigger used?
             If ByFlags And 16 Then
-                Get handle, , MapData(x, y).Trigger
+                Get Handle, , MapData(x, y).Trigger
             Else
                 MapData(x, y).Trigger = 0
             End If
@@ -1161,7 +1227,7 @@ Sub SwitchMap(ByVal map As Integer)
         Next x
     Next y
     
-    Close handle
+    Close Handle
     
     MapInfo.Name = ""
     MapInfo.Music = ""

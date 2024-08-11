@@ -331,7 +331,7 @@ Private Sub aliado_Click()
     frmCommet.Nombre = Right(Nombre.Caption, Len(Nombre.Caption) - 7)
     frmCommet.T = TIPO.ALIANZA
     frmCommet.Caption = "Ingrese propuesta de alianza"
-    Call frmCommet.Show(vbModal, frmGuildBrief)
+    Call frmCommet.Show(, frmGuildBrief)
 End Sub
 
 Private Sub Command1_Click()
@@ -340,14 +340,14 @@ End Sub
 
 Private Sub Command2_Click()
     Call frmGuildSol.RecieveSolicitud(Right$(Nombre, Len(Nombre) - 7))
-    Call frmGuildSol.Show(vbModal, frmGuildBrief)
+    Call frmGuildSol.Show(, frmGuildBrief)
 End Sub
 
 Private Sub Command3_Click()
     frmCommet.Nombre = Right(Nombre.Caption, Len(Nombre.Caption) - 7)
     frmCommet.T = TIPO.PAZ
     frmCommet.Caption = "Ingrese propuesta de paz"
-    Call frmCommet.Show(vbModal, frmGuildBrief)
+    Call frmCommet.Show(, frmGuildBrief)
 End Sub
 
 Private Sub Guerra_Click()

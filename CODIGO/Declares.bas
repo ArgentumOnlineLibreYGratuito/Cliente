@@ -33,25 +33,23 @@ Attribute VB_Name = "Mod_Declaraciones"
 
 Option Explicit
 
+''
+'When we have a list of strings, we use this to separate them and prevent
+'having too many string lengths in the queue. Yes, each string is NULL-terminated :P
+Public Const SEPARATOR As String * 1 = vbNullChar
+
 'Objetos públicos
 Public DialogosClanes As New clsGuildDlg
 Public Dialogos As New clsDialogs
 Public Audio As New clsAudio
 Public Inventario As New clsGrapchicalInventory
-'Public SurfaceDB As clsSurfaceManager   'No va new porque es una interfaz, el new se pone al decidir que clase de objeto es
+
 Public CustomKeys As New clsCustomKeys
 Public CustomMessages As New clsCustomMessages
-
-Public incomingData As New clsByteQueue
-Public outgoingData As New clsByteQueue
 
 ''
 'The main timer of the game.
 Public MainTimer As New clsTimer
-
-#If SeguridadAlkon Then
-Public MD5 As New clsMD5
-#End If
 
 'Sonidos
 Public Const SND_CLICK As String = "click.Wav"
@@ -129,13 +127,6 @@ Public Const bBrazoDerecho = 4
 Public Const bBrazoIzquierdo = 5
 Public Const bTorso = 6
 
-'Timers de GetTickCount
-Public Const tAt = 2000
-Public Const tUs = 600
-
-Public Const PrimerBodyBarco = 84
-Public Const UltimoBodyBarco = 87
-
 Public NumEscudosAnims As Integer
 
 Public ArmasHerrero(0 To 100) As Integer
@@ -155,8 +146,6 @@ Public Const MAX_BANCOINVENTORY_SLOTS As Byte = 40
 Public UserBancoInventory(1 To MAX_BANCOINVENTORY_SLOTS) As Inventory
 '[/KEVIN]
 
-
-Public Tips() As String * 255
 Public Const LoopAdEternum As Integer = 999
 
 'Direcciones
@@ -446,8 +435,6 @@ Public UserExp As Long
 Public UserReputacion As tReputacion
 Public UserEstadisticas As tEstadisticasUsu
 Public UserDescansar As Boolean
-Public tipf As String
-Public PrimeraVez As Boolean
 Public FPSFLAG As Boolean
 Public pausa As Boolean
 Public IScombate As Boolean
@@ -560,9 +547,7 @@ End Enum
 Public RequestPosTimer As Integer 'Used in main loop
 Public stxtbuffer As String 'Holds temp raw data from server
 Public stxtbuffercmsg As String 'Holds temp raw data from server
-Public SendNewChar As Boolean 'Used during login
 Public Connected As Boolean 'True when connected to server
-Public DownloadingMap As Boolean 'Currently downloading a map from server
 Public UserMap As Integer
 
 'Control
@@ -586,9 +571,6 @@ Public Declare Function GetKeyState Lib "user32" (ByVal nVirtKey As Long) As Int
 Public Declare Function GetAsyncKeyState Lib "user32" (ByVal nVirtKey As Long) As Integer
 
 Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
-
-'Para ejecutar el Internet Explorer para el manual
-Public Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" (ByVal hWnd As Long, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Long) As Long
 
 'Lista de cabezas
 Public Type tIndiceCabeza

@@ -970,7 +970,7 @@ Private Sub boton_Click(index As Integer)
             
             'Barrin 3/10/03
             If CheckData() Then
-                frmPasswd.Show vbModal, Me
+                frmPasswd.Show
             End If
             
         Case 1
@@ -998,7 +998,6 @@ End Function
 
 Private Sub TirarDados()
     Call WriteThrowDices
-    Call FlushBuffer
 End Sub
 
 Private Sub Command1_Click(index As Integer)
@@ -1028,8 +1027,8 @@ End Sub
 Private Sub Form_Load()
 SkillPoints = 10
 Puntos.Caption = SkillPoints
-'Me.Picture = LoadPicture(App.path & "\graficos\CP-Interface.jpg")
-'imgHogar.Picture = LoadPicture(App.path & "\graficos\CP-Ullathorpe.jpg")
+Me.Picture = LoadPicture(App.path & "\graficos\CP-Interface.jpg")
+imgHogar.Picture = LoadPicture(App.path & "\graficos\CP-Ullathorpe.jpg")
 
 Dim i As Integer
 lstProfesion.Clear
@@ -1059,13 +1058,9 @@ Next i
 
 lstProfesion.ListIndex = 1
 
-'Image1.Picture = LoadPicture(App.path & "\graficos\" & lstProfesion.Text & ".jpg")
+Image1.Picture = LoadPicture(App.path & "\graficos\" & lstProfesion.Text & ".jpg")
 
 Call TirarDados
-
-#If SeguridadAlkon Then
-    Call ProtectForm(Me)
-#End If
 
 End Sub
 

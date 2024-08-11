@@ -376,7 +376,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/CONTRASEÑA"
-                Call frmNewPassword.Show(vbModal, frmMain)
+                Call frmNewPassword.Show(, frmMain)
             
             Case "/APOSTAR"
                 If UserEstado = 1 Then 'Muerto
@@ -513,7 +513,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
             
             Case "/HORA"
-                Call Protocol.WriteServerTime
+                Call WriteServerTime
             
             Case "/DONDE"
                 If notNullArguments Then
@@ -1400,10 +1400,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 
             Case "/ECHARTODOSPJS"
                 Call WriteKickAllChars
-                
-            Case "/TCPESSTATS"
-                Call WriteRequestTCPStats
-                
+
             Case "/RELOADNPCS"
                 Call WriteReloadNPCs
                 
@@ -1442,11 +1439,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             
             Case "/PING"
                 Call WritePing
-            
-#If SeguridadAlkon Then
-            Case Else
-                Call ParseUserCommandEx(Comando, CantidadArgumentos, ArgumentosAll, ArgumentosRaw)
-#End If
+
         End Select
         
     ElseIf Left$(Comando, 1) = "\" Then

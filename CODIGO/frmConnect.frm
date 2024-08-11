@@ -21,14 +21,6 @@ Begin VB.Form frmConnect
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
-   Begin VB.CommandButton downloadServer 
-      Caption         =   "Descargar código del servidor"
-      Height          =   375
-      Left            =   240
-      TabIndex        =   3
-      Top             =   8280
-      Width           =   2415
-   End
    Begin VB.TextBox PortTxt 
       Alignment       =   2  'Center
       Appearance      =   0  'Flat
@@ -79,21 +71,6 @@ Begin VB.Form frmConnect
       Top             =   5280
       Width           =   3135
    End
-   Begin VB.Image imgServArgentina 
-      Height          =   795
-      Left            =   -195
-      MousePointer    =   99  'Custom
-      Top             =   6765
-      Visible         =   0   'False
-      Width           =   2595
-   End
-   Begin VB.Image imgGetPass 
-      Height          =   495
-      Left            =   3600
-      MousePointer    =   99  'Custom
-      Top             =   8220
-      Width           =   4575
-   End
    Begin VB.Label version 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
@@ -117,7 +94,7 @@ Begin VB.Form frmConnect
    Begin VB.Image Image1 
       Height          =   585
       Index           =   0
-      Left            =   8625
+      Left            =   8640
       MousePointer    =   99  'Custom
       Top             =   6705
       Width           =   3090
@@ -191,21 +168,6 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
-Private Sub downloadServer_Click()
-'***********************************
-'IMPORTANTE!
-'
-'No debe eliminarse la posibilidad de bajar el código de sus servidor de esta forma.
-'Caso contrario estarían violando la licencia Affero GPL y con ella derechos de autor,
-'incurriendo de esta forma en un delito punible por ley.
-'
-'Argentum Online es libre, es de todos. Mantengamoslo así. Si tanto te gusta el juego y querés los
-'cambios que hacemos nosotros, compartí los tuyos. Es un cambio justo. Si no estás de acuerdo,
-'no uses nuestro código, pues nadie te obliga o bien utiliza una versión anterior a la 0.12.0.
-'***********************************
-    Call ShellExecute(0, "Open", "http://downloads.sourceforge.net/morgoao/AOServerSrc0.12.1.zip?use_mirror=osdn", "", App.path, 0)
-End Sub
-
 Private Sub Form_Activate()
 'On Error Resume Next
 
@@ -259,7 +221,7 @@ Private Sub Form_Load()
  Next
  PortTxt.Text = Config_Inicio.Puerto
  
-' FONDO.Picture = LoadPicture(App.path & "\Graficos\Conectar.jpg")
+    FONDO.Picture = LoadPicture(App.path & "\Graficos\Conectar.jpg")
 
 
  '[CODE]:MatuX
@@ -267,22 +229,9 @@ Private Sub Form_Load()
  '  El código para mostrar la versión se genera acá para
  ' evitar que por X razones luego desaparezca, como suele
  ' pasar a veces :)
-    Version.Caption = "v" & App.Major & "." & App.Minor & " Build: " & App.Revision
+    version.Caption = "v" & App.Major & "." & App.Minor & " Build: " & App.Revision
  '[END]'
 
-'Recordatorio para cumplir la licencia, por si borrás el botón sin leer el code...
-Dim i As Long
-
-For i = 0 To Me.Controls.Count - 1
-    If Me.Controls(i).Name = "downloadServer" Then
-        Exit For
-    End If
-Next i
-
-If i = Me.Controls.Count Then
-    MsgBox "No debe eliminarse la posibilidad de bajar el código de sus servidor. Caso contrario estarían violando la licencia Affero GPL y con ella derechos de autor, incurriendo de esta forma en un delito punible por ley." & vbCrLf & vbCrLf & vbCrLf & _
-            "Argentum Online es libre, es de todos. Mantengamoslo así. Si tanto te gusta el juego y querés los cambios que hacemos nosotros, compartí los tuyos. Es un cambio justo. Si no estás de acuerdo, no uses nuestro código, pues nadie te obliga o bien utiliza una versión anterior a la 0.12.0.", vbCritical Or vbApplicationModal
-End If
 
 End Sub
 
@@ -313,26 +262,12 @@ Select Case index
         Call Audio.PlayMIDI("7.mid")
         
         EstadoLogin = E_MODO.Dados
-#If UsarWrench = 1 Then
-        If frmMain.Socket1.Connected Then
-            frmMain.Socket1.Disconnect
-            frmMain.Socket1.Cleanup
-            DoEvents
-        End If
-        frmMain.Socket1.HostName = CurServerIp
-        frmMain.Socket1.RemotePort = CurServerPort
-        frmMain.Socket1.Connect
-#Else
-        If frmMain.Winsock1.State <> sckClosed Then
-            frmMain.Winsock1.Close
-            DoEvents
-        End If
-        frmMain.Winsock1.Connect CurServerIp, CurServerPort
-#End If
 
+        Call modEngine.NetConnect(CurServerIp, CurServerPort)
+        
     Case 1
     
-        frmOldPersonaje.Show vbModal
+        frmOldPersonaje.Show
         
     Case 2
         On Error GoTo errH
@@ -344,20 +279,3 @@ Exit Sub
 errH:
     Call MsgBox("No se encuentra el programa recuperar.exe", vbCritical, "Argentum Online")
 End Sub
-
-Private Sub imgGetPass_Click()
-On Error GoTo errH
-
-    Call Audio.PlayWave(SND_CLICK)
-    Call Shell(App.path & "\RECUPERAR.EXE", vbNormalFocus)
-    Exit Sub
-errH:
-    Call MsgBox("No se encuentra el programa recuperar.exe", vbCritical, "Argentum Online")
-End Sub
-
-Private Sub imgServArgentina_Click()
-    Call Audio.PlayWave(SND_CLICK)
-    IPTxt.Text = IPdelServidor
-    PortTxt.Text = PuertoDelServidor
-End Sub
-

@@ -74,8 +74,8 @@ Private Const MS_ADD_EXTRA As Integer = 5000
 '                           (used to skip dialogs from people outside render area).
 Private Type dialog
     textLine()  As String
-    X           As Integer
-    Y           As Integer
+    x           As Integer
+    y           As Integer
     startTime   As Long
     lifeTime    As Long
     CharIndex   As Integer
@@ -285,7 +285,7 @@ End Function
 ' @param    y           The Y coord where to start rendering.
 ' @param    charIndex   The character whose dialog's position is being updated.
 
-Public Sub UpdateDialogPos(ByVal X As Integer, ByVal Y As Integer, ByVal CharIndex As Integer)
+Public Sub UpdateDialogPos(ByVal x As Integer, ByVal y As Integer, ByVal CharIndex As Integer)
 '**************************************************************
 'Author: Juan Martín Sotuyo Dodero
 'Last Modify Date: 07/28/07
@@ -297,8 +297,8 @@ Public Sub UpdateDialogPos(ByVal X As Integer, ByVal Y As Integer, ByVal CharInd
     
     If slot >= 0 Then
         With dialogs(slot)
-            .X = X - (MAX_LENGTH \ 2) * 3
-            .Y = Y - (UBound(.textLine()) * 3)
+            .x = x - (MAX_LENGTH \ 2) * 3
+            .y = y - (UBound(.textLine()) * 3)
             .renderable = True
         End With
     End If
@@ -331,7 +331,7 @@ Public Sub Render()
                 
                 'Render it
                 For j = 0 To UBound(.textLine())
-                    Call engine.Text_Render_ext(.textLine(j), .Y + offset, .X, 400, 12, .color, True, True)
+                    Call engine.Text_Render_ext(.textLine(j), .y + offset, .x, 400, 12, .color, True, True)
                     offset = offset + usedFont.size + 5
                 Next j
                 

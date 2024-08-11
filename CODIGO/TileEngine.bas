@@ -136,7 +136,7 @@ End Type
 
 
 'Apariencia del personaje
-Public Type Char
+Public Type char
     active As Byte
     Heading As E_Heading
     Pos As Position
@@ -318,14 +318,7 @@ Private iFrameIndex As Byte  'Frame actual de la LL
 Private llTick      As Long  'Contador
 Private LTLluvia(4) As Integer
 
-Public charlist(1 To 10000) As Char
-
-#If SeguridadAlkon Then
-
-Public MI(1 To 1233) As clsManagerInvisibles
-Public CualMI As Integer
-
-#End If
+Public charlist(1 To 10000) As char
 
 ' Used by GetTextExtentPoint32
 Private Type size
@@ -350,20 +343,20 @@ Private Declare Function BltAlphaFast Lib "vbabdx" (ByRef lpDDSDest As Any, ByRe
         ByVal pitchSrc As Long, ByVal pitchDst As Long, ByVal dwMode As Long) As Long
 Private Declare Function BltEfectoNoche Lib "vbabdx" (ByRef lpDDSDest As Any, ByVal iWidth As Long, ByVal iHeight As Long, _
         ByVal pitchDst As Long, ByVal dwMode As Long) As Long
-Private Declare Function SelectObject Lib "gdi32" (ByVal hDC As Long, ByVal hObject As Long) As Long
+Private Declare Function SelectObject Lib "gdi32" (ByVal hdc As Long, ByVal hObject As Long) As Long
 #End If
 
 Private Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal dwRop As Long) As Long
-Private Declare Function SelectObject Lib "gdi32" (ByVal hDC As Long, ByVal hObject As Long) As Long
-Private Declare Function CreateCompatibleDC Lib "gdi32" (ByVal hDC As Long) As Long
-Private Declare Function DeleteDC Lib "gdi32" (ByVal hDC As Long) As Long
+Private Declare Function SelectObject Lib "gdi32" (ByVal hdc As Long, ByVal hObject As Long) As Long
+Private Declare Function CreateCompatibleDC Lib "gdi32" (ByVal hdc As Long) As Long
+Private Declare Function DeleteDC Lib "gdi32" (ByVal hdc As Long) As Long
 Private Declare Function DeleteObject Lib "gdi32" (ByVal hObject As Long) As Long
 
 
 'Added by Juan Martín Sotuyo Dodero
 Private Declare Function StretchBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal nSrcWidth As Long, ByVal nSrcHeight As Long, ByVal dwRop As Long) As Long
-Private Declare Function SetPixel Lib "gdi32" (ByVal hDC As Long, ByVal x As Long, ByVal y As Long, ByVal crColor As Long) As Long
-Private Declare Function GetPixel Lib "gdi32" (ByVal hDC As Long, ByVal x As Long, ByVal y As Long) As Long
+Private Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long, ByVal crColor As Long) As Long
+Private Declare Function GetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long) As Long
 'Added by Barrin
 
 
@@ -372,7 +365,7 @@ Private Declare Function QueryPerformanceFrequency Lib "kernel32" (lpFrequency A
 Private Declare Function QueryPerformanceCounter Lib "kernel32" (lpPerformanceCount As Currency) As Long
 
 'Text width computation. Needed to center text.
-Private Declare Function GetTextExtentPoint32 Lib "gdi32" Alias "GetTextExtentPoint32A" (ByVal hDC As Long, ByVal lpsz As String, ByVal cbString As Long, lpSize As size) As Long
+Private Declare Function GetTextExtentPoint32 Lib "gdi32" Alias "GetTextExtentPoint32A" (ByVal hdc As Long, ByVal lpsz As String, ByVal cbString As Long, lpSize As size) As Long
 
 
 
@@ -391,10 +384,6 @@ Sub ResetCharInfo(ByVal CharIndex As Integer)
         .Criminal = 0
         .FxIndex = 0
         .invisible = False
-        
-#If SeguridadAlkon Then
-        Call MI(CualMI).ResetInvisible(CharIndex)
-#End If
         
         .Moving = 0
         .muerto = False

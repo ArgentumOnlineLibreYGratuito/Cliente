@@ -315,7 +315,7 @@ Private Sub Command4_Click()
 End Sub
 
 Private Sub Command5_Click()
-    Call frmGuildDetails.Show(vbModal, frmGuildLeader)
+    Call frmGuildDetails.Show(, frmGuildLeader)
     
     'Unload Me
 End Sub

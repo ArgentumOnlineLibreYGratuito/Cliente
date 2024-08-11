@@ -1,8 +1,5 @@
 VERSION 5.00
 Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.ocx"
-Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.ocx"
-Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.ocx"
-Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.ocx"
 Begin VB.Form frmMain 
    BackColor       =   &H00000000&
    BorderStyle     =   1  'Fixed Single
@@ -30,38 +27,6 @@ Begin VB.Form frmMain
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   794
    Visible         =   0   'False
-   Begin SocketWrenchCtrl.Socket Socket1 
-      Left            =   6750
-      Top             =   1920
-      _Version        =   65536
-      _ExtentX        =   741
-      _ExtentY        =   741
-      _StockProps     =   0
-      AutoResolve     =   0   'False
-      Backlog         =   1
-      Binary          =   -1  'True
-      Blocking        =   0   'False
-      Broadcast       =   0   'False
-      BufferSize      =   10240
-      HostAddress     =   ""
-      HostFile        =   ""
-      HostName        =   ""
-      InLine          =   0   'False
-      Interval        =   0
-      KeepAlive       =   0   'False
-      Library         =   ""
-      Linger          =   0
-      LocalPort       =   0
-      LocalService    =   ""
-      Protocol        =   0
-      RemotePort      =   0
-      RemoteService   =   ""
-      ReuseAddress    =   0   'False
-      Route           =   -1  'True
-      Timeout         =   10000
-      Type            =   1
-      Urgent          =   0   'False
-   End
    Begin VB.TextBox SendTxt 
       BackColor       =   &H00000000&
       BeginProperty Font 
@@ -134,13 +99,6 @@ Begin VB.Form frmMain
       Left            =   5760
       Top             =   2520
    End
-   Begin MSWinsockLib.Winsock Winsock1 
-      Left            =   6240
-      Top             =   1920
-      _ExtentX        =   741
-      _ExtentY        =   741
-      _Version        =   393216
-   End
    Begin VB.Timer Second 
       Enabled         =   0   'False
       Interval        =   1050
@@ -152,14 +110,6 @@ Begin VB.Form frmMain
       Interval        =   60000
       Left            =   3120
       Top             =   2520
-   End
-   Begin InetCtlsObjects.Inet Inet1 
-      Left            =   7605
-      Top             =   1905
-      _ExtentX        =   1005
-      _ExtentY        =   1005
-      _Version        =   393216
-      RequestTimeout  =   30
    End
    Begin VB.PictureBox PanelDer 
       AutoSize        =   -1  'True
@@ -852,9 +802,6 @@ engine.Engine_Blur_Toggle
 End Sub
 
 Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
-#If SeguridadAlkon Then
-    If LOGGING Then Call CheatingDeath.StoreKey(KeyCode, False)
-#End If
     
     If (Not SendTxt.Visible) And (Not SendCMSTXT.Visible) Then
         
@@ -932,10 +879,7 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
                 SendCMSTXT.Visible = True
                 SendCMSTXT.SetFocus
             End If
-        
-        Case CustomKeys.BindedKey(eKeyType.mKeyTakeScreenShot)
-            Call ScreenCapture
-        
+
         Case CustomKeys.BindedKey(eKeyType.mKeyToggleFPS)
             FPSFLAG = Not FPSFLAG
             If Not FPSFLAG Then _
@@ -1016,6 +960,10 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     End If
 End Sub
 
+
+Private Sub Inet1_StateChanged(ByVal State As Integer)
+
+End Sub
 
 Private Sub Macro_Timer()
     PuedeMacrear = True
@@ -1258,10 +1206,6 @@ Private Sub Form_Click()
     
     If Cartel Then Cartel = False
 
-#If SeguridadAlkon Then
-    If LOGGING Then Call CheatingDeath.StoreKey(MouseBoton, True)
-#End If
-
     If Not Comerciando Then
         Call ConvertCPtoTP(MouseX, MouseY, tX, tY)
 
@@ -1408,24 +1352,14 @@ Private Sub Image1_Click(index As Integer)
             Call frmOpciones.Show(vbModeless, frmMain)
             
         Case 1
-            LlegaronAtrib = False
-            LlegaronSkills = False
-            LlegoFama = False
             Call WriteRequestAtributes
             Call WriteRequestSkills
             Call WriteRequestMiniStats
             Call WriteRequestFame
-            Call FlushBuffer
-            
-            Do While Not LlegaronSkills Or Not LlegaronAtrib Or Not LlegoFama
-                DoEvents 'esperamos a que lleguen y mantenemos la interfaz viva
-            Loop
+
             frmEstadisticas.Iniciar_Labels
             frmEstadisticas.Show , frmMain
-            LlegaronAtrib = False
-            LlegaronSkills = False
-            LlegoFama = False
-        
+
         Case 2
             If frmGuildLeader.Visible Then Unload frmGuildLeader
             
@@ -1463,7 +1397,7 @@ Private Sub Label4_Click()
     picInv.Visible = True
 
     hlst.Visible = False
-    cmdInfo.Visible = False
+    cmdINFO.Visible = False
     CmdLanzar.Visible = False
     
     cmdMoverHechi(0).Visible = True
@@ -1482,7 +1416,7 @@ Private Sub Label7_Click()
     'DespInv(1).Visible = False
     picInv.Visible = False
     hlst.Visible = True
-    cmdInfo.Visible = True
+    cmdINFO.Visible = True
     CmdLanzar.Visible = True
     
     cmdMoverHechi(0).Visible = True
@@ -1615,150 +1549,6 @@ Private Sub SendCMSTXT_Change()
     End If
 End Sub
 
-
-''''''''''''''''''''''''''''''''''''''
-'     SOCKET1                        '
-''''''''''''''''''''''''''''''''''''''
-#If UsarWrench = 1 Then
-
-Private Sub Socket1_Connect()
-    
-    'Clean input and output buffers
-    Call incomingData.ReadASCIIStringFixed(incomingData.length)
-    Call outgoingData.ReadASCIIStringFixed(outgoingData.length)
-    
-#If SeguridadAlkon Then
-    Call ConnectionStablished(Socket1.PeerAddress)
-#End If
-    
-    Second.Enabled = True
-
-    Select Case EstadoLogin
-        Case E_MODO.CrearNuevoPj
-#If SeguridadAlkon Then
-            Call MI(CualMI).Inicializar(RandomNumber(1, 1000), 10000)
-#End If
-            Call Login
-        
-        Case E_MODO.Normal
-#If SeguridadAlkon Then
-            Call MI(CualMI).Inicializar(RandomNumber(1, 1000), 10000)
-#End If
-            Call Login
-        
-        Case E_MODO.Dados
-#If SeguridadAlkon Then
-            Call MI(CualMI).Inicializar(RandomNumber(1, 1000), 10000)
-#End If
-            frmCrearPersonaje.Show vbModal
-    End Select
-End Sub
-
-Private Sub Socket1_Disconnect()
-    Dim i As Long
-    
-    Second.Enabled = False
-    Connected = False
-    
-    Socket1.Cleanup
-    
-    frmConnect.MousePointer = vbNormal
-    
-    If Not frmPasswd.Visible And Not frmCrearPersonaje.Visible Then
-        frmConnect.Visible = True
-    End If
-    
-    On Local Error Resume Next
-    For i = 0 To Forms.Count - 1
-        If Forms(i).Name <> Me.Name And Forms(i).Name <> frmConnect.Name And Forms(i).Name <> frmOldPersonaje.Name And Forms(i).Name <> frmCrearPersonaje.Name And Forms(i).Name <> frmPasswd.Name Then
-            Unload Forms(i)
-        End If
-    Next i
-    On Local Error GoTo 0
-    
-    frmMain.Visible = False
-    
-    pausa = False
-    UserMeditar = False
-    
-#If SeguridadAlkon Then
-    LOGGING = False
-    LOGSTRING = False
-    LastPressed = 0
-    LastMouse = False
-    LastAmount = 0
-#End If
-
-    UserClase = 0
-    UserSexo = 0
-    UserRaza = 0
-    UserHogar = 0
-    UserEmail = ""
-    
-    For i = 1 To NUMSKILLS
-        UserSkills(i) = 0
-    Next i
-
-    For i = 1 To NUMATRIBUTOS
-        UserAtributos(i) = 0
-    Next i
-    
-    macrotrabajo.Enabled = False
-
-    SkillPoints = 0
-    Alocados = 0
-End Sub
-
-Private Sub Socket1_LastError(ErrorCode As Integer, ErrorString As String, Response As Integer)
-    '*********************************************
-    'Handle socket errors
-    '*********************************************
-    If ErrorCode = 24036 Then
-        Call MsgBox("Por favor espere, intentando completar conexion.", vbApplicationModal + vbInformation + vbOKOnly + vbDefaultButton1, "Error")
-        Exit Sub
-    End If
-    
-    Call MsgBox(ErrorString, vbApplicationModal + vbInformation + vbOKOnly + vbDefaultButton1, "Error")
-    frmConnect.MousePointer = 1
-    Response = 0
-    Second.Enabled = False
-
-    frmMain.Socket1.Disconnect
-    
-    If frmOldPersonaje.Visible Then
-        frmOldPersonaje.Visible = False
-    End If
-    
-    If Not frmCrearPersonaje.Visible Then
-        frmConnect.Show
-    Else
-        frmCrearPersonaje.MousePointer = 0
-    End If
-End Sub
-
-Private Sub Socket1_Read(dataLength As Integer, IsUrgent As Integer)
-    Dim RD As String
-    Dim data() As Byte
-    
-    Call Socket1.Read(RD, dataLength)
-    data = StrConv(RD, vbFromUnicode)
-    
-    If RD = vbNullString Then Exit Sub
-    
-#If SeguridadAlkon Then
-    Call DataReceived(data)
-#End If
-    
-    'Put data in the buffer
-    Call incomingData.WriteBlock(data)
-    
-    'Send buffer to Handle data
-    Call HandleIncomingData
-End Sub
-
-
-#End If
-
 Private Sub AbrirMenuViewPort()
 #If (ConMenuseConextuales = 1) Then
 
@@ -1820,148 +1610,6 @@ Case 1 'Menu del ViewPort del engine
     End Select
 End Select
 End Sub
-
-
-'
-' -------------------
-'    W I N S O C K
-' -------------------
-'
-
-#If UsarWrench <> 1 Then
-
-Private Sub Winsock1_Close()
-    Dim i As Long
-    
-    Debug.Print "WInsock Close"
-    
-    Second.Enabled = False
-    Connected = False
-    
-    If Winsock1.State <> sckClosed Then _
-        Winsock1.Close
-    
-    frmConnect.MousePointer = vbNormal
-    
-    If Not frmPasswd.Visible And Not frmCrearPersonaje.Visible Then
-        frmConnect.Visible = True
-    End If
-    
-    On Local Error Resume Next
-    For i = 0 To Forms.Count - 1
-        If Forms(i).Name <> Me.Name And Forms(i).Name <> frmConnect.Name And Forms(i).Name <> frmOldPersonaje.Name And Forms(i).Name <> frmCrearPersonaje.Name And Forms(i).Name <> frmPasswd.Name Then
-            Unload Forms(i)
-        End If
-    Next i
-    On Local Error GoTo 0
-    
-    frmMain.Visible = False
-
-    pausa = False
-    UserMeditar = False
-
-    UserClase = 0
-    UserSexo = 0
-    UserRaza = 0
-    UserHogar = 0
-    UserEmail = ""
-    
-    For i = 1 To NUMSKILLS
-        UserSkills(i) = 0
-    Next i
-
-    For i = 1 To NUMATRIBUTOS
-        UserAtributos(i) = 0
-    Next i
-
-    SkillPoints = 0
-    Alocados = 0
-
-    Dialogos.CantidadDialogos = 0
-End Sub
-
-Private Sub Winsock1_Connect()
-    Debug.Print "Winsock Connect"
-    
-    'Clean input and output buffers
-    Call incomingData.ReadASCIIStringFixed(incomingData.length)
-    Call outgoingData.ReadASCIIStringFixed(outgoingData.length)
-    
-#If SeguridadAlkon Then
-    Call ConnectionStablished(Winsock1.RemoteHostIP)
-#End If
-    
-    Second.Enabled = True
-    
-    Select Case EstadoLogin
-        Case E_MODO.CrearNuevoPj
-#If SeguridadAlkon Then
-            Call MI(CualMI).Inicializar(RandomNumber(1, 1000), 10000)
-#End If
-            Call Login
-
-
-        Case E_MODO.Normal
-#If SeguridadAlkon Then
-            Call MI(CualMI).Inicializar(RandomNumber(1, 1000), 10000)
-#End If
-            Call Login
-
-        Case E_MODO.Dados
-#If SeguridadAlkon Then
-            Call MI(CualMI).Inicializar(RandomNumber(1, 1000), 10000)
-#End If
-            frmCrearPersonaje.Show vbModal
-            
-#If SeguridadAlkon Then
-            Call ProtectForm(frmCrearPersonaje)
-#End If
-    End Select
-End Sub
-
-Private Sub Winsock1_DataArrival(ByVal BytesTotal As Long)
-    Dim RD As String
-    Dim data() As Byte
-    
-    'Socket1.Read RD, DataLength
-    Winsock1.GetData RD
-    
-    data = StrConv(RD, vbFromUnicode)
-    
-#If SeguridadAlkon Then
-    Call DataReceived(data)
-#End If
-    
-    'Set data in the buffer
-    Call incomingData.WriteBlock(data)
-    
-    'Send buffer to Handle data
-    Call HandleIncomingData
-End Sub
-
-Private Sub Winsock1_Error(ByVal number As Integer, Description As String, ByVal Scode As Long, ByVal source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
-    '*********************************************
-    'Handle socket errors
-    '*********************************************
-    
-    Call MsgBox(Description, vbApplicationModal + vbInformation + vbOKOnly + vbDefaultButton1, "Error")
-    frmConnect.MousePointer = 1
-    Second.Enabled = False
-
-    If Winsock1.State <> sckClosed Then _
-        Winsock1.Close
-    
-    If frmOldPersonaje.Visible Then
-        frmOldPersonaje.Visible = False
-    End If
-
-    If Not frmCrearPersonaje.Visible Then
-        frmConnect.Show
-    Else
-        frmCrearPersonaje.MousePointer = 0
-    End If
-End Sub
-#End If
 
 Private Function InGameArea() As Boolean
 '***************************************************
