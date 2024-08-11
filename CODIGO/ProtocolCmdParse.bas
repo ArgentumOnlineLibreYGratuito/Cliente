@@ -1415,10 +1415,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                  
             Case "/REINICIAR"
                 Call WriteRestart
-                
-            Case "/AUTOUPDATE"
-                Call WriteResetAutoUpdate
-            
+
             Case "/CHATCOLOR"
                 If notNullArguments And CantidadArgumentos >= 3 Then
                     If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Byte) And ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Byte) And ValidNumber(ArgumentosAll(2), eNumber_Types.ent_Byte) Then

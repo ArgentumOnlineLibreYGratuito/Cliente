@@ -41,25 +41,7 @@ Public Type tCabecera 'Cabecera de los con
     MagicWord As Long
 End Type
 
-Public Type tGameIni
-    Puerto As Long
-    Musica As Byte
-    fX As Byte
-    tip As Byte
-    Password As String
-    Name As String
-    DirGraficos As String
-    DirSonidos As String
-    DirMusica As String
-    DirMapas As String
-    NumeroDeBMPs As Long
-    NumeroMapas As Integer
-End Type
-
 Public Type tSetupMods
-    bDinamic    As Boolean
-    byMemory    As Byte
-    bUseVideo   As Boolean
     bNoMusic    As Boolean
     bNoSound    As Boolean
     bNoRes      As Boolean ' 24/06/2006 - ^[GS]^
@@ -68,35 +50,3 @@ End Type
 Public ClientSetup As tSetupMods
 
 Public MiCabecera As tCabecera
-Public Config_Inicio As tGameIni
-
-Public Sub IniciarCabecera(ByRef Cabecera As tCabecera)
-    Cabecera.desc = "Argentum Online by Noland Studios. Copyright Noland-Studios 2001, pablomarquez@noland-studios.com.ar"
-    Cabecera.CRC = Rnd * 100
-    Cabecera.MagicWord = Rnd * 10
-End Sub
-
-Public Function LeerGameIni() As tGameIni
-    Dim N As Integer
-    Dim GameIni As tGameIni
-    N = FreeFile
-    Open App.path & "\init\Inicio.con" For Binary As #N
-    Get #N, , MiCabecera
-    
-    Get #N, , GameIni
-    
-    Close #N
-    LeerGameIni = GameIni
-End Function
-
-Public Sub EscribirGameIni(ByRef GameIniConfiguration As tGameIni)
-On Local Error Resume Next
-
-Dim N As Integer
-N = FreeFile
-Open App.path & "\init\Inicio.con" For Binary As #N
-Put #N, , MiCabecera
-Put #N, , GameIniConfiguration
-Close #N
-End Sub
-

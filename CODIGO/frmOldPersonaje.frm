@@ -189,7 +189,7 @@ Select Case index
             EstadoLogin = Normal
 
 
-            Call modEngine.NetConnect(CurServerIp, CurServerPort)
+            Call modEngine.NetConnect(SERVER_ADDRESS, SERVER_PORT)
             
         End If
         

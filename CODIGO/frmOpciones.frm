@@ -29,7 +29,7 @@ Begin VB.Form frmOpciones
       Caption         =   "Cambiar Contraseña"
       Height          =   375
       Left            =   960
-      TabIndex        =   14
+      TabIndex        =   13
       Top             =   3600
       Width           =   2775
    End
@@ -37,16 +37,8 @@ Begin VB.Form frmOpciones
       Caption         =   "Configurar Teclas"
       Height          =   375
       Left            =   960
-      TabIndex        =   13
-      Top             =   3120
-      Width           =   2775
-   End
-   Begin VB.CommandButton customMsgCmd 
-      Caption         =   "Mensajes Personalizados"
-      Height          =   375
-      Left            =   960
       TabIndex        =   12
-      Top             =   2640
+      Top             =   3120
       Width           =   2775
    End
    Begin VB.Frame Frame2 
@@ -278,9 +270,6 @@ Private Sub Command2_Click()
     frmMain.SetFocus
 End Sub
 
-Private Sub customMsgCmd_Click()
-    Call frmMessageTxt.Show(vbModeless, Me)
-End Sub
 
 Private Sub Form_Load()
     loading = True      'Prevent sounds when setting check's values

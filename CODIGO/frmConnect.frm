@@ -21,50 +21,6 @@ Begin VB.Form frmConnect
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
-   Begin VB.TextBox PortTxt 
-      Alignment       =   2  'Center
-      Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
-      BorderStyle     =   0  'None
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H0000FF00&
-      Height          =   225
-      Left            =   3000
-      TabIndex        =   0
-      Text            =   "7666"
-      Top             =   2460
-      Width           =   1875
-   End
-   Begin VB.TextBox IPTxt 
-      Alignment       =   2  'Center
-      Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
-      BorderStyle     =   0  'None
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H0000FF00&
-      Height          =   225
-      Left            =   5340
-      TabIndex        =   2
-      Text            =   "localhost"
-      Top             =   2460
-      Width           =   3375
-   End
    Begin VB.Shape Shape1 
       Height          =   735
       Left            =   8640
@@ -87,7 +43,7 @@ Begin VB.Form frmConnect
       ForeColor       =   &H000000FF&
       Height          =   195
       Left            =   120
-      TabIndex        =   1
+      TabIndex        =   0
       Top             =   120
       Width           =   555
    End
@@ -168,59 +124,18 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
-Private Sub Form_Activate()
-'On Error Resume Next
-
-If ServersRecibidos Then
-    If CurServer <> 0 Then
-        IPTxt = ServersLst(1).Ip
-        PortTxt = ServersLst(1).Puerto
-    Else
-        IPTxt = IPdelServidor
-        PortTxt = PuertoDelServidor
-    End If
-End If
-
-End Sub
-
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
     If KeyCode = 27 Then
         prgRun = False
     End If
 End Sub
 
-Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
-
-'Make Server IP and Port box visible
-If KeyCode = vbKeyI And Shift = vbCtrlMask Then
-    
-    'Port
-    PortTxt.Visible = True
-    'Label4.Visible = True
-    
-    'Server IP
-    PortTxt.Text = "7666"
-    IPTxt.Text = "localhost"
-    IPTxt.Visible = True
-    'Label5.Visible = True
-    
-    KeyCode = 0
-    Exit Sub
-End If
-
-End Sub
-
 Private Sub Form_Load()
     '[CODE 002]:MatuX
     EngineRun = False
     '[END]
-    
- Dim j
- For Each j In Image1()
-    j.Tag = "0"
- Next
- PortTxt.Text = Config_Inicio.Puerto
- 
+
+
     FONDO.Picture = LoadPicture(App.path & "\Graficos\Conectar.jpg")
 
 
@@ -239,39 +154,17 @@ Private Sub Image1_Click(index As Integer)
 
 Call Audio.PlayWave(SND_CLICK)
 
-If ServersRecibidos Then
-    If Not IsIp(IPTxt) And CurServer <> 0 Then
-        If MsgBox("Atencion, está intentando conectarse a un servidor no oficial, NoLand Studios no se hace responsable de los posibles problemas que estos servidores presenten. ¿Desea continuar?", vbYesNo) = vbNo Then
-            If CurServer <> 0 Then
-                IPTxt = ServersLst(CurServer).Ip
-                PortTxt = ServersLst(CurServer).Puerto
-            Else
-                IPTxt = IPdelServidor
-                PortTxt = PuertoDelServidor
-            End If
-            Exit Sub
-        End If
-    End If
-End If
-CurServer = 0
-IPdelServidor = IPTxt
-PuertoDelServidor = PortTxt
-
 Select Case index
     Case 0
         Call Audio.PlayMIDI("7.mid")
         
         EstadoLogin = E_MODO.Dados
 
-        Call modEngine.NetConnect(CurServerIp, CurServerPort)
+        Call modEngine.NetConnect(SERVER_ADDRESS, SERVER_PORT)
         
     Case 1
     
         frmOldPersonaje.Show
-        
-    Case 2
-        On Error GoTo errH
-        Call Shell(App.path & "\RECUPERAR.EXE", vbNormalFocus)
 
 End Select
 Exit Sub
@@ -279,3 +172,4 @@ Exit Sub
 errH:
     Call MsgBox("No se encuentra el programa recuperar.exe", vbCritical, "Argentum Online")
 End Sub
+

@@ -33,6 +33,10 @@ Attribute VB_Name = "Mod_Declaraciones"
 
 Option Explicit
 
+
+Public Const SERVER_ADDRESS As String = "127.0.0.1"
+Public Const SERVER_PORT    As Long = 7666
+
 ''
 'When we have a list of strings, we use this to separate them and prevent
 'having too many string lengths in the queue. Yes, each string is NULL-terminated :P
@@ -45,7 +49,6 @@ Public Audio As New clsAudio
 Public Inventario As New clsGrapchicalInventory
 
 Public CustomKeys As New clsCustomKeys
-Public CustomMessages As New clsCustomMessages
 
 ''
 'The main timer of the game.
@@ -58,8 +61,6 @@ Public Const SND_PASOS2 As String = "24.Wav"
 Public Const SND_NAVEGANDO As String = "50.wav"
 Public Const SND_OVER As String = "click2.Wav"
 Public Const SND_DICE As String = "cupdice.Wav"
-Public Const SND_LLUVIAINEND As String = "lluviainend.wav"
-Public Const SND_LLUVIAOUTEND As String = "lluviaoutend.wav"
 
 ' Head index of the casper. Used to know if a char is killed
 
@@ -85,8 +86,6 @@ Public Const NUMATRIBUTES As Byte = 5
 'Musica
 Public Const MIdi_Inicio As Byte = 6
 
-Public RawServersList As String
-
 Public Type tColor
     r As Byte
     g As Byte
@@ -94,19 +93,6 @@ Public Type tColor
 End Type
 
 Public ColoresPJ(0 To 50) As tColor
-
-
-Public Type tServerInfo
-    Ip As String
-    Puerto As Integer
-    desc As String
-    PassRecPort As Integer
-End Type
-
-Public ServersLst() As tServerInfo
-Public ServersRecibidos As Boolean
-
-Public CurServer As Integer
 
 Public CreandoClan As Boolean
 Public ClanName As String
@@ -133,8 +119,6 @@ Public ArmasHerrero(0 To 100) As Integer
 Public ArmadurasHerrero(0 To 100) As Integer
 Public ObjCarpintero(0 To 100) As Integer
 
-Public Versiones(1 To 7) As Integer
-
 Public UsaMacro As Boolean
 Public CnTd As Byte
 
@@ -145,8 +129,6 @@ Public CnTd As Byte
 Public Const MAX_BANCOINVENTORY_SLOTS As Byte = 40
 Public UserBancoInventory(1 To MAX_BANCOINVENTORY_SLOTS) As Inventory
 '[/KEVIN]
-
-Public Const LoopAdEternum As Integer = 999
 
 'Direcciones
 Public Enum E_Heading
@@ -165,9 +147,6 @@ Public Const MAXHECHI As Byte = 35
 Public Const MAXSKILLPOINTS As Byte = 100
 
 Public Const FLAGORO As Integer = MAX_INVENTORY_SLOTS + 1
-
-Public Const FOgata As Integer = 1521
-
 
 Public Enum eClass
     Mage = 1    'Mago
@@ -344,11 +323,6 @@ Public Const MENSAJE_TRABAJO_MINERIA As String = "Haz click sobre el yacimiento.
 Public Const MENSAJE_TRABAJO_FUNDIRMETAL As String = "Haz click sobre la fragua..."
 Public Const MENSAJE_TRABAJO_PROYECTILES As String = "Haz click sobre la victima..."
 
-Public Const MENSAJE_ENTRAR_PARTY_1 As String = "Si deseas entrar en una party con "
-Public Const MENSAJE_ENTRAR_PARTY_2 As String = ", escribe /entrarparty"
-
-Public Const MENSAJE_NENE As String = "Cantidad de NPCs: "
-
 'Inventario
 Type Inventory
     OBJIndex As Integer
@@ -427,8 +401,7 @@ Public UserMaxHAM As Byte
 Public UserMinHAM As Byte
 Public UserGLD As Long
 Public UserLvl As Integer
-Public UserPort As Integer
-Public UserServerIP As String
+
 Public UserEstado As Byte '0 = Vivo & 1 = Muerto
 Public UserPasarNivel As Long
 Public UserExp As Long
@@ -471,12 +444,8 @@ Public ListaClases(1 To NUMCLASES) As String
 Public SkillPoints As Integer
 Public Alocados As Integer
 Public flags() As Integer
-Public Oscuridad As Integer
-Public logged As Boolean
 
 Public UsingSkill As Integer
-
-Public MD5HushYo As String * 16
 
 Public pingTime As Long
 
@@ -544,7 +513,6 @@ Public Enum eTrigger
 End Enum
 
 'Server stuff
-Public RequestPosTimer As Integer 'Used in main loop
 Public stxtbuffer As String 'Holds temp raw data from server
 Public stxtbuffercmsg As String 'Holds temp raw data from server
 Public Connected As Boolean 'True when connected to server
@@ -568,7 +536,6 @@ Public Declare Function getprivateprofilestring Lib "kernel32" Alias "GetPrivate
 
 'Teclado
 Public Declare Function GetKeyState Lib "user32" (ByVal nVirtKey As Long) As Integer
-Public Declare Function GetAsyncKeyState Lib "user32" (ByVal nVirtKey As Long) As Integer
 
 Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 

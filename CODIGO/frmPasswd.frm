@@ -229,7 +229,7 @@ If CheckDatos() Then
     EstadoLogin = E_MODO.CrearNuevoPj
 
     If Connected Then
-        Call modEngine.NetConnect(CurServerIp, CurServerPort)
+        Call modEngine.NetConnect(SERVER_ADDRESS, SERVER_PORT)
     Else
         Call WriteLoginNewChar
     End If

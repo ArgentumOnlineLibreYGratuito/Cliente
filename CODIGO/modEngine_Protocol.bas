@@ -17,364 +17,359 @@ Option Explicit
 
 
 Private Enum ServerPacketID
-    logged                  ' LOGGED
-    RemoveDialogs           ' QTDL
-    RemoveCharDialog        ' QDL
-    NavigateToggle          ' NAVEG
-    Disconnect              ' FINOK
-    CommerceEnd             ' FINCOMOK
-    BankEnd                 ' FINBANOK
-    CommerceInit            ' INITCOM
-    BankInit                ' INITBANCO
-    UserCommerceInit        ' INITCOMUSU
-    UserCommerceEnd         ' FINCOMUSUOK
-    ShowBlacksmithForm      ' SFH
-    ShowCarpenterForm       ' SFC
-    NPCSwing                ' N1
-    NPCKillUser             ' 6
-    BlockedWithShieldUser   ' 7
-    BlockedWithShieldOther  ' 8
-    UserSwing               ' U1
-    UpdateNeeded            ' REAU
-    SafeModeOn              ' SEGON
-    SafeModeOff             ' SEGOFF
+    logged                                       ' LOGGED
+    RemoveDialogs                                ' QTDL
+    RemoveCharDialog                             ' QDL
+    NavigateToggle                               ' NAVEG
+    Disconnect                                   ' FINOK
+    CommerceEnd                                  ' FINCOMOK
+    BankEnd                                      ' FINBANOK
+    CommerceInit                                 ' INITCOM
+    BankInit                                     ' INITBANCO
+    UserCommerceInit                             ' INITCOMUSU
+    UserCommerceEnd                              ' FINCOMUSUOK
+    ShowBlacksmithForm                           ' SFH
+    ShowCarpenterForm                            ' SFC
+    NPCSwing                                     ' N1
+    NPCKillUser                                  ' 6
+    BlockedWithShieldUser                        ' 7
+    BlockedWithShieldOther                       ' 8
+    UserSwing                                    ' U1
+    SafeModeOn                                   ' SEGON
+    SafeModeOff                                  ' SEGOFF
     ResuscitationSafeOn
     ResuscitationSafeOff
-    NobilityLost            ' PN
-    CantUseWhileMeditating  ' M!
-    UpdateSta               ' ASS
-    UpdateMana              ' ASM
-    UpdateHP                ' ASH
-    UpdateGold              ' ASG
-    UpdateExp               ' ASE
-    ChangeMap               ' CM
-    PosUpdate               ' PU
-    NPCHitUser              ' N2
-    UserHitNPC              ' U2
-    UserAttackedSwing       ' U3
-    UserHittedByUser        ' N4
-    UserHittedUser          ' N5
-    ChatOverHead            ' ||
-    ConsoleMsg              ' || - Beware!! its the same as above, but it was properly splitted
-    GuildChat               ' |+
-    ShowMessageBox          ' !!
-    UserIndexInServer       ' IU
-    UserCharIndexInServer   ' IP
-    CharacterCreate         ' CC
-    CharacterRemove         ' BP
-    CharacterMove           ' MP, +, * and _ '
-    CharacterChange         ' CP
-    ObjectCreate            ' HO
-    ObjectDelete            ' BO
-    BlockPosition           ' BQ
-    PlayMIDI                ' TM
-    PlayWave                ' TW
-    guildList               ' GL
-    AreaChanged             ' CA
-    PauseToggle             ' BKW
-    RainToggle              ' LLU
-    CreateFX                ' CFX
-    UpdateUserStats         ' EST
-    WorkRequestTarget       ' T01
-    ChangeInventorySlot     ' CSI
-    ChangeBankSlot          ' SBO
-    ChangeSpellSlot         ' SHS
-    Atributes               ' ATR
-    BlacksmithWeapons       ' LAH
-    BlacksmithArmors        ' LAR
-    CarpenterObjects        ' OBR
-    RestOK                  ' DOK
-    ErrorMsg                ' ERR
-    Blind                   ' CEGU
-    Dumb                    ' DUMB
-    ShowSignal              ' MCAR
-    ChangeNPCInventorySlot  ' NPCI
-    UpdateHungerAndThirst   ' EHYS
-    Fame                    ' FAMA
-    MiniStats               ' MEST
-    LevelUp                 ' SUNI
-    AddForumMsg             ' FMSG
-    ShowForumForm           ' MFOR
-    SetInvisible            ' NOVER
-    DiceRoll                ' DADOS
-    MeditateToggle          ' MEDOK
-    BlindNoMore             ' NSEGUE
-    DumbNoMore              ' NESTUP
-    SendSkills              ' SKILLS
-    TrainerCreatureList     ' LSTCRI
-    guildNews               ' GUILDNE
-    OfferDetails            ' PEACEDE & ALLIEDE
-    AlianceProposalsList    ' ALLIEPR
-    PeaceProposalsList      ' PEACEPR
-    CharacterInfo           ' CHRINFO
-    GuildLeaderInfo         ' LEADERI
-    GuildDetails            ' CLANDET
-    ShowGuildFundationForm  ' SHOWFUN
-    ParalizeOK              ' PARADOK
-    ShowUserRequest         ' PETICIO
-    TradeOK                 ' TRANSOK
-    BankOK                  ' BANCOOK
-    ChangeUserTradeSlot     ' COMUSUINV
-    SendNight               ' NOC
+    NobilityLost                                 ' PN
+    CantUseWhileMeditating                       ' M!
+    UpdateSta                                    ' ASS
+    UpdateMana                                   ' ASM
+    UpdateHP                                     ' ASH
+    UpdateGold                                   ' ASG
+    UpdateExp                                    ' ASE
+    ChangeMap                                    ' CM
+    PosUpdate                                    ' PU
+    NPCHitUser                                   ' N2
+    UserHitNPC                                   ' U2
+    UserAttackedSwing                            ' U3
+    UserHittedByUser                             ' N4
+    UserHittedUser                               ' N5
+    ChatOverHead                                 ' ||
+    ConsoleMsg                                   ' || - Beware!! its the same as above, but it was properly splitted
+    GuildChat                                    ' |+
+    ShowMessageBox                               ' !!
+    UserIndexInServer                            ' IU
+    UserCharIndexInServer                        ' IP
+    CharacterCreate                              ' CC
+    CharacterRemove                              ' BP
+    CharacterMove                                ' MP, +, * and _ '
+    CharacterChange                              ' CP
+    ObjectCreate                                 ' HO
+    ObjectDelete                                 ' BO
+    BlockPosition                                ' BQ
+    PlayMIDI                                     ' TM
+    PlayWave                                     ' TW
+    guildList                                    ' GL
+    AreaChanged                                  ' CA
+    PauseToggle                                  ' BKW
+    RainToggle                                   ' LLU
+    CreateFX                                     ' CFX
+    UpdateUserStats                              ' EST
+    WorkRequestTarget                            ' T01
+    ChangeInventorySlot                          ' CSI
+    ChangeBankSlot                               ' SBO
+    ChangeSpellSlot                              ' SHS
+    Atributes                                    ' ATR
+    BlacksmithWeapons                            ' LAH
+    BlacksmithArmors                             ' LAR
+    CarpenterObjects                             ' OBR
+    RestOK                                       ' DOK
+    ErrorMsg                                     ' ERR
+    Blind                                        ' CEGU
+    Dumb                                         ' DUMB
+    ChangeNPCInventorySlot                       ' NPCI
+    UpdateHungerAndThirst                        ' EHYS
+    Fame                                         ' FAMA
+    MiniStats                                    ' MEST
+    LevelUp                                      ' SUNI
+    SetInvisible                                 ' NOVER
+    DiceRoll                                     ' DADOS
+    MeditateToggle                               ' MEDOK
+    BlindNoMore                                  ' NSEGUE
+    DumbNoMore                                   ' NESTUP
+    SendSkills                                   ' SKILLS
+    TrainerCreatureList                          ' LSTCRI
+    guildNews                                    ' GUILDNE
+    OfferDetails                                 ' PEACEDE & ALLIEDE
+    AlianceProposalsList                         ' ALLIEPR
+    PeaceProposalsList                           ' PEACEPR
+    CharacterInfo                                ' CHRINFO
+    GuildLeaderInfo                              ' LEADERI
+    GuildDetails                                 ' CLANDET
+    ShowGuildFundationForm                       ' SHOWFUN
+    ParalizeOK                                   ' PARADOK
+    ShowUserRequest                              ' PETICIO
+    TradeOK                                      ' TRANSOK
+    BankOK                                       ' BANCOOK
+    ChangeUserTradeSlot                          ' COMUSUINV
+    SendNight                                    ' NOC
     Pong
     UpdateTagAndStatus
     
     'GM messages
-    SpawnList               ' SPL
-    ShowSOSForm             ' MSOS
-    ShowMOTDEditionForm     ' ZMOTD
-    ShowGMPanelForm         ' ABPANEL
-    UserNameList            ' LISTUSU
+    SpawnList                                    ' SPL
+    ShowSOSForm                                  ' MSOS
+    ShowMOTDEditionForm                          ' ZMOTD
+    ShowGMPanelForm                              ' ABPANEL
+    UserNameList                                 ' LISTUSU
 End Enum
 
 Private Enum ClientPacketID
-    LoginExistingChar       'OLOGIN
-    ThrowDices              'TIRDAD
-    LoginNewChar            'NLOGIN
-    Talk                    ';
-    Yell                    '-
-    Whisper                 '\
-    Walk                    'M
-    RequestPositionUpdate   'RPU
-    Attack                  'AT
-    PickUp                  'AG
-    CombatModeToggle        'TAB        - SHOULD BE HANLDED JUST BY THE CLIENT!!
-    SafeToggle              '/SEG & SEG  (SEG's behaviour has to be coded in the client)
+    LoginExistingChar                            'OLOGIN
+    ThrowDices                                   'TIRDAD
+    LoginNewChar                                 'NLOGIN
+    Talk                                         ';
+    Yell                                         '-
+    Whisper                                      '\
+    Walk                                         'M
+    RequestPositionUpdate                        'RPU
+    Attack                                       'AT
+    PickUp                                       'AG
+    CombatModeToggle                             'TAB        - SHOULD BE HANLDED JUST BY THE CLIENT!!
+    SafeToggle                                   '/SEG & SEG  (SEG's behaviour has to be coded in the client)
     ResuscitationSafeToggle
-    RequestGuildLeaderInfo  'GLINFO
-    RequestAtributes        'ATR
-    RequestFame             'FAMA
-    RequestSkills           'ESKI
-    RequestMiniStats        'FEST
-    CommerceEnd             'FINCOM
-    UserCommerceEnd         'FINCOMUSU
-    BankEnd                 'FINBAN
-    UserCommerceOk          'COMUSUOK
-    UserCommerceReject      'COMUSUNO
-    Drop                    'TI
-    CastSpell               'LH
-    LeftClick               'LC
-    DoubleClick             'RC
-    Work                    'UK
-    UseSpellMacro           'UMH
-    UseItem                 'USA
-    CraftBlacksmith         'CNS
-    CraftCarpenter          'CNC
-    WorkLeftClick           'WLC
-    CreateNewGuild          'CIG
-    SpellInfo               'INFS
-    EquipItem               'EQUI
-    ChangeHeading           'CHEA
-    ModifySkills            'SKSE
-    Train                   'ENTR
-    CommerceBuy             'COMP
-    BankExtractItem         'RETI
-    CommerceSell            'VEND
-    BankDeposit             'DEPO
-    ForumPost               'DEMSG
-    MoveSpell               'DESPHE
-    ClanCodexUpdate         'DESCOD
-    UserCommerceOffer       'OFRECER
-    GuildAcceptPeace        'ACEPPEAT
-    GuildRejectAlliance     'RECPALIA
-    GuildRejectPeace        'RECPPEAT
-    GuildAcceptAlliance     'ACEPALIA
-    GuildOfferPeace         'PEACEOFF
-    GuildOfferAlliance      'ALLIEOFF
-    GuildAllianceDetails    'ALLIEDET
-    GuildPeaceDetails       'PEACEDET
-    GuildRequestJoinerInfo  'ENVCOMEN
-    GuildAlliancePropList   'ENVALPRO
-    GuildPeacePropList      'ENVPROPP
-    GuildDeclareWar         'DECGUERR
-    GuildNewWebsite         'NEWWEBSI
-    GuildAcceptNewMember    'ACEPTARI
-    GuildRejectNewMember    'RECHAZAR
-    GuildKickMember         'ECHARCLA
-    GuildUpdateNews         'ACTGNEWS
-    GuildMemberInfo         '1HRINFO<
-    GuildOpenElections      'ABREELEC
-    GuildRequestMembership  'SOLICITUD
-    GuildRequestDetails     'CLANDETAILS
-    Online                  '/ONLINE
-    Quit                    '/SALIR
-    GuildLeave              '/SALIRCLAN
-    RequestAccountState     '/BALANCE
-    PetStand                '/QUIETO
-    PetFollow               '/ACOMPAÑAR
-    TrainList               '/ENTRENAR
-    Rest                    '/DESCANSAR
-    Meditate                '/MEDITAR
-    Resucitate              '/RESUCITAR
-    Heal                    '/CURAR
-    Help                    '/AYUDA
-    RequestStats            '/EST
-    CommerceStart           '/COMERCIAR
-    BankStart               '/BOVEDA
-    Enlist                  '/ENLISTAR
-    Information             '/INFORMACION
-    Reward                  '/RECOMPENSA
-    RequestMOTD             '/MOTD
-    Uptime                  '/UPTIME
-    PartyLeave              '/SALIRPARTY
-    PartyCreate             '/CREARPARTY
-    PartyJoin               '/PARTY
-    Inquiry                 '/ENCUESTA ( params )
-    GuildMessage            '/CMSG
-    PartyMessage            '/PMSG
-    CentinelReport          '/CENTINELA
-    GuildOnline             '/ONLINECLAN
-    PartyOnline             '/ONLINEPARTY
-    CouncilMessage          '/BMSG
-    RoleMasterRequest       '/ROL
-    GMRequest               '/GM
-    bugReport               '/_BUG
-    ChangeDescription       '/DESC
-    GuildVote               '/VOTO
-    Punishments             '/PENAS
-    ChangePassword          '/CONTRASEÑA
-    Gamble                  '/APOSTAR
-    InquiryVote             '/ENCUESTA ( with parameters )
-    LeaveFaction            '/RETIRAR ( with no arguments )
-    BankExtractGold         '/RETIRAR ( with arguments )
-    BankDepositGold         '/DEPOSITAR
-    Denounce                '/DENUNCIAR
-    GuildFundate            '/FUNDARCLAN
-    PartyKick               '/ECHARPARTY
-    PartySetLeader          '/PARTYLIDER
-    PartyAcceptMember       '/ACCEPTPARTY
-    Ping                    '/PING
+    RequestGuildLeaderInfo                       'GLINFO
+    RequestAtributes                             'ATR
+    RequestFame                                  'FAMA
+    RequestSkills                                'ESKI
+    RequestMiniStats                             'FEST
+    CommerceEnd                                  'FINCOM
+    UserCommerceEnd                              'FINCOMUSU
+    BankEnd                                      'FINBAN
+    UserCommerceOk                               'COMUSUOK
+    UserCommerceReject                           'COMUSUNO
+    Drop                                         'TI
+    CastSpell                                    'LH
+    LeftClick                                    'LC
+    DoubleClick                                  'RC
+    Work                                         'UK
+    UseSpellMacro                                'UMH
+    UseItem                                      'USA
+    CraftBlacksmith                              'CNS
+    CraftCarpenter                               'CNC
+    WorkLeftClick                                'WLC
+    CreateNewGuild                               'CIG
+    SpellInfo                                    'INFS
+    EquipItem                                    'EQUI
+    ChangeHeading                                'CHEA
+    ModifySkills                                 'SKSE
+    Train                                        'ENTR
+    CommerceBuy                                  'COMP
+    BankExtractItem                              'RETI
+    CommerceSell                                 'VEND
+    BankDeposit                                  'DEPO
+    ForumPost                                    'DEMSG
+    MoveSpell                                    'DESPHE
+    ClanCodexUpdate                              'DESCOD
+    UserCommerceOffer                            'OFRECER
+    GuildAcceptPeace                             'ACEPPEAT
+    GuildRejectAlliance                          'RECPALIA
+    GuildRejectPeace                             'RECPPEAT
+    GuildAcceptAlliance                          'ACEPALIA
+    GuildOfferPeace                              'PEACEOFF
+    GuildOfferAlliance                           'ALLIEOFF
+    GuildAllianceDetails                         'ALLIEDET
+    GuildPeaceDetails                            'PEACEDET
+    GuildRequestJoinerInfo                       'ENVCOMEN
+    GuildAlliancePropList                        'ENVALPRO
+    GuildPeacePropList                           'ENVPROPP
+    GuildDeclareWar                              'DECGUERR
+    GuildNewWebsite                              'NEWWEBSI
+    GuildAcceptNewMember                         'ACEPTARI
+    GuildRejectNewMember                         'RECHAZAR
+    GuildKickMember                              'ECHARCLA
+    GuildUpdateNews                              'ACTGNEWS
+    GuildMemberInfo                              '1HRINFO<
+    GuildOpenElections                           'ABREELEC
+    GuildRequestMembership                       'SOLICITUD
+    GuildRequestDetails                          'CLANDETAILS
+    Online                                       '/ONLINE
+    Quit                                         '/SALIR
+    GuildLeave                                   '/SALIRCLAN
+    RequestAccountState                          '/BALANCE
+    PetStand                                     '/QUIETO
+    PetFollow                                    '/ACOMPAÑAR
+    TrainList                                    '/ENTRENAR
+    Rest                                         '/DESCANSAR
+    Meditate                                     '/MEDITAR
+    Resucitate                                   '/RESUCITAR
+    Heal                                         '/CURAR
+    Help                                         '/AYUDA
+    RequestStats                                 '/EST
+    CommerceStart                                '/COMERCIAR
+    BankStart                                    '/BOVEDA
+    Enlist                                       '/ENLISTAR
+    Information                                  '/INFORMACION
+    Reward                                       '/RECOMPENSA
+    RequestMOTD                                  '/MOTD
+    Uptime                                       '/UPTIME
+    PartyLeave                                   '/SALIRPARTY
+    PartyCreate                                  '/CREARPARTY
+    PartyJoin                                    '/PARTY
+    Inquiry                                      '/ENCUESTA ( params )
+    GuildMessage                                 '/CMSG
+    PartyMessage                                 '/PMSG
+    CentinelReport                               '/CENTINELA
+    GuildOnline                                  '/ONLINECLAN
+    PartyOnline                                  '/ONLINEPARTY
+    CouncilMessage                               '/BMSG
+    RoleMasterRequest                            '/ROL
+    GMRequest                                    '/GM
+    bugReport                                    '/_BUG
+    ChangeDescription                            '/DESC
+    GuildVote                                    '/VOTO
+    Punishments                                  '/PENAS
+    ChangePassword                               '/CONTRASEÑA
+    Gamble                                       '/APOSTAR
+    InquiryVote                                  '/ENCUESTA ( with parameters )
+    LeaveFaction                                 '/RETIRAR ( with no arguments )
+    BankExtractGold                              '/RETIRAR ( with arguments )
+    BankDepositGold                              '/DEPOSITAR
+    Denounce                                     '/DENUNCIAR
+    GuildFundate                                 '/FUNDARCLAN
+    PartyKick                                    '/ECHARPARTY
+    PartySetLeader                               '/PARTYLIDER
+    PartyAcceptMember                            '/ACCEPTPARTY
+    Ping                                         '/PING
     
     'GM messages
-    GMMessage               '/GMSG
-    showName                '/SHOWNAME
-    OnlineRoyalArmy         '/ONLINEREAL
-    OnlineChaosLegion       '/ONLINECAOS
-    GoNearby                '/IRCERCA
-    comment                 '/REM
-    serverTime              '/HORA
-    Where                   '/DONDE
-    CreaturesInMap          '/NENE
-    WarpMeToTarget          '/TELEPLOC
-    WarpChar                '/TELEP
-    Silence                 '/SILENCIAR
-    SOSShowList             '/SHOW SOS
-    SOSRemove               'SOSDONE
-    GoToChar                '/IRA
-    invisible               '/INVISIBLE
-    GMPanel                 '/PANELGM
-    RequestUserList         'LISTUSU
-    Working                 '/TRABAJANDO
-    Hiding                  '/OCULTANDO
-    Jail                    '/CARCEL
-    KillNPC                 '/RMATA
-    WarnUser                '/ADVERTENCIA
-    EditChar                '/MOD
-    RequestCharInfo         '/INFO
-    RequestCharStats        '/STAT
-    RequestCharGold         '/BAL
-    RequestCharInventory    '/INV
-    RequestCharBank         '/BOV
-    RequestCharSkills       '/SKILLS
-    ReviveChar              '/REVIVIR
-    OnlineGM                '/ONLINEGM
-    OnlineMap               '/ONLINEMAP
-    Forgive                 '/PERDON
-    Kick                    '/ECHAR
-    Execute                 '/EJECUTAR
-    BanChar                 '/BAN
-    UnbanChar               '/UNBAN
-    NPCFollow               '/SEGUIR
-    SummonChar              '/SUM
-    SpawnListRequest        '/CC
-    SpawnCreature           'SPA
-    ResetNPCInventory       '/RESETINV
-    CleanWorld              '/LIMPIAR
-    ServerMessage           '/RMSG
-    NickToIP                '/NICK2IP
-    IPToNick                '/IP2NICK
-    GuildOnlineMembers      '/ONCLAN
-    TeleportCreate          '/CT
-    TeleportDestroy         '/DT
-    RainToggle              '/LLUVIA
-    SetCharDescription      '/SETDESC
-    ForceMIDIToMap          '/FORCEMIDIMAP
-    ForceWAVEToMap          '/FORCEWAVMAP
-    RoyalArmyMessage        '/REALMSG
-    ChaosLegionMessage      '/CAOSMSG
-    CitizenMessage          '/CIUMSG
-    CriminalMessage         '/CRIMSG
-    TalkAsNPC               '/TALKAS
-    DestroyAllItemsInArea   '/MASSDEST
-    AcceptRoyalCouncilMember '/ACEPTCONSE
-    AcceptChaosCouncilMember '/ACEPTCONSECAOS
-    ItemsInTheFloor         '/PISO
-    MakeDumb                '/ESTUPIDO
-    MakeDumbNoMore          '/NOESTUPIDO
-    DumpIPTables            '/DUMPSECURITY
-    CouncilKick             '/KICKCONSE
-    SetTrigger              '/TRIGGER
-    AskTrigger              '/TRIGGER with no arguments
-    BannedIPList            '/BANIPLIST
-    BannedIPReload          '/BANIPRELOAD
-    GuildMemberList         '/MIEMBROSCLAN
-    GuildBan                '/BANCLAN
-    BanIP                   '/BANIP
-    UnbanIP                 '/UNBANIP
-    CreateItem              '/CI
-    DestroyItems            '/DEST
-    ChaosLegionKick         '/NOCAOS
-    RoyalArmyKick           '/NOREAL
-    ForceMIDIAll            '/FORCEMIDI
-    ForceWAVEAll            '/FORCEWAV
-    RemovePunishment        '/BORRARPENA
-    TileBlockedToggle       '/BLOQ
-    KillNPCNoRespawn        '/MATA
-    KillAllNearbyNPCs       '/MASSKILL
-    LastIP                  '/LASTIP
-    ChangeMOTD              '/MOTDCAMBIA
-    SetMOTD                 'ZMOTD
-    SystemMessage           '/SMSG
-    CreateNPC               '/ACC
-    CreateNPCWithRespawn    '/RACC
-    ImperialArmour          '/AI1 - 4
-    ChaosArmour             '/AC1 - 4
-    NavigateToggle          '/NAVE
-    ServerOpenToUsersToggle '/HABILITAR
-    TurnOffServer           '/APAGAR
-    TurnCriminal            '/CONDEN
-    ResetFactions           '/RAJAR
-    RemoveCharFromGuild     '/RAJARCLAN
-    RequestCharMail         '/LASTEMAIL
-    AlterPassword           '/APASS
-    AlterMail               '/AEMAIL
-    AlterName               '/ANAME
-    ToggleCentinelActivated '/CENTINELAACTIVADO
-    DoBackUp                '/DOBACKUP
-    ShowGuildMessages       '/SHOWCMSG
-    SaveMap                 '/GUARDAMAPA
-    ChangeMapInfoPK         '/MODMAPINFO PK
-    ChangeMapInfoBackup     '/MODMAPINFO BACKUP
-    ChangeMapInfoRestricted '/MODMAPINFO RESTRINGIR
-    ChangeMapInfoNoMagic    '/MODMAPINFO MAGIASINEFECTO
-    ChangeMapInfoNoInvi     '/MODMAPINFO INVISINEFECTO
-    ChangeMapInfoNoResu     '/MODMAPINFO RESUSINEFECTO
-    ChangeMapInfoLand       '/MODMAPINFO TERRENO
-    ChangeMapInfoZone       '/MODMAPINFO ZONA
-    SaveChars               '/GRABAR
-    CleanSOS                '/BORRAR SOS
-    ShowServerForm          '/SHOW INT
-    night                   '/NOCHE
-    KickAllChars            '/ECHARTODOSPJS
-    ReloadNPCs              '/RELOADNPCS
-    ReloadServerIni         '/RELOADSINI
-    ReloadSpells            '/RELOADHECHIZOS
-    ReloadObjects           '/RELOADOBJ
-    Restart                 '/REINICIAR
-    ResetAutoUpdate         '/AUTOUPDATE
-    ChatColor               '/CHATCOLOR
-    Ignored                 '/IGNORADO
-    CheckSlot               '/SLOT
+    GMMessage                                    '/GMSG
+    showName                                     '/SHOWNAME
+    OnlineRoyalArmy                              '/ONLINEREAL
+    OnlineChaosLegion                            '/ONLINECAOS
+    GoNearby                                     '/IRCERCA
+    comment                                      '/REM
+    serverTime                                   '/HORA
+    Where                                        '/DONDE
+    CreaturesInMap                               '/NENE
+    WarpMeToTarget                               '/TELEPLOC
+    WarpChar                                     '/TELEP
+    Silence                                      '/SILENCIAR
+    SOSShowList                                  '/SHOW SOS
+    SOSRemove                                    'SOSDONE
+    GoToChar                                     '/IRA
+    invisible                                    '/INVISIBLE
+    GMPanel                                      '/PANELGM
+    RequestUserList                              'LISTUSU
+    Working                                      '/TRABAJANDO
+    Hiding                                       '/OCULTANDO
+    Jail                                         '/CARCEL
+    KillNPC                                      '/RMATA
+    WarnUser                                     '/ADVERTENCIA
+    EditChar                                     '/MOD
+    RequestCharInfo                              '/INFO
+    RequestCharStats                             '/STAT
+    RequestCharGold                              '/BAL
+    RequestCharInventory                         '/INV
+    RequestCharBank                              '/BOV
+    RequestCharSkills                            '/SKILLS
+    ReviveChar                                   '/REVIVIR
+    OnlineGM                                     '/ONLINEGM
+    OnlineMap                                    '/ONLINEMAP
+    Forgive                                      '/PERDON
+    Kick                                         '/ECHAR
+    Execute                                      '/EJECUTAR
+    BanChar                                      '/BAN
+    UnbanChar                                    '/UNBAN
+    NPCFollow                                    '/SEGUIR
+    SummonChar                                   '/SUM
+    SpawnListRequest                             '/CC
+    SpawnCreature                                'SPA
+    ResetNPCInventory                            '/RESETINV
+    CleanWorld                                   '/LIMPIAR
+    ServerMessage                                '/RMSG
+    NickToIP                                     '/NICK2IP
+    IPToNick                                     '/IP2NICK
+    GuildOnlineMembers                           '/ONCLAN
+    TeleportCreate                               '/CT
+    TeleportDestroy                              '/DT
+    RainToggle                                   '/LLUVIA
+    SetCharDescription                           '/SETDESC
+    ForceMIDIToMap                               '/FORCEMIDIMAP
+    ForceWAVEToMap                               '/FORCEWAVMAP
+    RoyalArmyMessage                             '/REALMSG
+    ChaosLegionMessage                           '/CAOSMSG
+    CitizenMessage                               '/CIUMSG
+    CriminalMessage                              '/CRIMSG
+    TalkAsNPC                                    '/TALKAS
+    DestroyAllItemsInArea                        '/MASSDEST
+    AcceptRoyalCouncilMember                     '/ACEPTCONSE
+    AcceptChaosCouncilMember                     '/ACEPTCONSECAOS
+    ItemsInTheFloor                              '/PISO
+    MakeDumb                                     '/ESTUPIDO
+    MakeDumbNoMore                               '/NOESTUPIDO
+    DumpIPTables                                 '/DUMPSECURITY
+    CouncilKick                                  '/KICKCONSE
+    SetTrigger                                   '/TRIGGER
+    AskTrigger                                   '/TRIGGER with no arguments
+    BannedIPList                                 '/BANIPLIST
+    BannedIPReload                               '/BANIPRELOAD
+    GuildMemberList                              '/MIEMBROSCLAN
+    GuildBan                                     '/BANCLAN
+    BanIP                                        '/BANIP
+    UnbanIP                                      '/UNBANIP
+    CreateItem                                   '/CI
+    DestroyItems                                 '/DEST
+    ChaosLegionKick                              '/NOCAOS
+    RoyalArmyKick                                '/NOREAL
+    ForceMIDIAll                                 '/FORCEMIDI
+    ForceWAVEAll                                 '/FORCEWAV
+    RemovePunishment                             '/BORRARPENA
+    TileBlockedToggle                            '/BLOQ
+    KillNPCNoRespawn                             '/MATA
+    KillAllNearbyNPCs                            '/MASSKILL
+    LastIP                                       '/LASTIP
+    ChangeMOTD                                   '/MOTDCAMBIA
+    SetMOTD                                      'ZMOTD
+    SystemMessage                                '/SMSG
+    CreateNPC                                    '/ACC
+    CreateNPCWithRespawn                         '/RACC
+    ImperialArmour                               '/AI1 - 4
+    ChaosArmour                                  '/AC1 - 4
+    NavigateToggle                               '/NAVE
+    ServerOpenToUsersToggle                      '/HABILITAR
+    TurnOffServer                                '/APAGAR
+    TurnCriminal                                 '/CONDEN
+    ResetFactions                                '/RAJAR
+    RemoveCharFromGuild                          '/RAJARCLAN
+    RequestCharMail                              '/LASTEMAIL
+    AlterPassword                                '/APASS
+    AlterMail                                    '/AEMAIL
+    AlterName                                    '/ANAME
+    ToggleCentinelActivated                      '/CENTINELAACTIVADO
+    DoBackUp                                     '/DOBACKUP
+    ShowGuildMessages                            '/SHOWCMSG
+    SaveMap                                      '/GUARDAMAPA
+    ChangeMapInfoPK                              '/MODMAPINFO PK
+    ChangeMapInfoBackup                          '/MODMAPINFO BACKUP
+    ChangeMapInfoRestricted                      '/MODMAPINFO RESTRINGIR
+    ChangeMapInfoNoMagic                         '/MODMAPINFO MAGIASINEFECTO
+    ChangeMapInfoNoInvi                          '/MODMAPINFO INVISINEFECTO
+    ChangeMapInfoNoResu                          '/MODMAPINFO RESUSINEFECTO
+    ChangeMapInfoLand                            '/MODMAPINFO TERRENO
+    ChangeMapInfoZone                            '/MODMAPINFO ZONA
+    SaveChars                                    '/GRABAR
+    CleanSOS                                     '/BORRAR SOS
+    ShowServerForm                               '/SHOW INT
+    night                                        '/NOCHE
+    KickAllChars                                 '/ECHARTODOSPJS
+    ReloadNPCs                                   '/RELOADNPCS
+    ReloadServerIni                              '/RELOADSINI
+    ReloadSpells                                 '/RELOADHECHIZOS
+    ReloadObjects                                '/RELOADOBJ
+    Restart                                      '/REINICIAR
+    ChatColor                                    '/CHATCOLOR
+    Ignored                                      '/IGNORADO
+    CheckSlot                                    '/SLOT
 End Enum
 
 Private Writer_ As BinaryWriter
@@ -387,16 +382,16 @@ End Sub
 
 Public Sub OnConnect()
     Select Case EstadoLogin
-        Case E_MODO.CrearNuevoPj
-            Call WriteLoginNewChar
+    Case E_MODO.CrearNuevoPj
+        Call WriteLoginNewChar
 
 
-        Case E_MODO.Normal
-            Call WriteLoginExistingChar
+    Case E_MODO.Normal
+        Call WriteLoginExistingChar
 
-        Case E_MODO.Dados
+    Case E_MODO.Dados
             
-            frmCrearPersonaje.Show
+        frmCrearPersonaje.Show
     End Select
     
 End Sub
@@ -447,7 +442,6 @@ Public Sub OnClose()
     
 End Sub
 
-
 Public Sub Encode(ByVal Message As BinaryReader)
 
     ' Here goes encode function
@@ -466,326 +460,314 @@ Public Sub handle(ByVal Message As BinaryReader)
     
         Select Case Message.ReadInt()
         
-            Case ServerPacketID.logged                  ' LOGGED
-                Call HandleLogged(Message)
+        Case ServerPacketID.logged               ' LOGGED
+            Call HandleLogged(Message)
                 
-            Case ServerPacketID.RemoveDialogs           ' QTDL
-                Call HandleRemoveDialogs(Message)
+        Case ServerPacketID.RemoveDialogs        ' QTDL
+            Call HandleRemoveDialogs(Message)
                 
-            Case ServerPacketID.RemoveCharDialog        ' QDL
-                Call HandleRemoveCharDialog(Message)
+        Case ServerPacketID.RemoveCharDialog     ' QDL
+            Call HandleRemoveCharDialog(Message)
                 
-            Case ServerPacketID.NavigateToggle          ' NAVEG
-                Call HandleNavigateToggle(Message)
+        Case ServerPacketID.NavigateToggle       ' NAVEG
+            Call HandleNavigateToggle(Message)
                 
-            Case ServerPacketID.Disconnect              ' FINOK
-                Call HandleDisconnect(Message)
+        Case ServerPacketID.Disconnect           ' FINOK
+            Call HandleDisconnect(Message)
                 
-            Case ServerPacketID.CommerceEnd             ' FINCOMOK
-                Call HandleCommerceEnd(Message)
+        Case ServerPacketID.CommerceEnd          ' FINCOMOK
+            Call HandleCommerceEnd(Message)
             
-            Case ServerPacketID.BankEnd                 ' FINBANOK
-                Call HandleBankEnd(Message)
+        Case ServerPacketID.BankEnd              ' FINBANOK
+            Call HandleBankEnd(Message)
             
-            Case ServerPacketID.CommerceInit            ' INITCOM
-                Call HandleCommerceInit(Message)
+        Case ServerPacketID.CommerceInit         ' INITCOM
+            Call HandleCommerceInit(Message)
             
-            Case ServerPacketID.BankInit                ' INITBANCO
-                Call HandleBankInit(Message)
+        Case ServerPacketID.BankInit             ' INITBANCO
+            Call HandleBankInit(Message)
             
-            Case ServerPacketID.UserCommerceInit        ' INITCOMUSU
-                Call HandleUserCommerceInit(Message)
+        Case ServerPacketID.UserCommerceInit     ' INITCOMUSU
+            Call HandleUserCommerceInit(Message)
             
-            Case ServerPacketID.UserCommerceEnd         ' FINCOMUSUOK
-                Call HandleUserCommerceEnd(Message)
+        Case ServerPacketID.UserCommerceEnd      ' FINCOMUSUOK
+            Call HandleUserCommerceEnd(Message)
             
-            Case ServerPacketID.ShowBlacksmithForm      ' SFH
-                Call HandleShowBlacksmithForm(Message)
+        Case ServerPacketID.ShowBlacksmithForm   ' SFH
+            Call HandleShowBlacksmithForm(Message)
             
-            Case ServerPacketID.ShowCarpenterForm       ' SFC
-                Call HandleShowCarpenterForm(Message)
+        Case ServerPacketID.ShowCarpenterForm    ' SFC
+            Call HandleShowCarpenterForm(Message)
             
-            Case ServerPacketID.NPCSwing                ' N1
-                Call HandleNPCSwing(Message)
+        Case ServerPacketID.NPCSwing             ' N1
+            Call HandleNPCSwing(Message)
             
-            Case ServerPacketID.NPCKillUser             ' 6
-                Call HandleNPCKillUser(Message)
+        Case ServerPacketID.NPCKillUser          ' 6
+            Call HandleNPCKillUser(Message)
             
-            Case ServerPacketID.BlockedWithShieldUser   ' 7
-                Call HandleBlockedWithShieldUser(Message)
+        Case ServerPacketID.BlockedWithShieldUser ' 7
+            Call HandleBlockedWithShieldUser(Message)
             
-            Case ServerPacketID.BlockedWithShieldOther  ' 8
-                Call HandleBlockedWithShieldOther(Message)
+        Case ServerPacketID.BlockedWithShieldOther ' 8
+            Call HandleBlockedWithShieldOther(Message)
             
-            Case ServerPacketID.UserSwing               ' U1
-                Call HandleUserSwing(Message)
-            
-            Case ServerPacketID.UpdateNeeded            ' REAU
-                Call HandleUpdateNeeded(Message)
-            
-            Case ServerPacketID.SafeModeOn              ' SEGON
-                Call HandleSafeModeOn(Message)
-            
-            Case ServerPacketID.SafeModeOff             ' SEGOFF
-                Call HandleSafeModeOff(Message)
-                
-            Case ServerPacketID.ResuscitationSafeOff
-                Call HandleResuscitationSafeOff(Message)
-            
-            Case ServerPacketID.ResuscitationSafeOn
-                Call HandleResuscitationSafeOn(Message)
-            
-            Case ServerPacketID.NobilityLost            ' PN
-                Call HandleNobilityLost(Message)
-            
-            Case ServerPacketID.CantUseWhileMeditating  ' M!
-                Call HandleCantUseWhileMeditating(Message)
-            
-            Case ServerPacketID.UpdateSta               ' ASS
-                Call HandleUpdateSta(Message)
-            
-            Case ServerPacketID.UpdateMana              ' ASM
-                Call HandleUpdateMana(Message)
-            
-            Case ServerPacketID.UpdateHP                ' ASH
-                Call HandleUpdateHP(Message)
-            
-            Case ServerPacketID.UpdateGold              ' ASG
-                Call HandleUpdateGold(Message)
-            
-            Case ServerPacketID.UpdateExp               ' ASE
-                Call HandleUpdateExp(Message)
-            
-            Case ServerPacketID.ChangeMap               ' CM
-                Call HandleChangeMap(Message)
-            
-            Case ServerPacketID.PosUpdate               ' PU
-                Call HandlePosUpdate(Message)
-            
-            Case ServerPacketID.NPCHitUser              ' N2
-                Call HandleNPCHitUser(Message)
-            
-            Case ServerPacketID.UserHitNPC              ' U2
-                Call HandleUserHitNPC(Message)
-            
-            Case ServerPacketID.UserAttackedSwing       ' U3
-                Call HandleUserAttackedSwing(Message)
-            
-            Case ServerPacketID.UserHittedByUser        ' N4
-                Call HandleUserHittedByUser(Message)
-            
-            Case ServerPacketID.UserHittedUser          ' N5
-                Call HandleUserHittedUser(Message)
-            
-            Case ServerPacketID.ChatOverHead            ' ||
-                Call HandleChatOverHead(Message)
-            
-            Case ServerPacketID.ConsoleMsg              ' || - Beware!! its the same as above, but it was properly splitted
-                Call HandleConsoleMessage(Message)
-            
-            Case ServerPacketID.GuildChat               ' |+
-                Call HandleGuildChat(Message)
-            
-            Case ServerPacketID.ShowMessageBox          ' !!
-                Call HandleShowMessageBox(Message)
-            
-            Case ServerPacketID.UserIndexInServer       ' IU
-                Call HandleUserIndexInServer(Message)
-            
-            Case ServerPacketID.UserCharIndexInServer   ' IP
-                Call HandleUserCharIndexInServer(Message)
-            
-            Case ServerPacketID.CharacterCreate         ' CC
-                Call HandleCharacterCreate(Message)
-            
-            Case ServerPacketID.CharacterRemove         ' BP
-                Call HandleCharacterRemove(Message)
-            
-            Case ServerPacketID.CharacterMove           ' MP, +, * and _ '
-                Call HandleCharacterMove(Message)
-            
-            Case ServerPacketID.CharacterChange         ' CP
-                Call HandleCharacterChange(Message)
-            
-            Case ServerPacketID.ObjectCreate            ' HO
-                Call HandleObjectCreate(Message)
-            
-            Case ServerPacketID.ObjectDelete            ' BO
-                Call HandleObjectDelete(Message)
-            
-            Case ServerPacketID.BlockPosition           ' BQ
-                Call HandleBlockPosition(Message)
-            
-            Case ServerPacketID.PlayMIDI                ' TM
-                Call HandlePlayMIDI(Message)
-            
-            Case ServerPacketID.PlayWave                ' TW
-                Call HandlePlayWave(Message)
-            
-            Case ServerPacketID.guildList               ' GL
-                Call HandleGuildList(Message)
-            
-            Case ServerPacketID.AreaChanged             ' CA
-                Call HandleAreaChanged(Message)
-            
-            Case ServerPacketID.PauseToggle             ' BKW
-                Call HandlePauseToggle(Message)
-            
-            Case ServerPacketID.RainToggle              ' LLU
-                Call HandleRainToggle(Message)
-            
-            Case ServerPacketID.CreateFX                ' CFX
-                Call HandleCreateFX(Message)
-            
-            Case ServerPacketID.UpdateUserStats         ' EST
-                Call HandleUpdateUserStats(Message)
-            
-            Case ServerPacketID.WorkRequestTarget       ' T01
-                Call HandleWorkRequestTarget(Message)
-            
-            Case ServerPacketID.ChangeInventorySlot     ' CSI
-                Call HandleChangeInventorySlot(Message)
-            
-            Case ServerPacketID.ChangeBankSlot          ' SBO
-                Call HandleChangeBankSlot(Message)
-            
-            Case ServerPacketID.ChangeSpellSlot         ' SHS
-                Call HandleChangeSpellSlot(Message)
-            
-            Case ServerPacketID.Atributes               ' ATR
-                Call HandleAtributes(Message)
-            
-            Case ServerPacketID.BlacksmithWeapons       ' LAH
-                Call HandleBlacksmithWeapons(Message)
-            
-            Case ServerPacketID.BlacksmithArmors        ' LAR
-                Call HandleBlacksmithArmors(Message)
-            
-            Case ServerPacketID.CarpenterObjects        ' OBR
-                Call HandleCarpenterObjects(Message)
-            
-            Case ServerPacketID.RestOK                  ' DOK
-                Call HandleRestOK(Message)
-            
-            Case ServerPacketID.ErrorMsg                ' ERR
-                Call HandleErrorMessage(Message)
-            
-            Case ServerPacketID.Blind                   ' CEGU
-                Call HandleBlind(Message)
-            
-            Case ServerPacketID.Dumb                    ' DUMB
-                Call HandleDumb(Message)
-            
-            Case ServerPacketID.ShowSignal              ' MCAR
-                Call HandleShowSignal(Message)
-            
-            Case ServerPacketID.ChangeNPCInventorySlot  ' NPCI
-                Call HandleChangeNPCInventorySlot(Message)
-            
-            Case ServerPacketID.UpdateHungerAndThirst   ' EHYS
-                Call HandleUpdateHungerAndThirst(Message)
-            
-            Case ServerPacketID.Fame                    ' FAMA
-                Call HandleFame(Message)
-            
-            Case ServerPacketID.MiniStats               ' MEST
-                Call HandleMiniStats(Message)
-            
-            Case ServerPacketID.LevelUp                 ' SUNI
-                Call HandleLevelUp(Message)
-            
-            Case ServerPacketID.AddForumMsg             ' FMSG
-                Call HandleAddForumMessage(Message)
-            
-            Case ServerPacketID.ShowForumForm           ' MFOR
-                Call HandleShowForumForm(Message)
-            
-            Case ServerPacketID.SetInvisible            ' NOVER
-                Call HandleSetInvisible(Message)
-            
-            Case ServerPacketID.DiceRoll                ' DADOS
-                Call HandleDiceRoll(Message)
-            
-            Case ServerPacketID.MeditateToggle          ' MEDOK
-                Call HandleMeditateToggle(Message)
-            
-            Case ServerPacketID.BlindNoMore             ' NSEGUE
-                Call HandleBlindNoMore(Message)
-            
-            Case ServerPacketID.DumbNoMore              ' NESTUP
-                Call HandleDumbNoMore(Message)
-            
-            Case ServerPacketID.SendSkills              ' SKILLS
-                Call HandleSendSkills(Message)
-            
-            Case ServerPacketID.TrainerCreatureList     ' LSTCRI
-                Call HandleTrainerCreatureList(Message)
-            
-            Case ServerPacketID.guildNews               ' GUILDNE
-                Call HandleGuildNews(Message)
-            
-            Case ServerPacketID.OfferDetails            ' PEACEDE and ALLIEDE
-                Call HandleOfferDetails(Message)
-            
-            Case ServerPacketID.AlianceProposalsList    ' ALLIEPR
-                Call HandleAlianceProposalsList(Message)
-            
-            Case ServerPacketID.PeaceProposalsList      ' PEACEPR
-                Call HandlePeaceProposalsList(Message)
-            
-            Case ServerPacketID.CharacterInfo           ' CHRINFO
-                Call HandleCharacterInfo(Message)
-            
-            Case ServerPacketID.GuildLeaderInfo         ' LEADERI
-                Call HandleGuildLeaderInfo(Message)
-            
-            Case ServerPacketID.GuildDetails            ' CLANDET
-                Call HandleGuildDetails(Message)
-            
-            Case ServerPacketID.ShowGuildFundationForm  ' SHOWFUN
-                Call HandleShowGuildFundationForm(Message)
-            
-            Case ServerPacketID.ParalizeOK              ' PARADOK
-                Call HandleParalizeOK(Message)
-            
-            Case ServerPacketID.ShowUserRequest         ' PETICIO
-                Call HandleShowUserRequest(Message)
-            
-            Case ServerPacketID.TradeOK                 ' TRANSOK
-                Call HandleTradeOK(Message)
-            
-            Case ServerPacketID.BankOK                  ' BANCOOK
-                Call HandleBankOK(Message)
-            
-            Case ServerPacketID.ChangeUserTradeSlot     ' COMUSUINV
-                Call HandleChangeUserTradeSlot(Message)
-                
-            Case ServerPacketID.SendNight               ' NOC
-                Call HandleSendNight(Message)
-            
-            Case ServerPacketID.Pong
-                Call HandlePong(Message)
-            
-            Case ServerPacketID.UpdateTagAndStatus
-                Call HandleUpdateTagAndStatus(Message)
+        Case ServerPacketID.UserSwing            ' U1
+            Call HandleUserSwing(Message)
 
-            Case ServerPacketID.SpawnList               ' SPL
-                Call HandleSpawnList(Message)
+        Case ServerPacketID.SafeModeOn           ' SEGON
+            Call HandleSafeModeOn(Message)
             
-            Case ServerPacketID.ShowSOSForm             ' RSOS and MSOS
-                Call HandleShowSOSForm(Message)
+        Case ServerPacketID.SafeModeOff          ' SEGOFF
+            Call HandleSafeModeOff(Message)
+                
+        Case ServerPacketID.ResuscitationSafeOff
+            Call HandleResuscitationSafeOff(Message)
             
-            Case ServerPacketID.ShowMOTDEditionForm     ' ZMOTD
-                Call HandleShowMOTDEditionForm(Message)
+        Case ServerPacketID.ResuscitationSafeOn
+            Call HandleResuscitationSafeOn(Message)
             
-            Case ServerPacketID.ShowGMPanelForm         ' ABPANEL
-                Call HandleShowGMPanelForm(Message)
+        Case ServerPacketID.NobilityLost         ' PN
+            Call HandleNobilityLost(Message)
             
-            Case ServerPacketID.UserNameList            ' LISTUSU
-                Call HandleUserNameList(Message)
+        Case ServerPacketID.CantUseWhileMeditating ' M!
+            Call HandleCantUseWhileMeditating(Message)
+            
+        Case ServerPacketID.UpdateSta            ' ASS
+            Call HandleUpdateSta(Message)
+            
+        Case ServerPacketID.UpdateMana           ' ASM
+            Call HandleUpdateMana(Message)
+            
+        Case ServerPacketID.UpdateHP             ' ASH
+            Call HandleUpdateHP(Message)
+            
+        Case ServerPacketID.UpdateGold           ' ASG
+            Call HandleUpdateGold(Message)
+            
+        Case ServerPacketID.UpdateExp            ' ASE
+            Call HandleUpdateExp(Message)
+            
+        Case ServerPacketID.ChangeMap            ' CM
+            Call HandleChangeMap(Message)
+            
+        Case ServerPacketID.PosUpdate            ' PU
+            Call HandlePosUpdate(Message)
+            
+        Case ServerPacketID.NPCHitUser           ' N2
+            Call HandleNPCHitUser(Message)
+            
+        Case ServerPacketID.UserHitNPC           ' U2
+            Call HandleUserHitNPC(Message)
+            
+        Case ServerPacketID.UserAttackedSwing    ' U3
+            Call HandleUserAttackedSwing(Message)
+            
+        Case ServerPacketID.UserHittedByUser     ' N4
+            Call HandleUserHittedByUser(Message)
+            
+        Case ServerPacketID.UserHittedUser       ' N5
+            Call HandleUserHittedUser(Message)
+            
+        Case ServerPacketID.ChatOverHead         ' ||
+            Call HandleChatOverHead(Message)
+            
+        Case ServerPacketID.ConsoleMsg           ' || - Beware!! its the same as above, but it was properly splitted
+            Call HandleConsoleMessage(Message)
+            
+        Case ServerPacketID.GuildChat            ' |+
+            Call HandleGuildChat(Message)
+            
+        Case ServerPacketID.ShowMessageBox       ' !!
+            Call HandleShowMessageBox(Message)
+            
+        Case ServerPacketID.UserIndexInServer    ' IU
+            Call HandleUserIndexInServer(Message)
+            
+        Case ServerPacketID.UserCharIndexInServer ' IP
+            Call HandleUserCharIndexInServer(Message)
+            
+        Case ServerPacketID.CharacterCreate      ' CC
+            Call HandleCharacterCreate(Message)
+            
+        Case ServerPacketID.CharacterRemove      ' BP
+            Call HandleCharacterRemove(Message)
+            
+        Case ServerPacketID.CharacterMove        ' MP, +, * and _ '
+            Call HandleCharacterMove(Message)
+            
+        Case ServerPacketID.CharacterChange      ' CP
+            Call HandleCharacterChange(Message)
+            
+        Case ServerPacketID.ObjectCreate         ' HO
+            Call HandleObjectCreate(Message)
+            
+        Case ServerPacketID.ObjectDelete         ' BO
+            Call HandleObjectDelete(Message)
+            
+        Case ServerPacketID.BlockPosition        ' BQ
+            Call HandleBlockPosition(Message)
+            
+        Case ServerPacketID.PlayMIDI             ' TM
+            Call HandlePlayMIDI(Message)
+            
+        Case ServerPacketID.PlayWave             ' TW
+            Call HandlePlayWave(Message)
+            
+        Case ServerPacketID.guildList            ' GL
+            Call HandleGuildList(Message)
+            
+        Case ServerPacketID.AreaChanged          ' CA
+            Call HandleAreaChanged(Message)
+            
+        Case ServerPacketID.PauseToggle          ' BKW
+            Call HandlePauseToggle(Message)
+            
+        Case ServerPacketID.RainToggle           ' LLU
+            Call HandleRainToggle(Message)
+            
+        Case ServerPacketID.CreateFX             ' CFX
+            Call HandleCreateFX(Message)
+            
+        Case ServerPacketID.UpdateUserStats      ' EST
+            Call HandleUpdateUserStats(Message)
+            
+        Case ServerPacketID.WorkRequestTarget    ' T01
+            Call HandleWorkRequestTarget(Message)
+            
+        Case ServerPacketID.ChangeInventorySlot  ' CSI
+            Call HandleChangeInventorySlot(Message)
+            
+        Case ServerPacketID.ChangeBankSlot       ' SBO
+            Call HandleChangeBankSlot(Message)
+            
+        Case ServerPacketID.ChangeSpellSlot      ' SHS
+            Call HandleChangeSpellSlot(Message)
+            
+        Case ServerPacketID.Atributes            ' ATR
+            Call HandleAtributes(Message)
+            
+        Case ServerPacketID.BlacksmithWeapons    ' LAH
+            Call HandleBlacksmithWeapons(Message)
+            
+        Case ServerPacketID.BlacksmithArmors     ' LAR
+            Call HandleBlacksmithArmors(Message)
+            
+        Case ServerPacketID.CarpenterObjects     ' OBR
+            Call HandleCarpenterObjects(Message)
+            
+        Case ServerPacketID.RestOK               ' DOK
+            Call HandleRestOK(Message)
+            
+        Case ServerPacketID.ErrorMsg             ' ERR
+            Call HandleErrorMessage(Message)
+            
+        Case ServerPacketID.Blind                ' CEGU
+            Call HandleBlind(Message)
+            
+        Case ServerPacketID.Dumb                 ' DUMB
+            Call HandleDumb(Message)
+       
+        Case ServerPacketID.ChangeNPCInventorySlot ' NPCI
+            Call HandleChangeNPCInventorySlot(Message)
+            
+        Case ServerPacketID.UpdateHungerAndThirst ' EHYS
+            Call HandleUpdateHungerAndThirst(Message)
+            
+        Case ServerPacketID.Fame                 ' FAMA
+            Call HandleFame(Message)
+            
+        Case ServerPacketID.MiniStats            ' MEST
+            Call HandleMiniStats(Message)
+            
+        Case ServerPacketID.LevelUp              ' SUNI
+            Call HandleLevelUp(Message)
+
+        Case ServerPacketID.SetInvisible         ' NOVER
+            Call HandleSetInvisible(Message)
+            
+        Case ServerPacketID.DiceRoll             ' DADOS
+            Call HandleDiceRoll(Message)
+            
+        Case ServerPacketID.MeditateToggle       ' MEDOK
+            Call HandleMeditateToggle(Message)
+            
+        Case ServerPacketID.BlindNoMore          ' NSEGUE
+            Call HandleBlindNoMore(Message)
+            
+        Case ServerPacketID.DumbNoMore           ' NESTUP
+            Call HandleDumbNoMore(Message)
+            
+        Case ServerPacketID.SendSkills           ' SKILLS
+            Call HandleSendSkills(Message)
+            
+        Case ServerPacketID.TrainerCreatureList  ' LSTCRI
+            Call HandleTrainerCreatureList(Message)
+            
+        Case ServerPacketID.guildNews            ' GUILDNE
+            Call HandleGuildNews(Message)
+            
+        Case ServerPacketID.OfferDetails         ' PEACEDE and ALLIEDE
+            Call HandleOfferDetails(Message)
+            
+        Case ServerPacketID.AlianceProposalsList ' ALLIEPR
+            Call HandleAlianceProposalsList(Message)
+            
+        Case ServerPacketID.PeaceProposalsList   ' PEACEPR
+            Call HandlePeaceProposalsList(Message)
+            
+        Case ServerPacketID.CharacterInfo        ' CHRINFO
+            Call HandleCharacterInfo(Message)
+            
+        Case ServerPacketID.GuildLeaderInfo      ' LEADERI
+            Call HandleGuildLeaderInfo(Message)
+            
+        Case ServerPacketID.GuildDetails         ' CLANDET
+            Call HandleGuildDetails(Message)
+            
+        Case ServerPacketID.ShowGuildFundationForm ' SHOWFUN
+            Call HandleShowGuildFundationForm(Message)
+            
+        Case ServerPacketID.ParalizeOK           ' PARADOK
+            Call HandleParalizeOK(Message)
+            
+        Case ServerPacketID.ShowUserRequest      ' PETICIO
+            Call HandleShowUserRequest(Message)
+            
+        Case ServerPacketID.TradeOK              ' TRANSOK
+            Call HandleTradeOK(Message)
+            
+        Case ServerPacketID.BankOK               ' BANCOOK
+            Call HandleBankOK(Message)
+            
+        Case ServerPacketID.ChangeUserTradeSlot  ' COMUSUINV
+            Call HandleChangeUserTradeSlot(Message)
+                
+        Case ServerPacketID.SendNight            ' NOC
+            Call HandleSendNight(Message)
+            
+        Case ServerPacketID.Pong
+            Call HandlePong(Message)
+            
+        Case ServerPacketID.UpdateTagAndStatus
+            Call HandleUpdateTagAndStatus(Message)
+
+        Case ServerPacketID.SpawnList            ' SPL
+            Call HandleSpawnList(Message)
+            
+        Case ServerPacketID.ShowSOSForm          ' RSOS and MSOS
+            Call HandleShowSOSForm(Message)
+            
+        Case ServerPacketID.ShowMOTDEditionForm  ' ZMOTD
+            Call HandleShowMOTDEditionForm(Message)
+            
+        Case ServerPacketID.ShowGMPanelForm      ' ABPANEL
+            Call HandleShowGMPanelForm(Message)
+            
+        Case ServerPacketID.UserNameList         ' LISTUSU
+            Call HandleUserNameList(Message)
     
-            Case Else
-                Exit Sub
+        Case Else
+            Exit Sub
 
         End Select
     
@@ -807,14 +789,10 @@ Private Sub HandleLogged(ByVal Message As BinaryReader)
 
 End Sub
 
-
-
 Private Sub HandleRemoveDialogs(ByVal Message As BinaryReader)
     
     Call Dialogos.RemoveAllDialogs
 End Sub
-
-
 
 Private Sub HandleRemoveCharDialog(ByVal Message As BinaryReader)
     
@@ -823,14 +801,10 @@ Private Sub HandleRemoveCharDialog(ByVal Message As BinaryReader)
     Call Dialogos.RemoveDialog(Message.ReadInt())
 End Sub
 
-
-
 Private Sub HandleNavigateToggle(ByVal Message As BinaryReader)
     
     UserNavegando = Not UserNavegando
 End Sub
-
-
 
 Private Sub HandleDisconnect(ByVal Message As BinaryReader)
     
@@ -877,8 +851,6 @@ Private Sub HandleDisconnect(ByVal Message As BinaryReader)
     
 End Sub
 
-
-
 Private Sub HandleCommerceEnd(ByVal Message As BinaryReader)
     
     'Clear item's list
@@ -892,8 +864,6 @@ Private Sub HandleCommerceEnd(ByVal Message As BinaryReader)
     Unload frmComerciar
 End Sub
 
-
-
 Private Sub HandleBankEnd(ByVal Message As BinaryReader)
     
     frmBancoObj.List1(0).Clear
@@ -902,8 +872,6 @@ Private Sub HandleBankEnd(ByVal Message As BinaryReader)
     Unload frmBancoObj
     Comerciando = False
 End Sub
-
-
 
 Private Sub HandleCommerceInit(ByVal Message As BinaryReader)
     
@@ -922,8 +890,6 @@ Private Sub HandleCommerceInit(ByVal Message As BinaryReader)
     Comerciando = True
     frmComerciar.Show , frmMain
 End Sub
-
-
 
 Private Sub HandleBankInit(ByVal Message As BinaryReader)
     
@@ -956,8 +922,6 @@ Private Sub HandleBankInit(ByVal Message As BinaryReader)
     frmBancoObj.Show , frmMain
 End Sub
 
-
-
 Private Sub HandleUserCommerceInit(ByVal Message As BinaryReader)
     
     Dim i           As Long
@@ -982,8 +946,6 @@ Private Sub HandleUserCommerceInit(ByVal Message As BinaryReader)
     frmComerciarUsu.Show , frmMain
 End Sub
 
-
-
 Private Sub HandleUserCommerceEnd(ByVal Message As BinaryReader)
     
     'Clear the lists
@@ -995,8 +957,6 @@ Private Sub HandleUserCommerceEnd(ByVal Message As BinaryReader)
     Comerciando = False
 End Sub
 
-
-
 Private Sub HandleShowBlacksmithForm(ByVal Message As BinaryReader)
     
     If frmMain.macrotrabajo.Enabled And (MacroBltIndex > 0) Then
@@ -1005,8 +965,6 @@ Private Sub HandleShowBlacksmithForm(ByVal Message As BinaryReader)
         frmHerrero.Show , frmMain
     End If
 End Sub
-
-
 
 Private Sub HandleShowCarpenterForm(ByVal Message As BinaryReader)
     
@@ -1017,49 +975,30 @@ Private Sub HandleShowCarpenterForm(ByVal Message As BinaryReader)
     End If
 End Sub
 
-
-
 Private Sub HandleNPCSwing(ByVal Message As BinaryReader)
     
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_CRIATURA_FALLA_GOLPE, 255, 0, 0, True, False, False)
 End Sub
-
-
 
 Private Sub HandleNPCKillUser(ByVal Message As BinaryReader)
     
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_CRIATURA_MATADO, 255, 0, 0, True, False, False)
 End Sub
 
-
-
 Private Sub HandleBlockedWithShieldUser(ByVal Message As BinaryReader)
     
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_RECHAZO_ATAQUE_ESCUDO, 255, 0, 0, True, False, False)
 End Sub
-
-
 
 Private Sub HandleBlockedWithShieldOther(ByVal Message As BinaryReader)
     
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_USUARIO_RECHAZO_ATAQUE_ESCUDO, 255, 0, 0, True, False, False)
 End Sub
 
-
-
 Private Sub HandleUserSwing(ByVal Message As BinaryReader)
     
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_FALLADO_GOLPE, 255, 0, 0, True, False, False)
 End Sub
-
-
-
-Private Sub HandleUpdateNeeded(ByVal Message As BinaryReader)
-    
-    Call frmMain.DibujarSatelite
-End Sub
-
-
 
 Private Sub HandleSafeModeOn(ByVal Message As BinaryReader)
     
@@ -1067,15 +1006,11 @@ Private Sub HandleSafeModeOn(ByVal Message As BinaryReader)
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_SEGURO_ACTIVADO, 0, 255, 0, True, False, False)
 End Sub
 
-
-
 Private Sub HandleSafeModeOff(ByVal Message As BinaryReader)
     
     Call frmMain.DesDibujarSeguro
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_SEGURO_DESACTIVADO, 255, 0, 0, True, False, False)
 End Sub
-
-
 
 Private Sub HandleResuscitationSafeOff(ByVal Message As BinaryReader)
     
@@ -1083,28 +1018,20 @@ Private Sub HandleResuscitationSafeOff(ByVal Message As BinaryReader)
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_SEGURO_RESU_OFF, 255, 0, 0, True, False, False)
 End Sub
 
-
-
 Private Sub HandleResuscitationSafeOn(ByVal Message As BinaryReader)
     Call frmMain.ControlSeguroResu(True)
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_SEGURO_RESU_ON, 0, 255, 0, True, False, False)
 End Sub
-
-
 
 Private Sub HandleNobilityLost(ByVal Message As BinaryReader)
     
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PIERDE_NOBLEZA, 255, 0, 0, False, False, False)
 End Sub
 
-
-
 Private Sub HandleCantUseWhileMeditating(ByVal Message As BinaryReader)
     
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_USAR_MEDITANDO, 255, 0, 0, False, False, False)
 End Sub
-
-
 
 Private Sub HandleUpdateSta(ByVal Message As BinaryReader)
     
@@ -1112,8 +1039,6 @@ Private Sub HandleUpdateSta(ByVal Message As BinaryReader)
     UserMinSTA = Message.ReadInt()
     frmMain.STAShp.Width = (((UserMinSTA / 100) / (UserMaxSTA / 100)) * 94)
 End Sub
-
-
 
 Private Sub HandleUpdateMana(ByVal Message As BinaryReader)
     
@@ -1126,8 +1051,6 @@ Private Sub HandleUpdateMana(ByVal Message As BinaryReader)
         frmMain.MANShp.Width = 0
     End If
 End Sub
-
-
 
 Private Sub HandleUpdateHP(ByVal Message As BinaryReader)
     
@@ -1143,8 +1066,6 @@ Private Sub HandleUpdateHP(ByVal Message As BinaryReader)
     End If
 End Sub
 
-
-
 Private Sub HandleUpdateGold(ByVal Message As BinaryReader)
     
     'Get data and update form
@@ -1152,16 +1073,14 @@ Private Sub HandleUpdateGold(ByVal Message As BinaryReader)
     
     If UserGLD >= CLng(UserLvl) * 10000 Then
         'Changes color
-        frmMain.GldLbl.ForeColor = &HFF&        'Red
+        frmMain.GldLbl.ForeColor = &HFF&         'Red
     Else
         'Changes color
-        frmMain.GldLbl.ForeColor = &HFFFF&        'Yellow
+        frmMain.GldLbl.ForeColor = &HFFFF&       'Yellow
     End If
     
     frmMain.GldLbl.Caption = UserGLD
 End Sub
-
-
 
 Private Sub HandleUpdateExp(ByVal Message As BinaryReader)
     
@@ -1170,8 +1089,6 @@ Private Sub HandleUpdateExp(ByVal Message As BinaryReader)
     frmMain.exp.Caption = "Exp: " & UserExp & "/" & UserPasarNivel
     frmMain.lblPorcLvl.Caption = "[" & Round(CDbl(UserExp) * CDbl(100) / CDbl(UserPasarNivel), 2) & "%]"
 End Sub
-
-
 
 Private Sub HandleChangeMap(ByVal Message As BinaryReader)
     
@@ -1198,8 +1115,6 @@ Private Sub HandleChangeMap(ByVal Message As BinaryReader)
     End If
 End Sub
 
-
-
 Private Sub HandlePosUpdate(ByVal Message As BinaryReader)
     
     'Remove char from old position
@@ -1217,48 +1132,40 @@ Private Sub HandlePosUpdate(ByVal Message As BinaryReader)
     
     'Are we under a roof
     bTecho = IIf(MapData(UserPos.x, UserPos.y).Trigger = 1 Or _
-    MapData(UserPos.x, UserPos.y).Trigger = 2 Or _
-    MapData(UserPos.x, UserPos.y).Trigger = 4, True, False)
+                 MapData(UserPos.x, UserPos.y).Trigger = 2 Or _
+                 MapData(UserPos.x, UserPos.y).Trigger = 4, True, False)
     
     'Update pos label
     frmMain.Coord.Caption = "(" & UserMap & "," & UserPos.x & "," & UserPos.y & ")"
 End Sub
 
-
-
 Private Sub HandleNPCHitUser(ByVal Message As BinaryReader)
     
     Select Case Message.ReadInt()
-        Case bCabeza
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_CABEZA & CStr(Message.ReadInt()), 255, 0, 0, True, False, False)
-        Case bBrazoIzquierdo
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_BRAZO_IZQ & CStr(Message.ReadInt()), 255, 0, 0, True, False, False)
-        Case bBrazoDerecho
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_BRAZO_DER & CStr(Message.ReadInt()), 255, 0, 0, True, False, False)
-        Case bPiernaIzquierda
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_PIERNA_IZQ & CStr(Message.ReadInt()), 255, 0, 0, True, False, False)
-        Case bPiernaDerecha
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_PIERNA_DER & CStr(Message.ReadInt()), 255, 0, 0, True, False, False)
-        Case bTorso
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_TORSO & CStr(Message.ReadInt()), 255, 0, 0, True, False, False)
+    Case bCabeza
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_CABEZA & CStr(Message.ReadInt()), 255, 0, 0, True, False, False)
+    Case bBrazoIzquierdo
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_BRAZO_IZQ & CStr(Message.ReadInt()), 255, 0, 0, True, False, False)
+    Case bBrazoDerecho
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_BRAZO_DER & CStr(Message.ReadInt()), 255, 0, 0, True, False, False)
+    Case bPiernaIzquierda
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_PIERNA_IZQ & CStr(Message.ReadInt()), 255, 0, 0, True, False, False)
+    Case bPiernaDerecha
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_PIERNA_DER & CStr(Message.ReadInt()), 255, 0, 0, True, False, False)
+    Case bTorso
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_TORSO & CStr(Message.ReadInt()), 255, 0, 0, True, False, False)
     End Select
 End Sub
-
-
 
 Private Sub HandleUserHitNPC(ByVal Message As BinaryReader)
     
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_CRIATURA_1 & CStr(Message.ReadInt()) & MENSAJE_2, 255, 0, 0, True, False, False)
 End Sub
 
-
-
 Private Sub HandleUserAttackedSwing(ByVal Message As BinaryReader)
     
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & charlist(Message.ReadInt()).Nombre & MENSAJE_ATAQUE_FALLO, 255, 0, 0, True, False, False)
 End Sub
-
-
 
 Private Sub HandleUserHittedByUser(ByVal Message As BinaryReader)
     
@@ -1267,22 +1174,20 @@ Private Sub HandleUserHittedByUser(ByVal Message As BinaryReader)
     attacker = charlist(Message.ReadInt()).Nombre
     
     Select Case Message.ReadInt
-        Case bCabeza
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & attacker & MENSAJE_RECIVE_IMPACTO_CABEZA & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
-        Case bBrazoIzquierdo
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & attacker & MENSAJE_RECIVE_IMPACTO_BRAZO_IZQ & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
-        Case bBrazoDerecho
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & attacker & MENSAJE_RECIVE_IMPACTO_BRAZO_DER & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
-        Case bPiernaIzquierda
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & attacker & MENSAJE_RECIVE_IMPACTO_PIERNA_IZQ & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
-        Case bPiernaDerecha
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & attacker & MENSAJE_RECIVE_IMPACTO_PIERNA_DER & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
-        Case bTorso
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & attacker & MENSAJE_RECIVE_IMPACTO_TORSO & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
+    Case bCabeza
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & attacker & MENSAJE_RECIVE_IMPACTO_CABEZA & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
+    Case bBrazoIzquierdo
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & attacker & MENSAJE_RECIVE_IMPACTO_BRAZO_IZQ & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
+    Case bBrazoDerecho
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & attacker & MENSAJE_RECIVE_IMPACTO_BRAZO_DER & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
+    Case bPiernaIzquierda
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & attacker & MENSAJE_RECIVE_IMPACTO_PIERNA_IZQ & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
+    Case bPiernaDerecha
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & attacker & MENSAJE_RECIVE_IMPACTO_PIERNA_DER & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
+    Case bTorso
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & attacker & MENSAJE_RECIVE_IMPACTO_TORSO & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
     End Select
 End Sub
-
-
 
 Private Sub HandleUserHittedUser(ByVal Message As BinaryReader)
     
@@ -1291,22 +1196,20 @@ Private Sub HandleUserHittedUser(ByVal Message As BinaryReader)
     victim = charlist(Message.ReadInt()).Nombre
     
     Select Case Message.ReadInt
-        Case bCabeza
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_CABEZA & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
-        Case bBrazoIzquierdo
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_BRAZO_IZQ & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
-        Case bBrazoDerecho
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_BRAZO_DER & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
-        Case bPiernaIzquierda
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_PIERNA_IZQ & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
-        Case bPiernaDerecha
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_PIERNA_DER & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
-        Case bTorso
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_TORSO & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
+    Case bCabeza
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_CABEZA & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
+    Case bBrazoIzquierdo
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_BRAZO_IZQ & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
+    Case bBrazoDerecho
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_BRAZO_DER & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
+    Case bPiernaIzquierda
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_PIERNA_IZQ & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
+    Case bPiernaDerecha
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_PIERNA_DER & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
+    Case bTorso
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_TORSO & CStr(Message.ReadInt() & MENSAJE_2), 255, 0, 0, True, False, False)
     End Select
 End Sub
-
-
 
 Private Sub HandleChatOverHead(ByVal Message As BinaryReader)
     
@@ -1325,11 +1228,9 @@ Private Sub HandleChatOverHead(ByVal Message As BinaryReader)
     
     'Only add the chat if the character exists (a CharacterRemove may have been sent to the PC / NPC area before the buffer was flushed)
     If charlist(CharIndex).active Then _
-    Call Dialogos.CreateDialog(chat, CharIndex, D3DColorXRGB(r, g, b))
+       Call Dialogos.CreateDialog(chat, CharIndex, D3DColorXRGB(r, g, b))
 
 End Sub
-
-
 
 Private Sub HandleConsoleMessage(ByVal Message As BinaryReader)
     
@@ -1373,8 +1274,6 @@ Private Sub HandleConsoleMessage(ByVal Message As BinaryReader)
     End If
     
 End Sub
-
-
 
 Private Sub HandleGuildChat(ByVal Message As BinaryReader)
     
@@ -1423,8 +1322,6 @@ Private Sub HandleGuildChat(ByVal Message As BinaryReader)
     
 End Sub
 
-
-
 Private Sub HandleShowMessageBox(ByVal Message As BinaryReader)
     
     frmMensaje.msg.Caption = Message.ReadString16()
@@ -1432,14 +1329,10 @@ Private Sub HandleShowMessageBox(ByVal Message As BinaryReader)
     
 End Sub
 
-
-
 Private Sub HandleUserIndexInServer(ByVal Message As BinaryReader)
     
     UserIndex = Message.ReadInt()
 End Sub
-
-
 
 Private Sub HandleUserCharIndexInServer(ByVal Message As BinaryReader)
     
@@ -1448,13 +1341,11 @@ Private Sub HandleUserCharIndexInServer(ByVal Message As BinaryReader)
     
     'Are we under a roof
     bTecho = IIf(MapData(UserPos.x, UserPos.y).Trigger = 1 Or _
-    MapData(UserPos.x, UserPos.y).Trigger = 2 Or _
-    MapData(UserPos.x, UserPos.y).Trigger = 4, True, False)
+                 MapData(UserPos.x, UserPos.y).Trigger = 2 Or _
+                 MapData(UserPos.x, UserPos.y).Trigger = 4, True, False)
     
     frmMain.Coord.Caption = "(" & UserMap & "," & UserPos.x & "," & UserPos.y & ")"
 End Sub
-
-
 
 Private Sub HandleCharacterCreate(ByVal Message As BinaryReader)
     
@@ -1516,8 +1407,6 @@ Private Sub HandleCharacterCreate(ByVal Message As BinaryReader)
     
 End Sub
 
-
-
 Private Sub HandleCharacterRemove(ByVal Message As BinaryReader)
     
     Dim CharIndex   As Integer
@@ -1527,8 +1416,6 @@ Private Sub HandleCharacterRemove(ByVal Message As BinaryReader)
     Call EraseChar(CharIndex)
     Call RefreshAllChars
 End Sub
-
-
 
 Private Sub HandleCharacterMove(ByVal Message As BinaryReader)
     
@@ -1541,7 +1428,7 @@ Private Sub HandleCharacterMove(ByVal Message As BinaryReader)
     y = Message.ReadInt()
     
     With charlist(CharIndex)
-        If .FxIndex >= 40 And .FxIndex <= 49 Then        'If it's meditating, we remove the FX
+        If .FxIndex >= 40 And .FxIndex <= 49 Then 'If it's meditating, we remove the FX
             .FxIndex = 0
         End If
         
@@ -1551,12 +1438,10 @@ Private Sub HandleCharacterMove(ByVal Message As BinaryReader)
         End If
     End With
     
-Call engine.Char_Move_by_Pos(CharIndex, x, y)
+    Call engine.Char_Move_by_Pos(CharIndex, x, y)
 
-Call RefreshAllChars
+    Call RefreshAllChars
 End Sub
-
-
 
 Private Sub HandleCharacterChange(ByVal Message As BinaryReader)
     
@@ -1602,8 +1487,6 @@ Private Sub HandleCharacterChange(ByVal Message As BinaryReader)
     Call RefreshAllChars
 End Sub
 
-
-
 Private Sub HandleObjectCreate(ByVal Message As BinaryReader)
     
     Dim x           As Byte
@@ -1617,8 +1500,6 @@ Private Sub HandleObjectCreate(ByVal Message As BinaryReader)
     Call InitGrh(MapData(x, y).ObjGrh, MapData(x, y).ObjGrh.grhindex)
 End Sub
 
-
-
 Private Sub HandleObjectDelete(ByVal Message As BinaryReader)
     
     Dim x           As Byte
@@ -1628,8 +1509,6 @@ Private Sub HandleObjectDelete(ByVal Message As BinaryReader)
     y = Message.ReadInt()
     MapData(x, y).ObjGrh.grhindex = 0
 End Sub
-
-
 
 Private Sub HandleBlockPosition(ByVal Message As BinaryReader)
     
@@ -1646,8 +1525,6 @@ Private Sub HandleBlockPosition(ByVal Message As BinaryReader)
     End If
 End Sub
 
-
-
 Private Sub HandlePlayMIDI(ByVal Message As BinaryReader)
     
     Dim currentMidi As Byte
@@ -1661,8 +1538,6 @@ Private Sub HandlePlayMIDI(ByVal Message As BinaryReader)
         Call Message.ReadInt
     End If
 End Sub
-
-
 
 Private Sub HandlePlayWave(ByVal Message As BinaryReader)
     
@@ -1683,8 +1558,6 @@ Private Sub HandlePlayWave(ByVal Message As BinaryReader)
     Call Audio.PlayWave(CStr(wave) & ".wav", srcX, srcY)
 End Sub
 
-
-
 Private Sub HandleGuildList(ByVal Message As BinaryReader)
     
     'Clear guild's list
@@ -1702,8 +1575,6 @@ Private Sub HandleGuildList(ByVal Message As BinaryReader)
     
 End Sub
 
-
-
 Private Sub HandleAreaChanged(ByVal Message As BinaryReader)
     
     Dim x           As Byte
@@ -1715,22 +1586,18 @@ Private Sub HandleAreaChanged(ByVal Message As BinaryReader)
     Call CambioDeArea(x, y)
 End Sub
 
-
-
 Private Sub HandlePauseToggle(ByVal Message As BinaryReader)
     
     pausa = Not pausa
 End Sub
-
-
 
 Private Sub HandleRainToggle(ByVal Message As BinaryReader)
     
     If Not InMapBounds(UserPos.x, UserPos.y) Then Exit Sub
     
     bTecho = (MapData(UserPos.x, UserPos.y).Trigger = 1 Or _
-             MapData(UserPos.x, UserPos.y).Trigger = 2 Or _
-             MapData(UserPos.x, UserPos.y).Trigger = 4)
+              MapData(UserPos.x, UserPos.y).Trigger = 2 Or _
+              MapData(UserPos.x, UserPos.y).Trigger = 4)
     If bRain Then
         If bLluvia(UserMap) Then
             'Stop playing the rain sound
@@ -1748,8 +1615,6 @@ Private Sub HandleRainToggle(ByVal Message As BinaryReader)
     bRain = Not bRain
 End Sub
 
-
-
 Private Sub HandleCreateFX(ByVal Message As BinaryReader)
     
     Dim CharIndex   As Integer
@@ -1762,8 +1627,6 @@ Private Sub HandleCreateFX(ByVal Message As BinaryReader)
     
     Call SetCharacterFx(CharIndex, fX, Loops)
 End Sub
-
-
 
 Private Sub HandleUpdateUserStats(ByVal Message As BinaryReader)
     
@@ -1807,14 +1670,12 @@ Private Sub HandleUpdateUserStats(ByVal Message As BinaryReader)
     
     If UserGLD >= CLng(UserLvl) * 10000 Then
         'Changes color
-        frmMain.GldLbl.ForeColor = &HFF&        'Red
+        frmMain.GldLbl.ForeColor = &HFF&         'Red
     Else
         'Changes color
-        frmMain.GldLbl.ForeColor = &HFFFF&        'Yellow
+        frmMain.GldLbl.ForeColor = &HFFFF&       'Yellow
     End If
 End Sub
-
-
 
 Private Sub HandleWorkRequestTarget(ByVal Message As BinaryReader)
     
@@ -1823,24 +1684,22 @@ Private Sub HandleWorkRequestTarget(ByVal Message As BinaryReader)
     frmMain.MousePointer = 2
     
     Select Case UsingSkill
-        Case Magia
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_MAGIA, 100, 100, 120, 0, 0)
-        Case Pesca
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_PESCA, 100, 100, 120, 0, 0)
-        Case Robar
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_ROBAR, 100, 100, 120, 0, 0)
-        Case Talar
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_TALAR, 100, 100, 120, 0, 0)
-        Case Mineria
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_MINERIA, 100, 100, 120, 0, 0)
-        Case FundirMetal
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_FUNDIRMETAL, 100, 100, 120, 0, 0)
-        Case Proyectiles
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_PROYECTILES, 100, 100, 120, 0, 0)
+    Case Magia
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_MAGIA, 100, 100, 120, 0, 0)
+    Case Pesca
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_PESCA, 100, 100, 120, 0, 0)
+    Case Robar
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_ROBAR, 100, 100, 120, 0, 0)
+    Case Talar
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_TALAR, 100, 100, 120, 0, 0)
+    Case Mineria
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_MINERIA, 100, 100, 120, 0, 0)
+    Case FundirMetal
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_FUNDIRMETAL, 100, 100, 120, 0, 0)
+    Case Proyectiles
+        Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_PROYECTILES, 100, 100, 120, 0, 0)
     End Select
 End Sub
-
-
 
 Private Sub HandleChangeInventorySlot(ByVal Message As BinaryReader)
     
@@ -1872,8 +1731,6 @@ Private Sub HandleChangeInventorySlot(ByVal Message As BinaryReader)
     
 End Sub
 
-
-
 Private Sub HandleChangeBankSlot(ByVal Message As BinaryReader)
     
     Dim slot        As Byte
@@ -1899,8 +1756,6 @@ Private Sub HandleChangeBankSlot(ByVal Message As BinaryReader)
     
 End Sub
 
-
-
 Private Sub HandleChangeSpellSlot(ByVal Message As BinaryReader)
     
     Dim slot        As Byte
@@ -1915,8 +1770,6 @@ Private Sub HandleChangeSpellSlot(ByVal Message As BinaryReader)
     End If
     
 End Sub
-
-
 
 Private Sub HandleAtributes(ByVal Message As BinaryReader)
 
@@ -1940,8 +1793,6 @@ Private Sub HandleAtributes(ByVal Message As BinaryReader)
     End If
 End Sub
 
-
-
 Private Sub HandleBlacksmithWeapons(ByVal Message As BinaryReader)
     
     Dim Count       As Integer
@@ -1953,10 +1804,10 @@ Private Sub HandleBlacksmithWeapons(ByVal Message As BinaryReader)
     Call frmHerrero.lstArmas.Clear
     
     For i = 1 To Count
-        tmp = Message.ReadString16() & " ("        'Get the object's name
-        tmp = tmp & CStr(Message.ReadInt()) & ","        'The iron needed
-        tmp = tmp & CStr(Message.ReadInt()) & ","        'The silver needed
-        tmp = tmp & CStr(Message.ReadInt()) & ")"        'The gold needed
+        tmp = Message.ReadString16() & " ("      'Get the object's name
+        tmp = tmp & CStr(Message.ReadInt()) & "," 'The iron needed
+        tmp = tmp & CStr(Message.ReadInt()) & "," 'The silver needed
+        tmp = tmp & CStr(Message.ReadInt()) & ")" 'The gold needed
         
         Call frmHerrero.lstArmas.AddItem(tmp)
         ArmasHerrero(i) = Message.ReadInt()
@@ -1967,8 +1818,6 @@ Private Sub HandleBlacksmithWeapons(ByVal Message As BinaryReader)
     Next i
     
 End Sub
-
-
 
 Private Sub HandleBlacksmithArmors(ByVal Message As BinaryReader)
     
@@ -1981,10 +1830,10 @@ Private Sub HandleBlacksmithArmors(ByVal Message As BinaryReader)
     Call frmHerrero.lstArmaduras.Clear
     
     For i = 1 To Count
-        tmp = Message.ReadString16() & " ("        'Get the object's name
-        tmp = tmp & CStr(Message.ReadInt()) & ","        'The iron needed
-        tmp = tmp & CStr(Message.ReadInt()) & ","        'The silver needed
-        tmp = tmp & CStr(Message.ReadInt()) & ")"        'The gold needed
+        tmp = Message.ReadString16() & " ("      'Get the object's name
+        tmp = tmp & CStr(Message.ReadInt()) & "," 'The iron needed
+        tmp = tmp & CStr(Message.ReadInt()) & "," 'The silver needed
+        tmp = tmp & CStr(Message.ReadInt()) & ")" 'The gold needed
         
         Call frmHerrero.lstArmaduras.AddItem(tmp)
         ArmadurasHerrero(i) = Message.ReadInt()
@@ -1995,8 +1844,6 @@ Private Sub HandleBlacksmithArmors(ByVal Message As BinaryReader)
     Next i
     
 End Sub
-
-
 
 Private Sub HandleCarpenterObjects(ByVal Message As BinaryReader)
     
@@ -2009,8 +1856,8 @@ Private Sub HandleCarpenterObjects(ByVal Message As BinaryReader)
     Call frmCarp.lstArmas.Clear
     
     For i = 1 To Count
-        tmp = Message.ReadString16() & " ("        'Get the object's name
-        tmp = tmp & CStr(Message.ReadInt()) & ")"        'The wood needed
+        tmp = Message.ReadString16() & " ("      'Get the object's name
+        tmp = tmp & CStr(Message.ReadInt()) & ")" 'The wood needed
         
         Call frmCarp.lstArmas.AddItem(tmp)
         ObjCarpintero(i) = Message.ReadInt()
@@ -2022,15 +1869,11 @@ Private Sub HandleCarpenterObjects(ByVal Message As BinaryReader)
     
 End Sub
 
-
-
 Private Sub HandleRestOK(ByVal Message As BinaryReader)
     
     UserDescansar = Not UserDescansar
     UserAvisado = False
 End Sub
-
-
 
 Private Sub HandleErrorMessage(ByVal Message As BinaryReader)
     
@@ -2042,32 +1885,15 @@ Private Sub HandleErrorMessage(ByVal Message As BinaryReader)
     
 End Sub
 
-
-
 Private Sub HandleBlind(ByVal Message As BinaryReader)
     
     UserCiego = True
 End Sub
 
-
-
 Private Sub HandleDumb(ByVal Message As BinaryReader)
     
     UserEstupido = True
 End Sub
-
-
-
-Private Sub HandleShowSignal(ByVal Message As BinaryReader)
-    
-    Dim tmp         As String
-    tmp = Message.ReadString16()
-    
-    Call InitCartel(tmp, Message.ReadInt())
-    
-End Sub
-
-
 
 Private Sub HandleChangeNPCInventorySlot(ByVal Message As BinaryReader)
     
@@ -2095,8 +1921,6 @@ Private Sub HandleChangeNPCInventorySlot(ByVal Message As BinaryReader)
     
 End Sub
 
-
-
 Private Sub HandleUpdateHungerAndThirst(ByVal Message As BinaryReader)
     
     UserMaxAGU = Message.ReadInt()
@@ -2107,68 +1931,35 @@ Private Sub HandleUpdateHungerAndThirst(ByVal Message As BinaryReader)
     frmMain.COMIDAsp.Width = (((UserMinHAM / 100) / (UserMaxHAM / 100)) * 94)
 End Sub
 
-
-
 Private Sub HandleFame(ByVal Message As BinaryReader)
-        With UserReputacion
-    .AsesinoRep = Message.ReadInt()
+    With UserReputacion
+        .AsesinoRep = Message.ReadInt()
         .BandidoRep = Message.ReadInt()
         .BurguesRep = Message.ReadInt()
         .LadronesRep = Message.ReadInt()
         .NobleRep = Message.ReadInt()
         .PlebeRep = Message.ReadInt()
         .Promedio = Message.ReadInt()
-        End With
+    End With
     
 End Sub
 
-
-
 Private Sub HandleMiniStats(ByVal Message As BinaryReader)
-        With UserEstadisticas
-    .CiudadanosMatados = Message.ReadInt()
+    With UserEstadisticas
+        .CiudadanosMatados = Message.ReadInt()
         .CriminalesMatados = Message.ReadInt()
         .UsuariosMatados = Message.ReadInt()
         .NpcsMatados = Message.ReadInt()
         .Clase = ListaClases(Message.ReadInt())
         .PenaCarcel = Message.ReadInt()
-            End With
+    End With
 End Sub
-
-
 
 Private Sub HandleLevelUp(ByVal Message As BinaryReader)
     
     SkillPoints = SkillPoints + Message.ReadInt()
     frmMain.Label1.Visible = True
 End Sub
-
-
-
-Private Sub HandleAddForumMessage(ByVal Message As BinaryReader)
-    
-    Dim Title       As String
-    Dim Body     As String
-    
-    Title = Message.ReadString16()
-    Body = Message.ReadString16()
-    
-    Call frmForo.List.AddItem(Title)
-    frmForo.Text(frmForo.List.ListCount - 1).Text = Body
-    Call Load(frmForo.Text(frmForo.List.ListCount))
-    
-End Sub
-
-
-
-Private Sub HandleShowForumForm(ByVal Message As BinaryReader)
-    
-    If Not frmForo.Visible Then
-        frmForo.Show , frmMain
-    End If
-End Sub
-
-
 
 Private Sub HandleSetInvisible(ByVal Message As BinaryReader)
     
@@ -2178,8 +1969,6 @@ Private Sub HandleSetInvisible(ByVal Message As BinaryReader)
     charlist(CharIndex).invisible = Message.ReadBool()
     
 End Sub
-
-
 
 Private Sub HandleDiceRoll(ByVal Message As BinaryReader)
     
@@ -2196,29 +1985,21 @@ Private Sub HandleDiceRoll(ByVal Message As BinaryReader)
     frmCrearPersonaje.lbConstitucion = UserAtributos(eAtributos.Constitucion)
 End Sub
 
-
-
 Private Sub HandleMeditateToggle(ByVal Message As BinaryReader)
     
     UserMeditar = Not UserMeditar
     UserAvisado = False
 End Sub
 
-
-
 Private Sub HandleBlindNoMore(ByVal Message As BinaryReader)
     
     UserCiego = False
 End Sub
 
-
-
 Private Sub HandleDumbNoMore(ByVal Message As BinaryReader)
     
     UserEstupido = False
 End Sub
-
-
 
 Private Sub HandleSendSkills(ByVal Message As BinaryReader)
 
@@ -2228,8 +2009,6 @@ Private Sub HandleSendSkills(ByVal Message As BinaryReader)
         UserSkills(i) = Message.ReadInt()
     Next i
 End Sub
-
-
 
 Private Sub HandleTrainerCreatureList(ByVal Message As BinaryReader)
     
@@ -2244,8 +2023,6 @@ Private Sub HandleTrainerCreatureList(ByVal Message As BinaryReader)
     frmEntrenador.Show , frmMain
     
 End Sub
-
-
 
 Private Sub HandleGuildNews(ByVal Message As BinaryReader)
     
@@ -2273,15 +2050,11 @@ Private Sub HandleGuildNews(ByVal Message As BinaryReader)
     
 End Sub
 
-
-
 Private Sub HandleOfferDetails(ByVal Message As BinaryReader)
     
     Call frmUserRequest.recievePeticion(Message.ReadString16())
     
 End Sub
-
-
 
 Private Sub HandleAlianceProposalsList(ByVal Message As BinaryReader)
     
@@ -2299,8 +2072,6 @@ Private Sub HandleAlianceProposalsList(ByVal Message As BinaryReader)
     
 End Sub
 
-
-
 Private Sub HandlePeaceProposalsList(ByVal Message As BinaryReader)
     
     Dim guildList() As String
@@ -2317,12 +2088,10 @@ Private Sub HandlePeaceProposalsList(ByVal Message As BinaryReader)
     
 End Sub
 
-
-
 Private Sub HandleCharacterInfo(ByVal Message As BinaryReader)
         
     With frmCharInfo
-    If .frmType = CharInfoFrmType.frmMembers Then
+        If .frmType = CharInfoFrmType.frmMembers Then
             .Rechazar.Visible = False
             .Aceptar.Visible = False
             .Echar.Visible = True
@@ -2381,18 +2150,16 @@ Private Sub HandleCharacterInfo(ByVal Message As BinaryReader)
         End If
         
         Call .Show(vbModeless, frmMain)
-        End With
+    End With
 End Sub
-
-
 
 Private Sub HandleGuildLeaderInfo(ByVal Message As BinaryReader)
     
     Dim List()      As String
     Dim i           As Long
     
-        With frmGuildLeader
-    'Get list of existing guilds
+    With frmGuildLeader
+        'Get list of existing guilds
         List = Split(Message.ReadString16(), SEPARATOR)
         
         'Empty the list
@@ -2426,15 +2193,13 @@ Private Sub HandleGuildLeaderInfo(ByVal Message As BinaryReader)
         Next i
         
         .Show , frmMain
-        End With
+    End With
 
 End Sub
 
-
-
 Private Sub HandleGuildDetails(ByVal Message As BinaryReader)
-        With frmGuildBrief
-    If Not .EsLeader Then
+    With frmGuildBrief
+        If Not .EsLeader Then
             .guerra.Visible = False
             .aliado.Visible = False
             .Command3.Visible = False
@@ -2472,13 +2237,11 @@ Private Sub HandleGuildDetails(ByVal Message As BinaryReader)
         Next i
         
         .desc.Text = Message.ReadString16()
-        End With
+    End With
 
     frmGuildBrief.Show vbModeless, frmMain
     
 End Sub
-
-
 
 Private Sub HandleShowGuildFundationForm(ByVal Message As BinaryReader)
     
@@ -2486,14 +2249,10 @@ Private Sub HandleShowGuildFundationForm(ByVal Message As BinaryReader)
     frmGuildFoundation.Show , frmMain
 End Sub
 
-
-
 Private Sub HandleParalizeOK(ByVal Message As BinaryReader)
     
     UserParalizado = Not UserParalizado
 End Sub
-
-
 
 Private Sub HandleShowUserRequest(ByVal Message As BinaryReader)
     
@@ -2501,8 +2260,6 @@ Private Sub HandleShowUserRequest(ByVal Message As BinaryReader)
     Call frmUserRequest.Show(vbModeless, frmMain)
     
 End Sub
-
-
 
 Private Sub HandleTradeOK(ByVal Message As BinaryReader)
     
@@ -2529,8 +2286,6 @@ Private Sub HandleTradeOK(ByVal Message As BinaryReader)
         End If
     End If
 End Sub
-
-
 
 Private Sub HandleBankOK(ByVal Message As BinaryReader)
     
@@ -2559,8 +2314,6 @@ Private Sub HandleBankOK(ByVal Message As BinaryReader)
     End If
 End Sub
 
-
-
 Private Sub HandleChangeUserTradeSlot(ByVal Message As BinaryReader)
 
     With OtroInventario(1)
@@ -2585,15 +2338,11 @@ Private Sub HandleChangeUserTradeSlot(ByVal Message As BinaryReader)
     
 End Sub
 
-
-
 Private Sub HandleSendNight(ByVal Message As BinaryReader)
     
-    Dim tBool       As Boolean        'CHECK, este handle no hace nada con lo que recibe.. porque, ehmm.. no hay noche?.. o si
+    Dim tBool       As Boolean                   'CHECK, este handle no hace nada con lo que recibe.. porque, ehmm.. no hay noche?.. o si
     tBool = Message.ReadBool()
 End Sub
-
-
 
 Private Sub HandleSpawnList(ByVal Message As BinaryReader)
     
@@ -2608,8 +2357,6 @@ Private Sub HandleSpawnList(ByVal Message As BinaryReader)
     frmSpawnList.Show , frmMain
     
 End Sub
-
-
 
 Private Sub HandleShowSOSForm(ByVal Message As BinaryReader)
     
@@ -2626,8 +2373,6 @@ Private Sub HandleShowSOSForm(ByVal Message As BinaryReader)
     
 End Sub
 
-
-
 Private Sub HandleShowMOTDEditionForm(ByVal Message As BinaryReader)
     
     frmCambiaMotd.txtMotd.Text = Message.ReadString16()
@@ -2635,14 +2380,10 @@ Private Sub HandleShowMOTDEditionForm(ByVal Message As BinaryReader)
     
 End Sub
 
-
-
 Private Sub HandleShowGMPanelForm(ByVal Message As BinaryReader)
     
     frmPanelGm.Show vbModeless, frmMain
 End Sub
-
-
 
 Private Sub HandleUserNameList(ByVal Message As BinaryReader)
     
@@ -2661,8 +2402,6 @@ Private Sub HandleUserNameList(ByVal Message As BinaryReader)
     
 End Sub
 
-
-
 Private Sub HandlePong(ByVal Message As BinaryReader)
     
     Call Message.ReadInt
@@ -2671,8 +2410,6 @@ Private Sub HandlePong(ByVal Message As BinaryReader)
     
     pingTime = 0
 End Sub
-
-
 
 Private Sub HandleUpdateTagAndStatus(ByVal Message As BinaryReader)
     
@@ -2710,11 +2447,7 @@ Public Sub WriteLoginExistingChar()
     Call Writer_.WriteInt(App.Major)
     Call Writer_.WriteInt(App.Minor)
     Call Writer_.WriteInt(App.Revision)
-    
-    For i = 1 To 7
-        Call Writer_.WriteInt(Versiones(i))
-    Next i
-    
+
     Call modEngine.NetWrite(Writer_)
 End Sub
 
@@ -2737,11 +2470,7 @@ Public Sub WriteLoginNewChar()
     Call Writer_.WriteInt(App.Major)
     Call Writer_.WriteInt(App.Minor)
     Call Writer_.WriteInt(App.Revision)
-    
-    For i = 1 To 7
-        Call Writer_.WriteInt(Versiones(i))
-    Next i
-    
+
     Call Writer_.WriteInt(UserRaza)
     Call Writer_.WriteInt(UserSexo)
     Call Writer_.WriteInt(UserClase)
@@ -4123,7 +3852,7 @@ End Sub
 
 Public Sub WriteIPToNick(ByRef Ip() As Byte)
     
-    If UBound(Ip()) - LBound(Ip()) + 1 <> 4 Then Exit Sub        'Invalid IP
+    If UBound(Ip()) - LBound(Ip()) + 1 <> 4 Then Exit Sub 'Invalid IP
     
     Dim i           As Long
     
@@ -4357,7 +4086,7 @@ End Sub
 
 Public Sub WriteBanIP(ByVal byIp As Boolean, ByRef Ip() As Byte, ByVal nick As String, ByVal reason As String)
     
-    If byIp And UBound(Ip()) - LBound(Ip()) + 1 <> 4 Then Exit Sub        'Invalid IP
+    If byIp And UBound(Ip()) - LBound(Ip()) + 1 <> 4 Then Exit Sub 'Invalid IP
     
     Dim i           As Long
     
@@ -4380,7 +4109,7 @@ End Sub
 
 Public Sub WriteUnbanIP(ByRef Ip() As Byte)
     
-    If UBound(Ip()) - LBound(Ip()) + 1 <> 4 Then Exit Sub        'Invalid IP
+    If UBound(Ip()) - LBound(Ip()) + 1 <> 4 Then Exit Sub 'Invalid IP
     
     Dim i           As Long
     
@@ -4801,6 +4530,7 @@ Public Sub WriteReloadObjects()
     Call Writer_.WriteInt(ClientPacketID.ReloadObjects)
     
     Call modEngine.NetWrite(Writer_)
+    
 End Sub
 
 Public Sub WriteRestart()
@@ -4808,24 +4538,18 @@ Public Sub WriteRestart()
     Call Writer_.WriteInt(ClientPacketID.Restart)
     
     Call modEngine.NetWrite(Writer_)
-End Sub
-
-Public Sub WriteResetAutoUpdate()
     
-    Call Writer_.WriteInt(ClientPacketID.ResetAutoUpdate)
-    
-    Call modEngine.NetWrite(Writer_)
 End Sub
 
 Public Sub WriteChatColor(ByVal r As Byte, ByVal g As Byte, ByVal b As Byte)
     
     Call Writer_.WriteInt(ClientPacketID.ChatColor)
-    
     Call Writer_.WriteInt(r)
     Call Writer_.WriteInt(g)
     Call Writer_.WriteInt(b)
     
     Call modEngine.NetWrite(Writer_)
+    
 End Sub
 
 Public Sub WriteIgnored()
@@ -4833,6 +4557,7 @@ Public Sub WriteIgnored()
     Call Writer_.WriteInt(ClientPacketID.Ignored)
     
     Call modEngine.NetWrite(Writer_)
+    
 End Sub
 
 Public Sub WriteCheckSlot(ByVal UserName As String, ByVal slot As Byte)
@@ -4842,17 +4567,17 @@ Public Sub WriteCheckSlot(ByVal UserName As String, ByVal slot As Byte)
     Call Writer_.WriteInt(slot)
     
     Call modEngine.NetWrite(Writer_)
+    
 End Sub
 
 Public Sub WritePing()
-    
-    'Prevent the timer from being cut
-    If pingTime <> 0 Then Exit Sub
-    
+
     Call Writer_.WriteInt(ClientPacketID.Ping)
-    Call modEngine.NetFlush
-    
-    pingTime = GetTickCount
+    Call Writer_.WriteInt(GetTickCount())
     
     Call modEngine.NetWrite(Writer_)
+    Call modEngine.NetFlush
+    
 End Sub
+
+

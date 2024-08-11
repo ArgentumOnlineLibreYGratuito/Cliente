@@ -105,12 +105,6 @@ Begin VB.Form frmMain
       Left            =   3600
       Top             =   2520
    End
-   Begin VB.Timer SpoofCheck 
-      Enabled         =   0   'False
-      Interval        =   60000
-      Left            =   3120
-      Top             =   2520
-   End
    Begin VB.PictureBox PanelDer 
       AutoSize        =   -1  'True
       BackColor       =   &H00000000&
@@ -132,30 +126,6 @@ Begin VB.Form frmMain
       TabIndex        =   1
       Top             =   -60
       Width           =   3585
-      Begin VB.TextBox Text1 
-         Height          =   285
-         Left            =   120
-         TabIndex        =   23
-         Text            =   "2"
-         Top             =   5160
-         Width           =   735
-      End
-      Begin VB.CommandButton Command2 
-         Caption         =   "MOTION BLUR"
-         Height          =   495
-         Left            =   1800
-         TabIndex        =   22
-         Top             =   5400
-         Width           =   1335
-      End
-      Begin VB.CommandButton Command1 
-         Caption         =   "PARTÍCULAS Y LUCES"
-         Height          =   495
-         Left            =   360
-         TabIndex        =   21
-         Top             =   5400
-         Width           =   1335
-      End
       Begin VB.CommandButton DespInv 
          Caption         =   "+"
          BeginProperty Font 
@@ -548,6 +518,7 @@ Begin VB.Form frmMain
       _ExtentY        =   2646
       _Version        =   393217
       BackColor       =   0
+      Enabled         =   -1  'True
       ReadOnly        =   -1  'True
       ScrollBars      =   2
       DisableNoScroll =   -1  'True
@@ -586,21 +557,11 @@ Begin VB.Form frmMain
       Visible         =   0   'False
       Width           =   510
    End
-   Begin VB.Image PicAU 
-      BorderStyle     =   1  'Fixed Single
-      Height          =   510
-      Left            =   9300
-      Picture         =   "frmMain.frx":250F
-      Stretch         =   -1  'True
-      Top             =   8100
-      Visible         =   0   'False
-      Width           =   510
-   End
    Begin VB.Image PicMH 
       BorderStyle     =   1  'Fixed Single
       Height          =   510
       Left            =   8790
-      Picture         =   "frmMain.frx":3781
+      Picture         =   "frmMain.frx":250F
       Stretch         =   -1  'True
       Top             =   8100
       Visible         =   0   'False
@@ -623,7 +584,7 @@ Begin VB.Form frmMain
       BorderStyle     =   1  'Fixed Single
       Height          =   510
       Left            =   8280
-      Picture         =   "frmMain.frx":4593
+      Picture         =   "frmMain.frx":3321
       Stretch         =   -1  'True
       Top             =   8100
       Width           =   510
@@ -785,22 +746,6 @@ Public Sub DesDibujarSeguro()
 PicSeg.Visible = False
 End Sub
 
-Public Sub DibujarSatelite()
-PicAU.Visible = True
-End Sub
-
-Public Sub DesDibujarSatelite()
-PicAU.Visible = False
-End Sub
-
-Private Sub Command1_Click()
-jojoparticulas
-End Sub
-
-Private Sub Command2_Click()
-engine.Engine_Blur_Toggle
-End Sub
-
 Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
     
     If (Not SendTxt.Visible) And (Not SendCMSTXT.Visible) Then
@@ -857,14 +802,6 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
                 Case CustomKeys.BindedKey(eKeyType.mKeyToggleResuscitationSafe)
                     Call WriteResuscitationToggle
             End Select
-        Else
-            Select Case KeyCode
-                'Custom messages!
-                Case vbKey0 To vbKey9
-                    If LenB(CustomMessages.Message((KeyCode - 39) Mod 10)) <> 0 Then
-                        Call WriteTalk(CustomMessages.Message((KeyCode - 39) Mod 10))
-                    End If
-            End Select
         End If
     End If
     
@@ -874,7 +811,7 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
             
             If (Not frmComerciar.Visible) And (Not frmComerciarUsu.Visible) And _
               (Not frmBancoObj.Visible) And (Not frmSkills3.Visible) And _
-              (Not frmMSG.Visible) And (Not frmForo.Visible) And _
+              (Not frmMSG.Visible) And _
               (Not frmEstadisticas.Visible) And (Not frmCantidad.Visible) Then
                 SendCMSTXT.Visible = True
                 SendCMSTXT.SetFocus
@@ -934,7 +871,7 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
             
             If (Not frmComerciar.Visible) And (Not frmComerciarUsu.Visible) And _
               (Not frmBancoObj.Visible) And (Not frmSkills3.Visible) And _
-              (Not frmMSG.Visible) And (Not frmForo.Visible) And _
+              (Not frmMSG.Visible) And _
               (Not frmEstadisticas.Visible) And (Not frmCantidad.Visible) Then
                 SendTxt.Visible = True
                 SendTxt.SetFocus
@@ -1026,10 +963,6 @@ Private Sub mnuUsar_Click()
     Call UsarItem
 End Sub
 
-Private Sub PicAU_Click()
-    AddtoRichTextBox frmMain.RecTxt, "Hay actualizaciones pendientes. Cierra el juego y ejecuta el autoupdate. (el mismo debe descargarse del sitio oficial http://ao.alkon.com.ar, y deberás conectarte al puerto 7667 con la IP tradicional del juego)", 255, 255, 255, False, False, False
-End Sub
-
 Private Sub PicMH_Click()
     AddtoRichTextBox frmMain.RecTxt, "Auto lanzar hechizos. Utiliza esta habilidad para entrenar únicamente. Para activarlo/desactivarlo utiliza F7.", 255, 255, 255, False, False, False
 End Sub
@@ -1077,23 +1010,6 @@ Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
     End If
 End Sub
 
-Private Sub SpoofCheck_Timer()
-
-Dim IPMMSB As Byte
-Dim IPMSB As Byte
-Dim IPLSB As Byte
-Dim IPLLSB As Byte
-
-IPLSB = 3 + 15
-IPMSB = 32 + 15
-IPMMSB = 200 + 15
-IPLLSB = 74 + 15
-
-If IPdelServidor <> ((IPMMSB - 15) & "." & (IPMSB - 15) & "." & (IPLSB - 15) _
-& "." & (IPLLSB - 15)) Then End
-
-End Sub
-
 Private Sub Second_Timer()
     If engine.bRunning Then engine.Engine_ActFPS
     With luz_dia(Hour(time))
@@ -1134,10 +1050,6 @@ End Sub
 Private Sub EquiparItem()
     If (Inventario.SelectedItem > 0) And (Inventario.SelectedItem < MAX_INVENTORY_SLOTS + 1) Then _
         Call WriteEquipItem(Inventario.SelectedItem)
-End Sub
-
-Private Sub Text1_Change()
-Actual = Text1
 End Sub
 
 ''''''''''''''''''''''''''''''''''''''
@@ -1203,8 +1115,6 @@ Private Sub DespInv_Click(index As Integer)
 End Sub
 
 Private Sub Form_Click()
-    
-    If Cartel Then Cartel = False
 
     If Not Comerciando Then
         Call ConvertCPtoTP(MouseX, MouseY, tX, tY)
@@ -1307,7 +1217,7 @@ Private Sub Form_DblClick()
 'Last Modify Date: 12/27/2007
 '12/28/2007: ByVal - Chequea que la ventana de comercio y boveda no este abierta al hacer doble clic a un comerciante, sobrecarga la lista de items.
 '**************************************************************
-    If Not frmForo.Visible And Not frmComerciar.Visible And Not frmBancoObj.Visible Then
+    If Not frmComerciar.Visible And Not frmBancoObj.Visible Then
         Call WriteDoubleClick(tX, tY)
     End If
 End Sub
@@ -1451,7 +1361,7 @@ On Error Resume Next  'el .SetFocus causaba errores al salir y volver a entrar
         SendCMSTXT.SetFocus
     ElseIf (Not frmComerciar.Visible) And (Not frmComerciarUsu.Visible) And _
       (Not frmBancoObj.Visible) And (Not frmSkills3.Visible) And _
-      (Not frmMSG.Visible) And (Not frmForo.Visible) And _
+      (Not frmMSG.Visible) And _
       (Not frmEstadisticas.Visible) And (Not frmCantidad.Visible) And (picInv.Visible) Then
         picInv.SetFocus
     End If

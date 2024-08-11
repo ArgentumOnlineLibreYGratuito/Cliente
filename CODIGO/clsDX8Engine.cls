@@ -145,15 +145,12 @@ Dim particle_group_last As Integer
 'Dim fxs_last As Integer
 
 
-Dim valoreBlur As Long
 Dim dimeTex As Long
 Dim tex As Direct3DTexture8
 Dim D3DbackBuffer As Direct3DSurface8
 Dim zTarget As Direct3DSurface8
 Dim stencil As Direct3DSurface8
 Dim superTex As Direct3DSurface8
-Dim blur As Boolean
-Public blur_factor As Byte
 
 Dim bump_map_texture As Direct3DTexture8
 Dim bump_map_texture_ex As Direct3DTexture8
@@ -512,7 +509,7 @@ Public Sub Engine_Init()
     Set stencil = D3DDevice.CreateDepthStencilSurface(800, 600, D3DFMT_D16, D3DMULTISAMPLE_NONE)
     Set tex = D3DX.CreateTexture(D3DDevice, dimeTex, dimeTex, 1, D3DUSAGE_RENDERTARGET, D3DFMT_X8R8G8B8, D3DPOOL_DEFAULT)
     Set superTex = tex.GetSurfaceLevel(0)
-    blur_factor = 10
+
     'bump mapping
     
     Font_Create "Tahoma", 8, True, 0
@@ -533,21 +530,6 @@ Set D3D = Nothing
 Set dX = Nothing
 End
 End Sub
-
-
-Private Function CreateTLVertex(x As Single, y As Single, Z As Single, rhw As Single, color As Long, Specular As Long, tu As Single, tv As Single) As TLVERTEX
-'*****************************************************
-'****** Coded by Menduz (lord.yo.wo@gmail.com) *******
-'*****************************************************
-    CreateTLVertex.x = x
-    CreateTLVertex.y = y
-    CreateTLVertex.Z = Z
-    CreateTLVertex.rhw = rhw
-    CreateTLVertex.color = color
-    CreateTLVertex.Specular = Specular
-    CreateTLVertex.tu = tu
-    CreateTLVertex.tv = tv
-End Function
 
 Public Sub Engine_ActFPS()
     If GetTickCount - lFrameTimer > 1000 Then
@@ -629,30 +611,6 @@ Private Sub Draw_Grh(ByRef Grh As Grh, ByVal x As Integer, ByVal y As Integer, B
 
 End Sub
 
-Public Sub Engine_Blur_Set(ByVal bool As Boolean)
-'*****************************************************
-'****** Coded by Menduz (lord.yo.wo@gmail.com) *******
-'*****************************************************
-blur = bool
-If blur = True Then
-    D3DDevice.SetTextureStageState 0, D3DTSS_ALPHAARG1, D3DTA_TFACTOR
-Else
-    D3DDevice.SetTextureStageState 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE
-End If
-End Sub
-
-Public Sub Engine_Blur_Toggle()
-'*****************************************************
-'****** Coded by Menduz (lord.yo.wo@gmail.com) *******
-'*****************************************************
-blur = Not blur
-If blur = True Then
-    D3DDevice.SetTextureStageState 0, D3DTSS_ALPHAARG1, D3DTA_TFACTOR
-Else
-    D3DDevice.SetTextureStageState 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE
-End If
-End Sub
-
 Public Sub Render()
 '*****************************************************
 '****** Coded by Menduz (lord.yo.wo@gmail.com) *******
@@ -661,24 +619,9 @@ Public Sub Render()
 
 D3DDevice.BeginScene
 
-If blur Then
-    D3DDevice.SetRenderTarget superTex, stencil, 0
-    D3DDevice.Clear 0, ByVal 0, D3DCLEAR_TARGET Or D3DCLEAR_ZBUFFER, 0, 1#, 0
-    D3DDevice.SetRenderTarget D3DbackBuffer, zTarget, 0
-Else
     D3DDevice.Clear 0, ByVal 0, D3DCLEAR_TARGET, 0, 1#, 0
-End If
+
     ShowNextFrame
-    
-    If blur Then
-        D3DDevice.SetTexture 0, tex
-        D3DDevice.SetTextureStageState 0, D3DTSS_ALPHAARG1, D3DTA_TFACTOR
-        D3DDevice.SetRenderState D3DRS_TEXTUREFACTOR, D3DColorARGB(blur_factor, 255, 255, 255)
-        D3DDevice.SetRenderState D3DRS_ALPHABLENDENABLE, 1
-        D3DDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_SRCALPHA
-        D3DDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA
-        D3DDevice.DrawPrimitiveUP D3DPT_TRIANGLESTRIP, 2, vertList(0), Len(vertList(0))
-    End If
 
     Text_Render font_list(1), "MZEngine", 10, 10, 70, 20, &HFFFFFFFF, DT_TOP Or DT_LEFT, True
     Text_Render font_list(1), "FPS: " & FPS, 25, 10, 60, 20, &HFFFFFFFF, DT_TOP Or DT_LEFT, True

@@ -195,19 +195,19 @@ End Sub
 
 
 Public Function DirGraficos() As String
-    DirGraficos = App.path & "\" & Config_Inicio.DirGraficos & "\"
+    DirGraficos = App.path & "\GRAFICOS\"
 End Function
 
 Public Function DirSound() As String
-    DirSound = App.path & "\" & Config_Inicio.DirSonidos & "\"
+    DirSound = App.path & "\WAV\"
 End Function
 
 Public Function DirMidi() As String
-    DirMidi = App.path & "\" & Config_Inicio.DirMusica & "\"
+    DirMidi = App.path & "\MIDI\"
 End Function
 
 Public Function DirMapas() As String
-    DirMapas = App.path & "\" & Config_Inicio.DirMapas & "\"
+    DirMapas = App.path & "\MAPAS\"
 End Function
 
 Public Function RandomNumber(ByVal LowerBound As Long, ByVal UpperBound As Long) As Long
@@ -236,22 +236,6 @@ On Error Resume Next
         InitGrh WeaponAnimData(loopc).WeaponWalk(3), Val(GetVar(arch, "ARMA" & loopc, "Dir3")), 0
         InitGrh WeaponAnimData(loopc).WeaponWalk(4), Val(GetVar(arch, "ARMA" & loopc, "Dir4")), 0
     Next loopc
-End Sub
-
-Sub CargarVersiones()
-On Error GoTo errorH:
-
-    Versiones(1) = Val(GetVar(App.path & "\init\" & "versiones.ini", "Graficos", "Val"))
-    Versiones(2) = Val(GetVar(App.path & "\init\" & "versiones.ini", "Wavs", "Val"))
-    Versiones(3) = Val(GetVar(App.path & "\init\" & "versiones.ini", "Midis", "Val"))
-    Versiones(4) = Val(GetVar(App.path & "\init\" & "versiones.ini", "Init", "Val"))
-    Versiones(5) = Val(GetVar(App.path & "\init\" & "versiones.ini", "Mapas", "Val"))
-    Versiones(6) = Val(GetVar(App.path & "\init\" & "versiones.ini", "E", "Val"))
-    Versiones(7) = Val(GetVar(App.path & "\init\" & "versiones.ini", "O", "Val"))
-Exit Sub
-
-errorH:
-    Call MsgBox("Error cargando versiones")
 End Sub
 
 Sub CargarColores()
@@ -346,15 +330,6 @@ Public Sub RefreshAllChars()
             MapData(charlist(loopc).Pos.x, charlist(loopc).Pos.y).CharIndex = loopc
         End If
     Next loopc
-End Sub
-
-Sub SaveGameini()
-    'Grabamos los datos del usuario en el Game.ini
-    Config_Inicio.Name = "BetaTester"
-    Config_Inicio.Password = "DammLamers"
-    Config_Inicio.Puerto = UserPort
-    
-    Call EscribirGameIni(Config_Inicio)
 End Sub
 
 Function AsciiValidos(ByVal cad As String) As Boolean
@@ -462,9 +437,7 @@ Sub SetConnected()
 '*****************************************************************
     'Set Connected
     Connected = True
-    
-    Call SaveGameini
-    
+
     'Unload the connect form
     Unload frmConnect
     Unload frmPasswd
@@ -486,9 +459,7 @@ Sub MoveTo(ByVal Direccion As E_Heading)
 ' 06/28/2008: NicoNZ - Saqué lo que impedía que si el usuario estaba paralizado se ejecute el sub.
 '***************************************************
     Dim LegalOk As Boolean
-    
-    If Cartel Then Cartel = False
-    
+
     Select Case Direccion
         Case E_Heading.NORTH
             LegalOk = LegalPos(UserPos.x, UserPos.y - 1)
@@ -548,10 +519,7 @@ On Error Resume Next
     
     'No walking when in commerce or banking.
     If Comerciando Then Exit Sub
-    
-    'No walking while writting in the forum.
-    If frmForo.Visible Then Exit Sub
-    
+
     'If game is paused, abort movement.
     If pausa Then Exit Sub
     
@@ -667,125 +635,10 @@ Function FileExist(ByVal file As String, ByVal FileType As VbFileAttribute) As B
     FileExist = (Dir$(file, FileType) <> "")
 End Function
 
-Sub WriteClientVer()
-    Dim hFile As Integer
-        
-    hFile = FreeFile()
-    Open App.path & "\init\Ver.bin" For Binary Access Write Lock Read As #hFile
-    Put #hFile, , CLng(777)
-    Put #hFile, , CLng(777)
-    Put #hFile, , CLng(777)
-    
-    Put #hFile, , CInt(App.Major)
-    Put #hFile, , CInt(App.Minor)
-    Put #hFile, , CInt(App.Revision)
-    
-    Close #hFile
-End Sub
-
-Public Function IsIp(ByVal Ip As String) As Boolean
-    Dim i As Long
-    
-    For i = 1 To UBound(ServersLst)
-        If ServersLst(i).Ip = Ip Then
-            IsIp = True
-            Exit Function
-        End If
-    Next i
-End Function
-
-Public Sub CargarServidores()
-'********************************
-'Author: Unknown
-'Last Modification: 07/26/07
-'Last Modified by: Rapsodius
-'Added Instruction "CloseClient" before End so the mutex is cleared
-'********************************
-On Error GoTo errorH
-    Dim F As String
-    Dim c As Integer
-    Dim i As Long
-    
-    F = App.path & "\init\sinfo.dat"
-    c = Val(GetVar(F, "INIT", "Cant"))
-    
-    ReDim ServersLst(1 To c) As tServerInfo
-    For i = 1 To c
-        ServersLst(i).desc = GetVar(F, "S" & i, "Desc")
-        ServersLst(i).Ip = Trim$(GetVar(F, "S" & i, "Ip"))
-        ServersLst(i).PassRecPort = CInt(GetVar(F, "S" & i, "P2"))
-        ServersLst(i).Puerto = CInt(GetVar(F, "S" & i, "PJ"))
-    Next i
-    CurServer = 1
-Exit Sub
-
-errorH:
-    Call MsgBox("Error cargando los servidores, actualicelos de la web", vbCritical + vbOKOnly, "Argentum Online")
-    
-    Call CloseClient
-End Sub
-
-Public Sub InitServersList()
-On Error Resume Next
-    Dim NumServers As Integer
-    Dim i As Integer
-    Dim Cont As Integer
-    
-    i = 1
-    
-    Do While (ReadField(i, RawServersList, Asc(";")) <> "")
-        i = i + 1
-        Cont = Cont + 1
-    Loop
-    
-    ReDim ServersLst(1 To Cont) As tServerInfo
-    
-    For i = 1 To Cont
-        Dim cur$
-        cur$ = ReadField(i, RawServersList, Asc(";"))
-        ServersLst(i).Ip = ReadField(1, cur$, Asc(":"))
-        ServersLst(i).Puerto = ReadField(2, cur$, Asc(":"))
-        ServersLst(i).desc = ReadField(4, cur$, Asc(":"))
-        ServersLst(i).PassRecPort = ReadField(3, cur$, Asc(":"))
-    Next i
-    
-    CurServer = 1
-End Sub
-
-Public Function CurServerPasRecPort() As Integer
-    If CurServer <> 0 Then
-        CurServerPasRecPort = 7667
-    Else
-        CurServerPasRecPort = CInt(frmConnect.PortTxt)
-    End If
-End Function
-
-Public Function CurServerIp() As String
-    If CurServer <> 0 Then
-        CurServerIp = ServersLst(CurServer).Ip
-    Else
-        CurServerIp = frmConnect.IPTxt
-    End If
-End Function
-
-Public Function CurServerPort() As Integer
-    If CurServer <> 0 Then
-        CurServerPort = ServersLst(CurServer).Puerto
-    Else
-        CurServerPort = Val(frmConnect.PortTxt)
-    End If
-End Function
-
 Sub Main()
     Call modEngine.Initialize
-    
-    Call WriteClientVer
-    
-    'Load config file
-    If FileExist(App.path & "\init\Inicio.con", vbNormal) Then
-        Config_Inicio = LeerGameIni()
-    End If
-    
+
+
     'Load ao.dat config file
     If FileExist(App.path & "\init\ao.dat", vbArchive) Then
         Call LoadClientSetup
@@ -811,8 +664,6 @@ Sub Main()
     ChDrive App.path
     ChDir App.path
 
-    MD5HushYo = "0123456789abcdef"  'We aren't using a real MD5
-
     'Set resolution BEFORE the loading form is displayed, therefore it will be centered.
     Call Resolution.SetResolution
     
@@ -820,21 +671,15 @@ Sub Main()
     frmCargando.Refresh
     
     frmConnect.version = "v" & App.Major & "." & App.Minor & " Build: " & App.Revision
-    AddtoRichTextBox frmCargando.status, "Buscando servidores... ", 0, 0, 0, 0, 0, 1
 
-    Call CargarServidores
-'TODO : esto de ServerRecibidos no se podría sacar???
-    ServersRecibidos = True
-    
-    AddtoRichTextBox frmCargando.status, "Hecho", , , , 1
     AddtoRichTextBox frmCargando.status, "Iniciando constantes... ", 0, 0, 0, 0, 0, 1
     
     Call InicializarNombres
-    Call CargarParticulas
+
     ' Initialize FONTTYPES
     Call InitFonts
     
-    frmOldPersonaje.NameTxt.Text = Config_Inicio.Name
+    frmOldPersonaje.NameTxt.Text = ""
     frmOldPersonaje.PasswordTxt.Text = ""
     
     AddtoRichTextBox frmCargando.status, "Hecho", , , , 1
@@ -860,7 +705,6 @@ UserMap = 1
     Call CargarArrayLluvia
     Call CargarAnimArmas
     Call CargarAnimEscudos
-    Call CargarVersiones
     Call CargarColores
     
     AddtoRichTextBox frmCargando.status, "Hecho", , , , 1
@@ -868,10 +712,10 @@ UserMap = 1
     AddtoRichTextBox frmCargando.status, "Iniciando DirectSound... ", 0, 0, 0, 0, 0, True
     
     'Inicializamos el sonido
-    Call Audio.Initialize(frmMain.hWnd, App.path & "\" & Config_Inicio.DirSonidos & "\", App.path & "\" & Config_Inicio.DirMusica & "\")
+    Call Audio.Initialize(frmMain.hWnd, App.path & "\WAV\", App.path & "\MIDI\")
     
     'Enable / Disable audio
-    Audio.MusicActivated = False 'TODO Not ClientSetup.bNoMusic
+    Audio.MusicActivated = Not ClientSetup.bNoMusic
     Audio.SoundActivated = Not ClientSetup.bNoSound
     
     'Inicializamos el inventario gráfico
@@ -917,9 +761,7 @@ UserMap = 1
     Dialogos.font = frmMain.font
     DialogosClanes.font = frmMain.font
 
-jojoparticulas
-    
-engine.Start
+    engine.Start
 End Sub
 
 Sub WriteVar(ByVal file As String, ByVal Main As String, ByVal var As String, ByVal value As String)
@@ -1137,7 +979,7 @@ Public Sub CloseClient()
     
     
     'Destruimos los objetos públicos creados
-    Set CustomMessages = Nothing
+
     Set CustomKeys = Nothing
     Set SurfaceDB = Nothing
     Set Dialogos = Nothing
