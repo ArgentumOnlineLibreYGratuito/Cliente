@@ -1,0 +1,9 @@
+# File encoding and type
+.manifest text
+.rc text
+*.bas text working-tree-encoding=windows-1252
+*.cls text working-tree-encoding=windows-1252
+*.vbp text working-tree-encoding=windows-1252
+*.frm text working-tree-encoding=windows-1252
+*.json text working-tree-encoding=windows-1252
+*.dat text working-tree-encoding=windows-1252

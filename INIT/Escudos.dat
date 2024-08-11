@@ -1,0 +1,34 @@
+'Oso: NO USEN EL ESCUDO 2 (Es "No Animar" ^^)
+
+[INIT]
+NumEscudos=6
+
+[ESC1]
+Dir1=4727 'norte
+Dir2=4729
+Dir3=4726
+Dir4=4728 'sur
+
+[ESC3]
+Dir3=902 'norte
+Dir1=903
+Dir4=904
+Dir2=905 'sur
+
+[ESC4]
+Dir3=928 'norte
+Dir1=929
+Dir4=930
+Dir2=931 'sur
+
+[ESC5]
+Dir3=13278 'norte
+Dir1=13279
+Dir4=13280
+Dir2=13281 'sur
+
+[ESC6]
+Dir3=4856 'norte
+Dir1=4857
+Dir4=4858
+Dir2=4859 'sur
