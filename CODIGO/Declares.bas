@@ -97,8 +97,6 @@ Public CreandoClan As Boolean
 Public ClanName As String
 Public Site As String
 
-Public UserEstupido As Boolean
-
 Public RainBufferIndex As Long
 Public Const bCabeza = 1
 Public Const bPiernaIzquierda = 2
@@ -509,6 +507,7 @@ Public stxtbuffer As String 'Holds temp raw data from server
 Public stxtbuffercmsg As String 'Holds temp raw data from server
 Public Connected As Boolean 'True when connected to server
 Public UserMap As Integer
+Public UserMapRain As Boolean
 
 'Control
 Public prgRun As Boolean 'When true the program ends
@@ -528,19 +527,3 @@ Public Declare Function GetKeyState Lib "user32" (ByVal nVirtKey As Long) As Int
 
 Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
-'Lista de cabezas
-Public Type tIndiceCabeza
-    Head(1 To 4) As Integer
-End Type
-
-Public Type tIndiceCuerpo
-    Body(1 To 4) As Integer
-    HeadOffsetX As Integer
-    HeadOffsetY As Integer
-End Type
-
-Public Type tIndiceFx
-    Animacion As Integer
-    OffsetX As Integer
-    OffsetY As Integer
-End Type

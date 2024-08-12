@@ -208,6 +208,12 @@ Public Type MapInfo
     MapVersion As Integer
 End Type
 
+Public Type EffectData
+    Animacion As Integer
+    OffsetX As Integer
+    OffsetY As Integer
+End Type
+
 'TODO Is this comment still valid? => DX7 Objects
 'TODO Is this comment still valid? => Public DirectX As New DirectX7
 'TODO Is this comment still valid? => Public DirectDraw As DirectDraw7
@@ -245,7 +251,7 @@ Public NumWeaponAnims As Integer
 Public GrhData() As GrhData 'Guarda todos los grh
 Public BodyData() As BodyData
 Public HeadData() As HeadData
-Public FxData() As tIndiceFx
+Public FxData() As EffectData
 Public WeaponAnimData() As WeaponAnimData
 Public ShieldAnimData() As ShieldAnimData
 Public CascoAnimData() As HeadData
@@ -405,6 +411,8 @@ Public Sub InitGrh(ByRef Grh As Grh, ByVal grhindex As Integer, Optional ByVal S
 '*****************************************************************
 'Sets up a grh. MUST be done before rendering
 '*****************************************************************
+    If (grhindex = 0) Then Exit Sub
+    
     Grh.grhindex = grhindex
     
     If Started = 2 Then
@@ -672,36 +680,6 @@ ErrorHandler:
 
     
 End Sub
-
-
-
-Public Function RenderSounds()
-'**************************************************************
-'Author: Juan Martín Sotuyo Dodero
-'Last Modify Date: 3/30/2008
-'Actualiza todos los sonidos del mapa.
-'**************************************************************
-    If bLluvia(UserMap) = 1 Then
-        If bRain Then
-            If bTecho Then
-                If frmMain.IsPlaying <> PlayLoop.plLluviain Then
-                    If RainBufferIndex Then _
-                        Call modEngine_Audio.Cancel(RainBufferIndex)
-                    RainBufferIndex = modEngine_Audio.PlayEffect("lluviain.wav", Nothing, True)
-                    frmMain.IsPlaying = PlayLoop.plLluviain
-                End If
-            Else
-                If frmMain.IsPlaying <> PlayLoop.plLluviaout Then
-                    If RainBufferIndex Then _
-                        Call modEngine_Audio.Cancel(RainBufferIndex)
-                    RainBufferIndex = modEngine_Audio.PlayEffect("lluviaout.wav", Nothing, True)
-                    frmMain.IsPlaying = PlayLoop.plLluviaout
-                End If
-            End If
-        End If
-    End If
-    
-End Function
 
 #If ConAlfaB Then
 

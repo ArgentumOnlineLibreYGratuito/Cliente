@@ -33,9 +33,6 @@ Attribute VB_Name = "Mod_General"
 
 Option Explicit
 
-Public bLluvia() As Byte 'TODO Is this comment still valid? =>  Array para determinar si
-'TODO Is this comment still valid? => debemos mostrar la animacion de la lluvia
-
 Private Type tFont
     red As Byte
     green As Byte
@@ -189,14 +186,6 @@ End Function
 
 Public Function DirMapas() As String
     DirMapas = App.path & "\MAPAS\"
-End Function
-
-Public Function RandomNumber(ByVal LowerBound As Long, ByVal UpperBound As Long) As Long
-    'Initialize randomizer
-    Randomize Timer
-    
-    'Generate random number
-    RandomNumber = (UpperBound - LowerBound) * Rnd + LowerBound
 End Function
 
 Sub CargarAnimArmas()
@@ -477,15 +466,6 @@ Sub MoveTo(ByVal Direccion As E_Heading)
 
 End Sub
 
-Sub RandomMove()
-'***************************************************
-'Author: Alejandro Santos (AlejoLp)
-'Last Modify Date: 06/03/2006
-' 06/03/2006: AlejoLp - Ahora utiliza la funcion MoveTo
-'***************************************************
-    Call MoveTo(RandomNumber(NORTH, WEST))
-End Sub
-
 Sub CheckKeys()
 '*****************************************************************
 'Checks keys and respond
@@ -503,7 +483,7 @@ On Error Resume Next
     
     'Don't allow any these keys during movement..
     If UserMoving = 0 Then
-        If Not UserEstupido Then
+
             'Move Up
             If GetKeyState(CustomKeys.BindedKey(eKeyType.mKeyUp)) < 0 Then
                 If frmMain.TrainingMacro.Enabled Then frmMain.DesactivarMacroHechizos
@@ -535,21 +515,7 @@ On Error Resume Next
                 frmMain.Coord.Caption = "(" & UserMap & "," & UserPos.x & "," & UserPos.y & ")"
                 Exit Sub
             End If
-            
-        Else
-            Dim kp As Boolean
-            kp = (GetKeyState(CustomKeys.BindedKey(eKeyType.mKeyUp)) < 0) Or _
-                GetKeyState(CustomKeys.BindedKey(eKeyType.mKeyRight)) < 0 Or _
-                GetKeyState(CustomKeys.BindedKey(eKeyType.mKeyDown)) < 0 Or _
-                GetKeyState(CustomKeys.BindedKey(eKeyType.mKeyLeft)) < 0
-            
-            If kp Then
-                Call RandomMove
-            End If
-            
-            If frmMain.TrainingMacro.Enabled Then frmMain.DesactivarMacroHechizos
-            frmMain.Coord.Caption = "(" & UserPos.x & "," & UserPos.y & ")"
-        End If
+
     End If
 End Sub
 
@@ -609,6 +575,7 @@ Function FileExist(ByVal file As String, ByVal FileType As VbFileAttribute) As B
 End Function
 
 Sub Main()
+
     ' Initialize Aurora Engine
     Call modEngine.Initialize
 
@@ -643,12 +610,12 @@ Sub Main()
     AddtoRichTextBox frmCargando.status, "Hecho", , , , 1
     
     AddtoRichTextBox frmCargando.status, "Iniciando motor gráfico... ", 0, 0, 0, 0, 0, 1
-    LoadGrhData
-    CargarCabezas
-    CargarCascos
-    CargarCuerpos
-    CargarArrayLluvia
-    CargarFxs
+    Call modEngine_Data.LoadGraphics("Resources://Init/Graphics.ind")
+    Call modEngine_Data.LoadHeads("Resources://Init/Heads.ind")
+    Call modEngine_Data.LoadHelmets("Resources://Init/Helmets.ind")
+    Call modEngine_Data.LoadBodies("Resources://Init/Bodies.ind")
+    Call modEngine_Data.LoadFXs("Resources://Init/Effects.ind")
+
     'If Not InitTileEngine(frmMain.hWnd, 160, 7, 32, 32, 13, 17, 9, 8, 8, 0.018) Then
     '    Call CloseClient
     'End If
@@ -660,7 +627,6 @@ Sub Main()
 
 UserMap = 1
     
-    Call CargarArrayLluvia
     Call CargarAnimArmas
     Call CargarAnimEscudos
     Call CargarColores
@@ -899,89 +865,3 @@ Public Sub CloseClient()
     
     End
 End Sub
-
-Sub SwitchMap(ByVal map As Integer)
-'**************************************************************
-'Formato de mapas optimizado para reducir el espacio que ocupan.
-'Diseñado y creado por Juan Martín Sotuyo Dodero (Maraxus) (juansotuyo@hotmail.com)
-'**************************************************************
-    Dim y As Long
-    Dim x As Long
-    Dim ByFlags As Byte
-    Dim Handle As Integer
-    Dim MICabecera As tCabecera
-    Dim tempInt As Integer
-    
-    Handle = FreeFile()
-    
-    Open DirMapas & "Mapa" & map & ".map" For Binary As Handle
-    Seek Handle, 1
-            
-    'map Header
-    Get Handle, , MapInfo.MapVersion
-    Get Handle, , MiCabecera
-    Get Handle, , tempint
-    Get Handle, , tempint
-    Get Handle, , tempint
-    Get Handle, , tempint
-    
-    'Load arrays
-    For y = YMinMapSize To YMaxMapSize
-        For x = XMinMapSize To XMaxMapSize
-            Get Handle, , ByFlags
-            MapData(x, y).luz = 0
-            MapData(x, y).particle_group = 0
-            MapData(x, y).Blocked = (ByFlags And 1)
-            
-            Get Handle, , MapData(x, y).Graphic(1).grhindex
-            InitGrh MapData(x, y).Graphic(1), MapData(x, y).Graphic(1).grhindex
-            
-            'Layer 2 used?
-            If ByFlags And 2 Then
-                Get Handle, , MapData(x, y).Graphic(2).grhindex
-                InitGrh MapData(x, y).Graphic(2), MapData(x, y).Graphic(2).grhindex
-            Else
-                MapData(x, y).Graphic(2).grhindex = 0
-            End If
-                
-            'Layer 3 used?
-            If ByFlags And 4 Then
-                Get Handle, , MapData(x, y).Graphic(3).grhindex
-                InitGrh MapData(x, y).Graphic(3), MapData(x, y).Graphic(3).grhindex
-            Else
-                MapData(x, y).Graphic(3).grhindex = 0
-            End If
-                
-            'Layer 4 used?
-            If ByFlags And 8 Then
-                Get Handle, , MapData(x, y).Graphic(4).grhindex
-                InitGrh MapData(x, y).Graphic(4), MapData(x, y).Graphic(4).grhindex
-            Else
-                MapData(x, y).Graphic(4).grhindex = 0
-            End If
-            
-            'Trigger used?
-            If ByFlags And 16 Then
-                Get Handle, , MapData(x, y).Trigger
-            Else
-                MapData(x, y).Trigger = 0
-            End If
-            
-            'Erase NPCs
-            If MapData(x, y).CharIndex > 0 Then
-                Call EraseChar(MapData(x, y).CharIndex)
-            End If
-            
-            'Erase OBJs
-            MapData(x, y).ObjGrh.grhindex = 0
-        Next x
-    Next y
-    
-    Close Handle
-    
-    MapInfo.Name = ""
-    MapInfo.Music = ""
-    
-End Sub
-
-

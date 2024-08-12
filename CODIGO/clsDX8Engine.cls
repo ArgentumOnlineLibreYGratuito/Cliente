@@ -67,10 +67,6 @@ Private MainViewHeight As Integer
 
 Private MouseTileX As Byte
 Private MouseTileY As Byte
-Private RLluvia(7)  As RECT  'RECT de la lluvia
-Private iFrameIndex As Byte  'Frame actual de la LL
-Private llTick      As Long  'Contador
-Private LTLluvia(4) As Integer
 Private WindowTileWidth As Integer
 Private WindowTileHeight As Integer
 

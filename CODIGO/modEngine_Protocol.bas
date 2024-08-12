@@ -1053,22 +1053,15 @@ End Sub
 Private Sub HandleChangeMap(ByVal Message As BinaryReader)
     
     UserMap = Message.ReadInt()
-    
-    'TODO: Once on-the-fly editor is implemented check for map version before loading....
-    'For now we just drop it
-    Call Message.ReadInt
-    
-    If FileExist(DirMapas & "Mapa" & UserMap & ".map", vbNormal) Then
-        Call SwitchMap(UserMap)
-        If bLluvia(UserMap) = 0 Then
-            If bRain Then
-                Call modEngine_Audio.Cancel(RainBufferIndex)
-                RainBufferIndex = 0
-                frmMain.IsPlaying = PlayLoop.plNone
-            End If
+    UserMapRain = Message.ReadBool()
+
+    If (LoadMap("Resources://Maps/Mapa" & UserMap & ".map")) Then
+        If (bRain And Not UserMapRain) Then
+            Call modEngine_Audio.Cancel(RainBufferIndex)
+
+            frmMain.IsPlaying = PlayLoop.plNone
         End If
     Else
-        'no encontramos el mapa en el hd
         MsgBox "Error en los mapas, algún archivo ha sido modificado o esta dañado."
         
         Call CloseClient
@@ -1406,8 +1399,7 @@ Private Sub HandleCharacterChange(ByVal Message As BinaryReader)
     
     Dim CharIndex   As Integer
     Dim tempint     As Integer
-    Dim headIndex   As Integer
-    
+
     CharIndex = Message.ReadInt()
     
     With charlist(CharIndex)
@@ -1419,15 +1411,15 @@ Private Sub HandleCharacterChange(ByVal Message As BinaryReader)
             .Body = BodyData(tempint)
         End If
         
-        headIndex = Message.ReadInt()
+        tempint = Message.ReadInt()
         
         If tempint < LBound(HeadData()) Or tempint > UBound(HeadData()) Then
             .Head = HeadData(0)
         Else
-            .Head = HeadData(headIndex)
+            .Head = HeadData(tempint)
         End If
         
-        .muerto = (headIndex = CASPER_HEAD)
+        .muerto = (tempint = CASPER_HEAD)
         
         .Heading = Message.ReadInt()
         
@@ -1549,11 +1541,13 @@ Private Sub HandleRainToggle(ByVal Message As BinaryReader)
     bTecho = (MapData(UserPos.x, UserPos.y).Trigger = 1 Or _
               MapData(UserPos.x, UserPos.y).Trigger = 2 Or _
               MapData(UserPos.x, UserPos.y).Trigger = 4)
-    If bRain Then
-        If bLluvia(UserMap) Then
-            'Stop playing the rain sound
+        
+    bRain = Not bRain
+    
+    If (bRain) Then
+        If (Not UserMapRain) Then
             Call modEngine_Audio.Cancel(RainBufferIndex)
-            RainBufferIndex = 0
+
             If bTecho Then
                 Call modEngine_Audio.PlayEffect("lluviainend.wav")
             Else
@@ -1561,9 +1555,14 @@ Private Sub HandleRainToggle(ByVal Message As BinaryReader)
             End If
             frmMain.IsPlaying = PlayLoop.plNone
         End If
+    Else
+        If (UserMapRain) Then
+            Call modEngine_Audio.Cancel(RainBufferIndex)
+
+            frmMain.IsPlaying = PlayLoop.plNone
+        End If
     End If
-    
-    bRain = Not bRain
+
 End Sub
 
 Private Sub HandleCreateFX(ByVal Message As BinaryReader)
