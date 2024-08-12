@@ -111,7 +111,6 @@ Private Enum ServerPacketID
     TradeOK                                      ' TRANSOK
     BankOK                                       ' BANCOOK
     ChangeUserTradeSlot                          ' COMUSUINV
-    SendNight                                    ' NOC
     Pong
     UpdateTagAndStatus
     
@@ -167,7 +166,6 @@ Private Enum ClientPacketID
     BankExtractItem                              'RETI
     CommerceSell                                 'VEND
     BankDeposit                                  'DEPO
-    ForumPost                                    'DEMSG
     MoveSpell                                    'DESPHE
     ClanCodexUpdate                              'DESCOD
     UserCommerceOffer                            'OFRECER
@@ -218,13 +216,11 @@ Private Enum ClientPacketID
     Inquiry                                      '/ENCUESTA ( params )
     GuildMessage                                 '/CMSG
     PartyMessage                                 '/PMSG
-    CentinelReport                               '/CENTINELA
     GuildOnline                                  '/ONLINECLAN
     PartyOnline                                  '/ONLINEPARTY
     CouncilMessage                               '/BMSG
     RoleMasterRequest                            '/ROL
     GMRequest                                    '/GM
-    bugReport                                    '/_BUG
     ChangeDescription                            '/DESC
     GuildVote                                    '/VOTO
     Punishments                                  '/PENAS
@@ -345,7 +341,6 @@ Private Enum ClientPacketID
     AlterPassword                                '/APASS
     AlterMail                                    '/AEMAIL
     AlterName                                    '/ANAME
-    ToggleCentinelActivated                      '/CENTINELAACTIVADO
     DoBackUp                                     '/DOBACKUP
     ShowGuildMessages                            '/SHOWCMSG
     SaveMap                                      '/GUARDAMAPA
@@ -360,13 +355,7 @@ Private Enum ClientPacketID
     SaveChars                                    '/GRABAR
     CleanSOS                                     '/BORRAR SOS
     ShowServerForm                               '/SHOW INT
-    night                                        '/NOCHE
     KickAllChars                                 '/ECHARTODOSPJS
-    ReloadNPCs                                   '/RELOADNPCS
-    ReloadServerIni                              '/RELOADSINI
-    ReloadSpells                                 '/RELOADHECHIZOS
-    ReloadObjects                                '/RELOADOBJ
-    Restart                                      '/REINICIAR
     ChatColor                                    '/CHATCOLOR
     Ignored                                      '/IGNORADO
     CheckSlot                                    '/SLOT
@@ -439,6 +428,7 @@ Public Sub OnClose()
     Alocados = 0
 
     Set Dialogos = New clsDialogs
+    Dialogos.font = frmMain.font
     
 End Sub
 
@@ -741,10 +731,7 @@ Public Sub handle(ByVal Message As BinaryReader)
             
         Case ServerPacketID.ChangeUserTradeSlot  ' COMUSUINV
             Call HandleChangeUserTradeSlot(Message)
-                
-        Case ServerPacketID.SendNight            ' NOC
-            Call HandleSendNight(Message)
-            
+
         Case ServerPacketID.Pong
             Call HandlePong(Message)
             
@@ -779,7 +766,6 @@ Private Sub HandleLogged(ByVal Message As BinaryReader)
     
     ' Variable initialization
     UserCiego = False
-    EngineRun = True
     IScombate = False
     UserDescansar = False
     Nombres = True
@@ -815,7 +801,7 @@ Private Sub HandleDisconnect(ByVal Message As BinaryReader)
     frmMain.Label1.Visible = False
     
     'Stop audio
-    Call Audio.StopWave
+    Call modEngine_Audio.Halt
     frmMain.IsPlaying = PlayLoop.plNone
     
     'Show connection form
@@ -1102,7 +1088,7 @@ Private Sub HandleChangeMap(ByVal Message As BinaryReader)
         Call SwitchMap(UserMap)
         If bLluvia(UserMap) = 0 Then
             If bRain Then
-                Call Audio.StopWave(RainBufferIndex)
+                Call modEngine_Audio.Cancel(RainBufferIndex)
                 RainBufferIndex = 0
                 frmMain.IsPlaying = PlayLoop.plNone
             End If
@@ -1532,21 +1518,13 @@ Private Sub HandlePlayMIDI(ByVal Message As BinaryReader)
     currentMidi = Message.ReadInt()
     
     If currentMidi Then
-        Call Audio.PlayMIDI(CStr(currentMidi) & ".mid", Message.ReadInt())
-    Else
-        'Remove the bytes to prevent errors
-        Call Message.ReadInt
+        Call modEngine_Audio.PlayMusic(CStr(currentMidi) & ".mp3")
     End If
+    
 End Sub
 
 Private Sub HandlePlayWave(ByVal Message As BinaryReader)
-    
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 08/14/07
-    'Last Modified by: Rapsodius
-    'Added support for 3D Sounds.
-    
-    
+
     Dim wave        As Byte
     Dim srcX        As Byte
     Dim srcY        As Byte
@@ -1555,7 +1533,7 @@ Private Sub HandlePlayWave(ByVal Message As BinaryReader)
     srcX = Message.ReadInt()
     srcY = Message.ReadInt()
     
-    Call Audio.PlayWave(CStr(wave) & ".wav", srcX, srcY)
+    'TODO Call modEngine_Audio.PlayEffect(CStr(wave) & ".wav", srcX, srcY)
 End Sub
 
 Private Sub HandleGuildList(ByVal Message As BinaryReader)
@@ -1601,12 +1579,12 @@ Private Sub HandleRainToggle(ByVal Message As BinaryReader)
     If bRain Then
         If bLluvia(UserMap) Then
             'Stop playing the rain sound
-            Call Audio.StopWave(RainBufferIndex)
+            Call modEngine_Audio.Cancel(RainBufferIndex)
             RainBufferIndex = 0
             If bTecho Then
-                Call Audio.PlayWave("lluviainend.wav", 0, 0, LoopStyle.Disabled)
+                Call modEngine_Audio.PlayEffect("lluviainend.wav")
             Else
-                Call Audio.PlayWave("lluviaoutend.wav", 0, 0, LoopStyle.Disabled)
+                Call modEngine_Audio.PlayEffect("lluviaoutend.wav")
             End If
             frmMain.IsPlaying = PlayLoop.plNone
         End If
@@ -2841,16 +2819,6 @@ Public Sub WriteBankDeposit(ByVal slot As Byte, ByVal Amount As Integer)
     Call modEngine.NetWrite(Writer_)
 End Sub
 
-Public Sub WriteForumPost(ByVal Title As String, ByVal Message As String)
-    
-    Call Writer_.WriteInt(ClientPacketID.ForumPost)
-    
-    Call Writer_.WriteString16(Title)
-    Call Writer_.WriteString16(Message)
-    
-    Call modEngine.NetWrite(Writer_)
-End Sub
-
 Public Sub WriteMoveSpell(ByVal upwards As Boolean, ByVal slot As Byte)
     
     Call Writer_.WriteInt(ClientPacketID.MoveSpell)
@@ -3265,15 +3233,6 @@ Public Sub WritePartyMessage(ByVal Message As String)
     Call modEngine.NetWrite(Writer_)
 End Sub
 
-Public Sub WriteCentinelReport(ByVal number As Integer)
-    
-    Call Writer_.WriteInt(ClientPacketID.CentinelReport)
-    
-    Call Writer_.WriteInt(number)
-    
-    Call modEngine.NetWrite(Writer_)
-End Sub
-
 Public Sub WriteGuildOnline()
     
     Call Writer_.WriteInt(ClientPacketID.GuildOnline)
@@ -3309,15 +3268,6 @@ End Sub
 Public Sub WriteGMRequest()
     
     Call Writer_.WriteInt(ClientPacketID.GMRequest)
-    
-    Call modEngine.NetWrite(Writer_)
-End Sub
-
-Public Sub WriteBugReport(ByVal Message As String)
-    
-    Call Writer_.WriteInt(ClientPacketID.bugReport)
-    
-    Call Writer_.WriteString16(Message)
     
     Call modEngine.NetWrite(Writer_)
 End Sub
@@ -4367,13 +4317,6 @@ Public Sub WriteAlterName(ByVal UserName As String, ByVal newName As String)
     Call modEngine.NetWrite(Writer_)
 End Sub
 
-Public Sub WriteToggleCentinelActivated()
-    
-    Call Writer_.WriteInt(ClientPacketID.ToggleCentinelActivated)
-    
-    Call modEngine.NetWrite(Writer_)
-End Sub
-
 Public Sub WriteDoBackup()
     
     Call Writer_.WriteInt(ClientPacketID.DoBackUp)
@@ -4490,55 +4433,11 @@ Public Sub WriteShowServerForm()
     Call modEngine.NetWrite(Writer_)
 End Sub
 
-Public Sub WriteNight()
-    
-    Call Writer_.WriteInt(ClientPacketID.night)
-    
-    Call modEngine.NetWrite(Writer_)
-End Sub
-
 Public Sub WriteKickAllChars()
     
     Call Writer_.WriteInt(ClientPacketID.KickAllChars)
     
     Call modEngine.NetWrite(Writer_)
-End Sub
-
-Public Sub WriteReloadNPCs()
-    
-    Call Writer_.WriteInt(ClientPacketID.ReloadNPCs)
-    
-    Call modEngine.NetWrite(Writer_)
-End Sub
-
-Public Sub WriteReloadServerIni()
-    
-    Call Writer_.WriteInt(ClientPacketID.ReloadServerIni)
-    
-    Call modEngine.NetWrite(Writer_)
-End Sub
-
-Public Sub WriteReloadSpells()
-    
-    Call Writer_.WriteInt(ClientPacketID.ReloadSpells)
-    
-    Call modEngine.NetWrite(Writer_)
-End Sub
-
-Public Sub WriteReloadObjects()
-    
-    Call Writer_.WriteInt(ClientPacketID.ReloadObjects)
-    
-    Call modEngine.NetWrite(Writer_)
-    
-End Sub
-
-Public Sub WriteRestart()
-    
-    Call Writer_.WriteInt(ClientPacketID.Restart)
-    
-    Call modEngine.NetWrite(Writer_)
-    
 End Sub
 
 Public Sub WriteChatColor(ByVal r As Byte, ByVal g As Byte, ByVal b As Byte)

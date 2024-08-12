@@ -302,20 +302,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     'Avisar que falta el parametro
                     Call ShowConsoleMsg("Escriba un mensaje.")
                 End If
-            
-            Case "/CENTINELA"
-                If notNullArguments Then
-                    If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Integer) Then
-                        Call WriteCentinelReport(CInt(ArgumentosRaw))
-                    Else
-                        'No es numerico
-                        Call ShowConsoleMsg("El código de verificación debe ser numerico. Utilice /centinela X, siendo X el código de verificación.")
-                    End If
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /centinela X, siendo X el código de verificación.")
-                End If
-        
+ 
             Case "/ONLINECLAN"
                 Call WriteGuildOnline
                 
@@ -340,15 +327,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 
             Case "/GM"
                 Call WriteGMRequest
-                
-            Case "/_BUG"
-                If notNullArguments Then
-                    Call WriteBugReport(ArgumentosRaw)
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Escriba una descripción del bug.")
-                End If
-            
+
             Case "/DESC"
                 If UserEstado = 1 Then 'Muerto
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -1333,10 +1312,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     'Avisar que falta el parametro
                     Call ShowConsoleMsg("Faltan parámetros. Utilice /slot NICK@SLOT.")
                 End If
-                
-            Case "/CENTINELAACTIVADO"
-                Call WriteToggleCentinelActivated
-                
+
             Case "/DOBACKUP"
                 Call WriteDoBackup
                 
@@ -1394,27 +1370,9 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                             
                     End Select
                 End If
-                
-            Case "/NOCHE"
-                Call WriteNight
-                
+  
             Case "/ECHARTODOSPJS"
                 Call WriteKickAllChars
-
-            Case "/RELOADNPCS"
-                Call WriteReloadNPCs
-                
-            Case "/RELOADSINI"
-                Call WriteReloadServerIni
-                
-            Case "/RELOADHECHIZOS"
-                Call WriteReloadSpells
-                
-            Case "/RELOADOBJ"
-                Call WriteReloadObjects
-                 
-            Case "/REINICIAR"
-                Call WriteRestart
 
             Case "/CHATCOLOR"
                 If notNullArguments And CantidadArgumentos >= 3 Then

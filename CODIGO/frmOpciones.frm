@@ -227,36 +227,36 @@ Private loading As Boolean
 
 Private Sub Check1_Click(index As Integer)
     If Not loading Then _
-        Call Audio.PlayWave(SND_CLICK)
+        Call modEngine_Audio.PlayInterface(SND_CLICK)
     
     Select Case index
         Case 0
             If Check1(0).value = vbUnchecked Then
-                Audio.MusicActivated = False
+                modEngine_Audio.MusicEnabled = False
                 Slider1(0).Enabled = False
-            ElseIf Not Audio.MusicActivated Then  'Prevent the music from reloading
-                Audio.MusicActivated = True
+            ElseIf Not modEngine_Audio.MusicEnabled Then  'Prevent the music from reloading
+                modEngine_Audio.MusicEnabled = True
                 Slider1(0).Enabled = True
-                Slider1(0).value = Audio.MusicVolume
+                Slider1(0).value = modEngine_Audio.MusicVolume
             End If
         
         Case 1
             If Check1(1).value = vbUnchecked Then
-                Audio.SoundActivated = False
+                modEngine_Audio.EffectEnabled = False
                 RainBufferIndex = 0
                 frmMain.IsPlaying = PlayLoop.plNone
                 Slider1(1).Enabled = False
             Else
-                Audio.SoundActivated = True
+                modEngine_Audio.EffectEnabled = True
                 Slider1(1).Enabled = True
-                Slider1(1).value = Audio.SoundVolume
+                Slider1(1).value = modEngine_Audio.EffectVolume
             End If
     End Select
 End Sub
 
 Private Sub cmdCustomKeys_Click()
     If Not loading Then _
-        Call Audio.PlayWave(SND_CLICK)
+        Call modEngine_Audio.PlayInterface(SND_CLICK)
     Call frmCustomKeys.Show(, Me)
 End Sub
 
@@ -274,19 +274,19 @@ End Sub
 Private Sub Form_Load()
     loading = True      'Prevent sounds when setting check's values
     
-    If Audio.MusicActivated Then
+    If modEngine_Audio.MusicEnabled Then
         Check1(0).value = vbChecked
         Slider1(0).Enabled = True
-        Slider1(0).value = Audio.MusicVolume
+        Slider1(0).value = modEngine_Audio.MusicVolume
     Else
         Check1(0).value = vbUnchecked
         Slider1(0).Enabled = False
     End If
     
-    If Audio.SoundActivated Then
+    If modEngine_Audio.EffectEnabled Then
         Check1(1).value = vbChecked
         Slider1(1).Enabled = True
-        Slider1(1).value = Audio.SoundVolume
+        Slider1(1).value = modEngine_Audio.EffectVolume
     Else
         Check1(1).value = vbUnchecked
         Slider1(1).Enabled = False
@@ -316,18 +316,18 @@ End Sub
 Private Sub Slider1_Change(index As Integer)
     Select Case index
         Case 0
-            Audio.MusicVolume = Slider1(0).value
+            modEngine_Audio.MusicVolume = Slider1(0).value
         Case 1
-            Audio.SoundVolume = Slider1(1).value
+            modEngine_Audio.EffectVolume = Slider1(1).value
     End Select
 End Sub
 
 Private Sub Slider1_Scroll(index As Integer)
     Select Case index
         Case 0
-            Audio.MusicVolume = Slider1(0).value
+            modEngine_Audio.MusicVolume = Slider1(0).value
         Case 1
-            Audio.SoundVolume = Slider1(1).value
+            modEngine_Audio.EffectVolume = Slider1(1).value
     End Select
 End Sub
 

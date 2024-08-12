@@ -17,15 +17,6 @@ Begin VB.Form frmCargando
    ScaleWidth      =   642
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
-   Begin VB.FileListBox MP3Files 
-      Height          =   480
-      Left            =   180
-      Pattern         =   "*.mp3"
-      TabIndex        =   2
-      Top             =   240
-      Visible         =   0   'False
-      Width           =   1215
-   End
    Begin RichTextLib.RichTextBox Status 
       Height          =   2400
       Left            =   2340
@@ -38,7 +29,6 @@ Begin VB.Form frmCargando
       _ExtentY        =   4233
       _Version        =   393217
       BackColor       =   16512
-      Enabled         =   -1  'True
       ReadOnly        =   -1  'True
       ScrollBars      =   2
       TextRTF         =   $"frmCargando.frx":0000
@@ -107,4 +97,3 @@ Option Explicit
 Private Sub Form_Load()
 LOGO.Picture = LoadPicture(DirGraficos & "cargando.jpg")
 End Sub
-

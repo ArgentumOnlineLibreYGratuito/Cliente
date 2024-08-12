@@ -636,6 +636,8 @@ FramesPerSecCounter = FramesPerSecCounter + 1
 timerElapsedTime = GetElapsedTime()
 timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
 particletimer = timerElapsedTime * 0.05
+
+Call Engine_ActFPS
 End Sub
 
 
@@ -1362,6 +1364,8 @@ Private Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, 
     Dim color As Long
     
     With charlist(CharIndex)
+        If .Heading = 0 Then Exit Sub
+        
         If .Moving Then
             'If needed, move left and right
             If .scrollDirectionX <> 0 Then
@@ -1535,7 +1539,14 @@ DoEvents
     '   Sleep 5
     'Wend
     
+    Dim Viewport As Math_Rectf
+    Viewport.X1 = 0: Viewport.X2 = 800
+    Viewport.Y1 = 0: Viewport.Y2 = 600
+
+Call modEngine_Audio.Update(0, UserPos.X, UserPos.Y)
 Call modEngine.Tick
+
+
 Loop
 engine.Engine_Deinit
 Call CloseClient

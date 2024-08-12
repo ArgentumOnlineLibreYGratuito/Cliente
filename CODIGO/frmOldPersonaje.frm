@@ -134,7 +134,6 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
-Private Const textoKeypad = "Utilice el teclado como protección contra keyloggers. Seleccione el password con el mouse y presione <ENTER> al finalizar"
 Private Const textoSeguir = "Conectarse al juego" & vbNewLine & "con el usuario y" & vbNewLine & "clave seleccionadas"
 Private Const textoSalir = "Volver a la pantalla principal" & vbNewLine & "para crear personajes o recuperar" & vbNewLine & "contraseñas"
 
@@ -174,7 +173,7 @@ End Sub
 
 Private Sub Image1_Click(index As Integer)
 
-Call Audio.PlayWave(SND_CLICK)
+Call modEngine_Audio.PlayInterface(SND_CLICK)
 
 Select Case index
     Case 0
@@ -206,7 +205,7 @@ Select Case index
             Me.lblInfo.Visible = True
             Me.lblInfo.Caption = textoSeguir
             Image1(0).Tag = "1"
-            Call Audio.PlayWave(SND_OVER)
+            Call modEngine_Audio.PlayInterface(SND_OVER)
             Image1(0).Picture = LoadPicture(App.path & "\Graficos\bsiguientea.jpg")
         End If
     Case 1
@@ -214,18 +213,10 @@ Select Case index
             Me.lblInfo.Visible = True
             Me.lblInfo.Caption = textoSalir
             Image1(1).Tag = "1"
-            Call Audio.PlayWave(SND_OVER)
+            Call modEngine_Audio.PlayInterface(SND_OVER)
             Image1(1).Picture = LoadPicture(App.path & "\Graficos\bvolvera.jpg")
         End If
-    Case 2
-        If Image1(2).Tag = "0" Then
-            Me.lblInfo.Visible = True
-            Me.lblInfo.Caption = textoKeypad
-            Image1(2).Tag = "1"
-            Call Audio.PlayWave(SND_OVER)
-            Image1(2).Picture = LoadPicture(App.path & "\Graficos\bteclasa.jpg")
-        End If
-        
+
 End Select
 End Sub
 

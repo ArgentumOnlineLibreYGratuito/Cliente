@@ -131,32 +131,22 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
 End Sub
 
 Private Sub Form_Load()
-    '[CODE 002]:MatuX
-    EngineRun = False
-    '[END]
-
 
     FONDO.Picture = LoadPicture(App.path & "\Graficos\Conectar.jpg")
 
 
- '[CODE]:MatuX
- '
- '  El código para mostrar la versión se genera acá para
- ' evitar que por X razones luego desaparezca, como suele
- ' pasar a veces :)
     version.Caption = "v" & App.Major & "." & App.Minor & " Build: " & App.Revision
- '[END]'
 
 
 End Sub
 
 Private Sub Image1_Click(index As Integer)
 
-Call Audio.PlayWave(SND_CLICK)
+Call modEngine_Audio.PlayInterface(SND_CLICK)
 
 Select Case index
     Case 0
-        Call Audio.PlayMIDI("7.mid")
+        Call modEngine_Audio.PlayMusic("7.mp3")
         
         EstadoLogin = E_MODO.Dados
 

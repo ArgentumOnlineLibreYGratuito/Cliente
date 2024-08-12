@@ -168,6 +168,8 @@ Public Type char
     muerto As Boolean
     invisible As Boolean
     priv As Byte
+    
+    Emitter As Audio_Emitter
 End Type
 
 'Info de un objeto
@@ -232,8 +234,6 @@ Public UserHead As Integer
 Public UserPos As Position 'Posicion
 Public AddtoUserPos As Position 'Si se mueve
 Public UserCharIndex As Integer
-
-Public EngineRun As Boolean
 
 Public FPS As Long
 Public FramesPerSecCounter As Long
@@ -367,6 +367,14 @@ Private Declare Function QueryPerformanceCounter Lib "kernel32" (lpPerformanceCo
 'Text width computation. Needed to center text.
 Private Declare Function GetTextExtentPoint32 Lib "gdi32" Alias "GetTextExtentPoint32A" (ByVal hdc As Long, ByVal lpsz As String, ByVal cbString As Long, lpSize As size) As Long
 
+Public Type tCabecera 'Cabecera de los con
+    desc As String * 255
+    CRC As Long
+    MagicWord As Long
+End Type
+
+Public MiCabecera As tCabecera
+
 
 
 Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef tX As Byte, ByRef tY As Byte)
@@ -490,21 +498,6 @@ Public Sub InitGrh(ByRef Grh As Grh, ByVal grhindex As Integer, Optional ByVal S
     Grh.Speed = GrhData(Grh.grhindex).Speed
 End Sub
 
-Public Sub DoFogataFx()
-    Dim location As Position
-    
-    If bFogata Then
-        bFogata = HayFogata(location)
-        If Not bFogata Then
-            Call Audio.StopWave(FogataBufferIndex)
-            FogataBufferIndex = 0
-        End If
-    Else
-        bFogata = HayFogata(location)
-        If bFogata And FogataBufferIndex = 0 Then FogataBufferIndex = Audio.PlayWave("fuego.wav", location.x, location.y, LoopStyle.Enabled)
-    End If
-End Sub
-
 Private Function EstaPCarea(ByVal CharIndex As Integer) As Boolean
     With charlist(CharIndex).Pos
         EstaPCarea = .x > UserPos.x - MinXBorder And .x < UserPos.x + MinXBorder And .y > UserPos.y - MinYBorder And .y < UserPos.y + MinYBorder
@@ -512,22 +505,22 @@ Private Function EstaPCarea(ByVal CharIndex As Integer) As Boolean
 End Function
 
 Sub DoPasosFx(ByVal CharIndex As Integer)
-    If Not UserNavegando Then
-        With charlist(CharIndex)
+    With charlist(CharIndex)
+        If Not UserNavegando Then
             If Not .muerto And EstaPCarea(CharIndex) And (.priv = 0 Or .priv > 5) Then
                 .pie = Not .pie
-                
+                    
                 If .pie Then
-                    Call Audio.PlayWave(SND_PASOS1, .Pos.x, .Pos.y)
+                    Call modEngine_Audio.PlayEffect(SND_PASOS1, .Emitter)
                 Else
-                    Call Audio.PlayWave(SND_PASOS2, .Pos.x, .Pos.y)
+                    Call modEngine_Audio.PlayEffect(SND_PASOS2, .Emitter)
                 End If
             End If
-        End With
-    Else
-' TODO : Actually we would have to check if the CharIndex char is in the water or not....
-        Call Audio.PlayWave(SND_NAVEGANDO, charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y)
-    End If
+        Else
+    ' TODO : Actually we would have to check if the CharIndex char is in the water or not....
+            Call modEngine_Audio.PlayEffect(SND_NAVEGANDO, .Emitter)
+        End If
+    End With
 End Sub
 
 Sub MoveCharbyPos(ByVal CharIndex As Integer, ByVal nX As Integer, ByVal nY As Integer)
@@ -818,22 +811,21 @@ Public Function RenderSounds()
             If bTecho Then
                 If frmMain.IsPlaying <> PlayLoop.plLluviain Then
                     If RainBufferIndex Then _
-                        Call Audio.StopWave(RainBufferIndex)
-                    RainBufferIndex = Audio.PlayWave("lluviain.wav", 0, 0, LoopStyle.Enabled)
+                        Call modEngine_Audio.Cancel(RainBufferIndex)
+                    RainBufferIndex = modEngine_Audio.PlayEffect("lluviain.wav", Nothing, True)
                     frmMain.IsPlaying = PlayLoop.plLluviain
                 End If
             Else
                 If frmMain.IsPlaying <> PlayLoop.plLluviaout Then
                     If RainBufferIndex Then _
-                        Call Audio.StopWave(RainBufferIndex)
-                    RainBufferIndex = Audio.PlayWave("lluviaout.wav", 0, 0, LoopStyle.Enabled)
+                        Call modEngine_Audio.Cancel(RainBufferIndex)
+                    RainBufferIndex = modEngine_Audio.PlayEffect("lluviaout.wav", Nothing, True)
                     frmMain.IsPlaying = PlayLoop.plLluviaout
                 End If
             End If
         End If
     End If
     
-    DoFogataFx
 End Function
 
 Function HayUserAbajo(ByVal x As Integer, ByVal y As Integer, ByVal grhindex As Integer) As Boolean

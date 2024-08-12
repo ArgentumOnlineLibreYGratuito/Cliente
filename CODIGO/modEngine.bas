@@ -15,6 +15,15 @@ Attribute VB_Name = "modEngine"
 
 Option Explicit
 
+
+' -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+' [Engine::Services]
+' -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Public Aurora_Audio    As Audio_Service
+Public Aurora_Content  As Content_Service
+Public Aurora_Graphic  As Graphic_Service
+
 ' -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ' [Engine::Network]
 ' -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -35,6 +44,13 @@ Public Sub Initialize()
     
     Call Kernel.Initialize(eKernelModeClient, Configuration)
 
+    Set Aurora_Audio = Kernel.Audio
+    
+    Set Aurora_Content = Kernel.Content
+    Call Aurora_Content.AddSystemLocator("Resources", "Resources")
+
+    Set Aurora_Graphic = Kernel.Graphics
+
 End Sub
 
 Public Sub Tick()
@@ -54,7 +70,7 @@ Public Sub NetConnect(ByVal Address As String, ByVal Port As Long)
     
     Set NetConnection_ = Kernel.Network.Connect(Address, Port)
     Call NetConnection_.SetProtocol(NetProtocol_)
-    
+
     Call modEngine_Protocol.Initialize
     
 End Sub
@@ -125,5 +141,3 @@ Private Sub Network_OnError(ByVal Connection As Network_Client, ByVal Error As L
     ' TODO: Log.Error(...)
     
 End Sub
-
-

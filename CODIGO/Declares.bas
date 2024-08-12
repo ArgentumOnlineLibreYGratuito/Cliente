@@ -45,7 +45,6 @@ Public Const SEPARATOR As String * 1 = vbNullChar
 'Objetos públicos
 Public DialogosClanes As New clsGuildDlg
 Public Dialogos As New clsDialogs
-Public Audio As New clsAudio
 Public Inventario As New clsGrapchicalInventory
 
 Public CustomKeys As New clsCustomKeys
@@ -520,9 +519,6 @@ Public UserMap As Integer
 
 'Control
 Public prgRun As Boolean 'When true the program ends
-
-Public IPdelServidor As String
-Public PuertoDelServidor As String
 
 '
 '********** FUNCIONES API ***********

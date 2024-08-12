@@ -754,7 +754,7 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
         If LenB(CustomKeys.ReadableName(KeyCode)) > 0 Then
             Select Case KeyCode
                 Case CustomKeys.BindedKey(eKeyType.mKeyToggleMusic)
-                    Audio.MusicActivated = Not Audio.MusicActivated
+                    modEngine_Audio.MasterEnabled = Not modEngine_Audio.MasterEnabled
                 
                 Case CustomKeys.BindedKey(eKeyType.mKeyGetObject)
                     Call AgarrarItem
@@ -1011,7 +1011,7 @@ Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
 End Sub
 
 Private Sub Second_Timer()
-    If engine.bRunning Then engine.Engine_ActFPS
+
     With luz_dia(Hour(time))
         base_light = engine.change_day_effect(day_r_old, day_g_old, day_b_old, .r, .g, .b)
     End With
@@ -1255,7 +1255,7 @@ Private Sub hlst_KeyUp(KeyCode As Integer, Shift As Integer)
 End Sub
 
 Private Sub Image1_Click(index As Integer)
-    Call Audio.PlayWave(SND_CLICK)
+    Call modEngine_Audio.PlayInterface(SND_CLICK)
 
     Select Case index
         Case 0
@@ -1298,7 +1298,7 @@ Private Sub Label1_Click()
 End Sub
 
 Private Sub Label4_Click()
-    Call Audio.PlayWave(SND_CLICK)
+    Call modEngine_Audio.PlayInterface(SND_CLICK)
 
     InvEqu.Picture = LoadPicture(App.path & "\Graficos\Centronuevoinventario.jpg")
 
@@ -1318,7 +1318,7 @@ Private Sub Label4_Click()
 End Sub
 
 Private Sub Label7_Click()
-    Call Audio.PlayWave(SND_CLICK)
+    Call modEngine_Audio.PlayInterface(SND_CLICK)
 
     InvEqu.Picture = LoadPicture(App.path & "\Graficos\Centronuevohechizos.jpg")
     '%%%%%%OCULTAMOS EL INV&&&&&&&&&&&&
@@ -1348,7 +1348,7 @@ Private Sub picInv_DblClick()
 End Sub
 
 Private Sub picInv_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    Call Audio.PlayWave(SND_CLICK)
+    Call modEngine_Audio.PlayInterface(SND_CLICK)
 End Sub
 
 Private Sub RecTxt_Change()

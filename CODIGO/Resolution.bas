@@ -107,7 +107,7 @@ Public Sub SetResolution()
     oldResWidth = Screen.Width \ Screen.TwipsPerPixelX
     oldResHeight = Screen.Height \ Screen.TwipsPerPixelY
     
-    If NoRes Then
+    If Not Configuration.Graphics_Fullscreen Then
         CambiarResolucion = (oldResWidth < 800 Or oldResHeight < 600)
     Else
         CambiarResolucion = (oldResWidth <> 800 Or oldResHeight <> 600)

@@ -290,7 +290,7 @@ End Sub
 
 Private Sub Image1_Click(index As Integer)
 
-Call Audio.PlayWave(SND_CLICK)
+Call modEngine_Audio.PlayInterface(SND_CLICK)
 
 If List1(index).List(List1(index).ListIndex) = "" Or _
    List1(index).ListIndex < 0 Then Exit Sub

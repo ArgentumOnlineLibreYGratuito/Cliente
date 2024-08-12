@@ -137,7 +137,7 @@ On Error GoTo ErrHandler
             mFreeMemoryBytes = mFreeMemoryBytes - surface_desc.size
         End With
     End With
-    Debug.Print mFreeMemoryBytes / 1024 / 1024; " MB LIBRES"
+
     Do While mFreeMemoryBytes < 0
         If Not RemoveLRU() Then
             Exit Do

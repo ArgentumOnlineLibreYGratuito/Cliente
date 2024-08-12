@@ -66,7 +66,6 @@ Public Enum FontTypeNames
     FONTTYPE_CONSEJOCAOS
     FONTTYPE_CONSEJOVesA
     FONTTYPE_CONSEJOCAOSVesA
-    FONTTYPE_CENTINELA
     FONTTYPE_GMMSG
     FONTTYPE_GM
     FONTTYPE_CITIZEN
@@ -169,11 +168,7 @@ Public Sub InitFonts()
         .green = 50
         .bold = 1
     End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_CENTINELA)
-        .green = 255
-        .bold = 1
-    End With
+
     
     With FontTypes(FontTypeNames.FONTTYPE_GMMSG)
         .red = 255
@@ -493,9 +488,7 @@ Sub MoveTo(ByVal Direccion As E_Heading)
     End If
     
     If frmMain.macrotrabajo.Enabled Then frmMain.DesactivarMacroTrabajo
-    
-    ' Update 3D sounds!
-    Call Audio.MoveListener(UserPos.x, UserPos.y)
+
 End Sub
 
 Sub RandomMove()
@@ -558,8 +551,6 @@ On Error Resume Next
                 Exit Sub
             End If
             
-            ' We haven't moved - Update 3D sounds!
-            Call Audio.MoveListener(UserPos.x, UserPos.y)
         Else
             Dim kp As Boolean
             kp = (GetKeyState(CustomKeys.BindedKey(eKeyType.mKeyUp)) < 0) Or _
@@ -569,9 +560,6 @@ On Error Resume Next
             
             If kp Then
                 Call RandomMove
-            Else
-                ' We haven't moved - Update 3D sounds!
-                Call Audio.MoveListener(UserPos.x, UserPos.y)
             End If
             
             If frmMain.TrainingMacro.Enabled Then frmMain.DesactivarMacroHechizos
@@ -636,33 +624,16 @@ Function FileExist(ByVal file As String, ByVal FileType As VbFileAttribute) As B
 End Function
 
 Sub Main()
+    ' Initialize Aurora Engine
     Call modEngine.Initialize
 
+    ' Load Game's properties
+    Call modEngine_Properties.LoadProperties
 
-    'Load ao.dat config file
-    If FileExist(App.path & "\init\ao.dat", vbArchive) Then
-        Call LoadClientSetup
-        
-    Else
-        'Use dynamic by default
-        'Set SurfaceDB = New clsSurfaceManDyn
-    End If
-    
-    'Read command line. Do it AFTER config file is loaded to prevent this from
-    'canceling the effects of "/nores" option.
-    Call LeerLineaComandos
-    
     'If FindPreviousInstance Then
     '    Call MsgBox("Argentum Online ya esta corriendo! No es posible correr otra instancia del juego. Haga click en Aceptar para salir.", vbApplicationModal + vbInformation + vbOKOnly, "Error al ejecutar")
     '    End
     'End If
-    
-    
-    'usaremos esto para ayudar en los parches
-    Call SaveSetting("ArgentumOnlineCliente", "Init", "Path", App.path & "\")
-    
-    ChDrive App.path
-    ChDir App.path
 
     'Set resolution BEFORE the loading form is displayed, therefore it will be centered.
     Call Resolution.SetResolution
@@ -712,16 +683,20 @@ UserMap = 1
     AddtoRichTextBox frmCargando.status, "Iniciando DirectSound... ", 0, 0, 0, 0, 0, True
     
     'Inicializamos el sonido
-    Call Audio.Initialize(frmMain.hWnd, App.path & "\WAV\", App.path & "\MIDI\")
+    'Call Audio.Initialize(frmMain.hWnd, App.path & "\WAV\", App.path & "\MIDI\")
     
     'Enable / Disable audio
-    Audio.MusicActivated = Not ClientSetup.bNoMusic
-    Audio.SoundActivated = Not ClientSetup.bNoSound
+    modEngine_Audio.MusicEnabled = Configuration.Audio_MusicEnabled
+    modEngine_Audio.MusicVolume = Configuration.Audio_MusicVolume
+    modEngine_Audio.EffectEnabled = Configuration.Audio_EffectEnabled
+    modEngine_Audio.EffectVolume = Configuration.Audio_EffectVolume
+    modEngine_Audio.InterfaceEnabled = Configuration.Audio_InterfaceEnabled
+    modEngine_Audio.InterfaceVolume = Configuration.Audio_InterfaceVolume
     
     'Inicializamos el inventario gráfico
     Call Inventario.Initialize(frmMain.picInv)
     
-    Call Audio.PlayMIDI(MIdi_Inicio & ".mid")
+    Call modEngine_Audio.PlayMusic(MIdi_Inicio & ".mp3")
     
     AddtoRichTextBox frmCargando.status, "Hecho", , , , 1, , False
     AddtoRichTextBox frmCargando.status, "                    ¡Bienvenido a Argentum Online!", , , , 1
@@ -848,36 +823,6 @@ Public Sub ShowSendCMSGTxt()
         frmMain.SendCMSTXT.SetFocus
     End If
 End Sub
-    
-Public Sub LeerLineaComandos()
-    Dim T() As String
-    Dim i As Long
-    
-    'Parseo los comandos
-    T = Split(Command, " ")
-    For i = LBound(T) To UBound(T)
-        Select Case UCase$(T(i))
-            Case "/NORES" 'no cambiar la resolucion
-                NoRes = True
-        End Select
-    Next i
-End Sub
-
-Private Sub LoadClientSetup()
-'**************************************************************
-'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modify Date: 24/06/2006
-'
-'**************************************************************
-    Dim fHandle As Integer
-    
-    fHandle = FreeFile
-    Open App.path & "\init\ao.dat" For Binary Access Read Lock Write As fHandle
-        Get fHandle, , ClientSetup
-    Close fHandle
-    
-    NoRes = ClientSetup.bNoRes
-End Sub
 
 Private Sub InicializarNombres()
 '**************************************************************
@@ -969,7 +914,6 @@ Public Sub CloseClient()
     ' Allow new instances of the client to be opened
     Call PrevInstance.ReleaseInstance
     
-    EngineRun = False
     frmCargando.Show
     AddtoRichTextBox frmCargando.status, "Liberando recursos...", 0, 0, 0, 0, 0, 1
     
@@ -984,7 +928,6 @@ Public Sub CloseClient()
     Set SurfaceDB = Nothing
     Set Dialogos = Nothing
     Set DialogosClanes = Nothing
-    Set Audio = Nothing
     Set Inventario = Nothing
     Set MainTimer = Nothing
 

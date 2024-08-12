@@ -936,7 +936,7 @@ CheckData = True
 End Function
 
 Private Sub boton_Click(index As Integer)
-    Call Audio.PlayWave(SND_CLICK)
+    Call modEngine_Audio.PlayInterface(SND_CLICK)
     
     Select Case index
         Case 0
@@ -974,34 +974,24 @@ Private Sub boton_Click(index As Integer)
             End If
             
         Case 1
-            Call Audio.PlayMIDI("2.mid")
+            Call modEngine_Audio.PlayMusic("2.mp3")
             
             frmConnect.FONDO.Picture = LoadPicture(App.path & "\Graficos\conectar.jpg")
             Unload Me
             
             
         Case 2
-            Call Audio.PlayWave(SND_DICE)
+            Call modEngine_Audio.PlayInterface(SND_DICE)
             Call TirarDados
     End Select
 End Sub
-
-
-Function RandomNumber(ByVal LowerBound As Variant, ByVal UpperBound As Variant) As Single
-
-Randomize Timer
-
-RandomNumber = (UpperBound - LowerBound + 1) * Rnd + LowerBound
-If RandomNumber > UpperBound Then RandomNumber = UpperBound
-
-End Function
 
 Private Sub TirarDados()
     Call WriteThrowDices
 End Sub
 
 Private Sub Command1_Click(index As Integer)
-Call Audio.PlayWave(SND_CLICK)
+Call modEngine_Audio.PlayInterface(SND_CLICK)
 
 Dim indice
 If (index And &H1) = 0 Then
