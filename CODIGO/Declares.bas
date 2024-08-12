@@ -54,12 +54,12 @@ Public CustomKeys As New clsCustomKeys
 Public MainTimer As New clsTimer
 
 'Sonidos
-Public Const SND_CLICK As String = "click.Wav"
-Public Const SND_PASOS1 As String = "23.Wav"
-Public Const SND_PASOS2 As String = "24.Wav"
+Public Const SND_CLICK As String = "click.wav"
+Public Const SND_PASOS1 As String = "23.wav"
+Public Const SND_PASOS2 As String = "24.wav"
 Public Const SND_NAVEGANDO As String = "50.wav"
-Public Const SND_OVER As String = "click2.Wav"
-Public Const SND_DICE As String = "cupdice.Wav"
+Public Const SND_OVER As String = "click2.wav"
+Public Const SND_DICE As String = "cupdice.wav"
 
 ' Head index of the casper. Used to know if a char is killed
 
