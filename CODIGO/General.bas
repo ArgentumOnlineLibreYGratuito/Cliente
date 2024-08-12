@@ -615,10 +615,12 @@ Sub Main()
     ' Load Game's properties
     Call modEngine_Properties.LoadProperties
 
-    'If FindPreviousInstance Then
-    '    Call MsgBox("Argentum Online ya esta corriendo! No es posible correr otra instancia del juego. Haga click en Aceptar para salir.", vbApplicationModal + vbInformation + vbOKOnly, "Error al ejecutar")
-    '    End
-    'End If
+    If (Not Application.IsAppDebug()) Then
+        If (Application.IsAppRunning()) Then
+            Call MsgBox("Argentum Online ya esta corriendo! No es posible correr otra instancia del juego. Haga click en Aceptar para salir.", vbApplicationModal + vbInformation + vbOKOnly, "Error al ejecutar")
+            End
+        End If
+    End If
 
     'Set resolution BEFORE the loading form is displayed, therefore it will be centered.
     Call Resolution.SetResolution
@@ -875,9 +877,7 @@ Public Sub CloseClient()
 'Last Modify Date: 8/14/2007
 'Frees all used resources, cleans up and leaves
 '**************************************************************
-    ' Allow new instances of the client to be opened
-    Call PrevInstance.ReleaseInstance
-    
+
     frmCargando.Show
     AddtoRichTextBox frmCargando.status, "Liberando recursos...", 0, 0, 0, 0, 0, 1
     

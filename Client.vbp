@@ -47,7 +47,6 @@ Module=ModAreas; CODIGO\ModAreas.bas
 Class=clsTimer; CODIGO\MainTimer.cls
 Form=CODIGO\frmPasswd.frm
 Module=ProtocolCmdParse; CODIGO\ProtocolCmdParse.bas
-Module=PrevInstance; CODIGO\PrevInstance.bas
 Class=clsDialogs; CODIGO\clsDialogs.cls
 Class=clsCustomKeys; CODIGO\clsCustomKeys.cls
 Form=CODIGO\frmCustomKeys.frm

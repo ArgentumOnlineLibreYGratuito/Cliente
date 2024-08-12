@@ -882,11 +882,6 @@ Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y A
     MouseShift = Shift
 End Sub
 
-Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    clicX = x
-    clicY = y
-End Sub
-
 Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     If prgRun = True Then
         prgRun = False
@@ -983,11 +978,6 @@ End Sub
 Private Sub renderer_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     MouseX = x
     MouseY = y
-End Sub
-
-Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    clicX = x
-    clicY = y
 End Sub
 
 Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
