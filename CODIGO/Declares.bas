@@ -97,14 +97,9 @@ Public CreandoClan As Boolean
 Public ClanName As String
 Public Site As String
 
-Public UserCiego As Boolean
 Public UserEstupido As Boolean
 
-Public NoRes As Boolean 'no cambiar la resolucion
-
 Public RainBufferIndex As Long
-Public FogataBufferIndex As Long
-
 Public Const bCabeza = 1
 Public Const bPiernaIzquierda = 2
 Public Const bPiernaDerecha = 3
@@ -445,8 +440,6 @@ Public Alocados As Integer
 Public flags() As Integer
 
 Public UsingSkill As Integer
-
-Public pingTime As Long
 
 Public Enum E_MODO
     Normal = 1

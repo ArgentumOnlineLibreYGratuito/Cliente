@@ -130,17 +130,6 @@ Option Explicit
 
 Private Const MAX_GM_MSG = 300
 
-Private MisMSG(0 To MAX_GM_MSG) As String
-Private Apunt(0 To MAX_GM_MSG) As Integer
-
-Public Sub CrearGMmSg(Nick As String, msg As String)
-If List1.ListCount < MAX_GM_MSG Then
-        List1.AddItem Nick & "-" & List1.ListCount
-        MisMSG(List1.ListCount - 1) = msg
-        Apunt(List1.ListCount - 1) = List1.ListCount - 1
-End If
-End Sub
-
 Private Sub Command1_Click()
 Me.Visible = False
 List1.Clear
@@ -154,11 +143,6 @@ End Sub
 Private Sub Form_Load()
 List1.Clear
 
-End Sub
-
-Private Sub list1_Click()
-Dim ind As Integer
-ind = Val(ReadField(2, List1.List(List1.ListIndex), Asc("-")))
 End Sub
 
 Private Sub List1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)

@@ -8,6 +8,7 @@ Sub CargarCabezas()
     Dim i As Long
     Dim Numheads As Integer
     Dim Miscabezas() As tIndiceCabeza
+    Dim MICabecera As tCabecera
     
     N = FreeFile()
     Open App.path & "\init\Cabezas.ind" For Binary Access Read As #N
@@ -40,7 +41,8 @@ Sub CargarCascos()
     Dim N As Integer
     Dim i As Long
     Dim NumCascos As Integer
-
+    Dim MICabecera As tCabecera
+    
     Dim Miscabezas() As tIndiceCabeza
     
     N = FreeFile()
@@ -75,6 +77,7 @@ Sub CargarCuerpos()
     Dim i As Long
     Dim NumCuerpos As Integer
     Dim MisCuerpos() As tIndiceCuerpo
+    Dim MICabecera As tCabecera
     
     N = FreeFile()
     Open App.path & "\init\Personajes.ind" For Binary Access Read As #N
@@ -110,6 +113,7 @@ Sub CargarFxs()
     Dim N As Integer
     Dim i As Long
     Dim NumFxs As Integer
+    Dim MICabecera As tCabecera
     
     N = FreeFile()
     Open App.path & "\init\Fxs.ind" For Binary Access Read As #N
@@ -134,6 +138,7 @@ Sub CargarArrayLluvia()
     Dim N As Integer
     Dim i As Long
     Dim Nu As Integer
+    Dim MICabecera As tCabecera
     
     N = FreeFile()
     Open App.path & "\init\fk.ind" For Binary Access Read As #N

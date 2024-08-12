@@ -518,7 +518,6 @@ Begin VB.Form frmMain
       _ExtentY        =   2646
       _Version        =   393217
       BackColor       =   0
-      Enabled         =   -1  'True
       ReadOnly        =   -1  'True
       ScrollBars      =   2
       DisableNoScroll =   -1  'True
@@ -667,8 +666,6 @@ Public MouseX As Long
 Public MouseY As Long
 Public MouseBoton As Long
 Public MouseShift As Long
-Private clicX As Long
-Private clicY As Long
 
 Public IsPlaying As Byte
 
@@ -895,11 +892,6 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
         prgRun = False
         Cancel = 1
     End If
-End Sub
-
-
-Private Sub Inet1_StateChanged(ByVal State As Integer)
-
 End Sub
 
 Private Sub Macro_Timer()
@@ -1520,15 +1512,3 @@ Case 1 'Menu del ViewPort del engine
     End Select
 End Select
 End Sub
-
-Private Function InGameArea() As Boolean
-'***************************************************
-'Author: NicoNZ
-'Last Modification: 04/07/08
-'Checks if last click was performed within or outside the game area.
-'***************************************************
-    If clicX < MainViewShp.Left Or clicX > MainViewShp.Left + (32 * 17) Then Exit Function
-    If clicY < MainViewShp.Top Or clicY > MainViewShp.Top + (32 * 13) Then Exit Function
-    
-    InGameArea = True
-End Function

@@ -33,14 +33,8 @@ Attribute VB_Name = "Mod_General"
 
 Option Explicit
 
-Public iplst As String
-
-Public bFogata As Boolean
-
-Public bLluvia() As Byte ' Array para determinar si
-'debemos mostrar la animacion de la lluvia
-
-Private lFrameTimer As Long
+Public bLluvia() As Byte 'TODO Is this comment still valid? =>  Array para determinar si
+'TODO Is this comment still valid? => debemos mostrar la animacion de la lluvia
 
 Private Type tFont
     red As Byte
@@ -191,14 +185,6 @@ End Sub
 
 Public Function DirGraficos() As String
     DirGraficos = App.path & "\GRAFICOS\"
-End Function
-
-Public Function DirSound() As String
-    DirSound = App.path & "\WAV\"
-End Function
-
-Public Function DirMidi() As String
-    DirMidi = App.path & "\MIDI\"
 End Function
 
 Public Function DirMapas() As String
@@ -505,9 +491,8 @@ Sub CheckKeys()
 'Checks keys and respond
 '*****************************************************************
 On Error Resume Next
-    Static lastMovement As Long
     
-    'No input allowed while Argentum is not the active window
+    'TODO Is this comment still valid? => No input allowed while Argentum is not the active window
     If Not Application.IsAppActive() Then Exit Sub
     
     'No walking when in commerce or banking.
@@ -739,13 +724,6 @@ UserMap = 1
     engine.Start
 End Sub
 
-Sub WriteVar(ByVal file As String, ByVal Main As String, ByVal var As String, ByVal value As String)
-'*****************************************************************
-'Writes a var to a text file
-'*****************************************************************
-    writeprivateprofilestring Main, var, value, file
-End Sub
-
 Function GetVar(ByVal file As String, ByVal Main As String, ByVal var As String) As String
 '*****************************************************************
 'Gets a Var from a text file
@@ -809,20 +787,6 @@ Function HayAgua(ByVal x As Integer, ByVal y As Integer) As Boolean
                 MapData(x, y).Graphic(2).grhindex = 0
                 
 End Function
-
-Public Sub ShowSendTxt()
-    If Not frmCantidad.Visible Then
-        frmMain.SendTxt.Visible = True
-        frmMain.SendTxt.SetFocus
-    End If
-End Sub
-
-Public Sub ShowSendCMSGTxt()
-    If Not frmCantidad.Visible Then
-        frmMain.SendCMSTXT.Visible = True
-        frmMain.SendCMSTXT.SetFocus
-    End If
-End Sub
 
 Private Sub InicializarNombres()
 '**************************************************************
@@ -943,9 +907,10 @@ Sub SwitchMap(ByVal map As Integer)
 '**************************************************************
     Dim y As Long
     Dim x As Long
-    Dim tempint As Integer
     Dim ByFlags As Byte
     Dim Handle As Integer
+    Dim MICabecera As tCabecera
+    Dim tempInt As Integer
     
     Handle = FreeFile()
     
@@ -1017,6 +982,6 @@ Sub SwitchMap(ByVal map As Integer)
     MapInfo.Name = ""
     MapInfo.Music = ""
     
-    CurMap = map
 End Sub
+
 

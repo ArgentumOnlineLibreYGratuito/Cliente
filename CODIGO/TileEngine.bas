@@ -208,93 +208,40 @@ Public Type MapInfo
     MapVersion As Integer
 End Type
 
-'DX7 Objects
-'Public DirectX As New DirectX7
-'Public DirectDraw As DirectDraw7
-'Private PrimarySurface As DirectDrawSurface7
-'Private PrimaryClipper As DirectDrawClipper
-'Private BackBufferSurface As DirectDrawSurface7
-
-Public IniPath As String
-Public MapPath As String
+'TODO Is this comment still valid? => DX7 Objects
+'TODO Is this comment still valid? => Public DirectX As New DirectX7
+'TODO Is this comment still valid? => Public DirectDraw As DirectDraw7
+'TODO Is this comment still valid? => Private PrimarySurface As DirectDrawSurface7
+'TODO Is this comment still valid? => Private PrimaryClipper As DirectDrawClipper
+'TODO Is this comment still valid? => Private BackBufferSurface As DirectDrawSurface7
 
 
-'Bordes del mapa
+'TODO Is this comment still valid? => Bordes del mapa
 Public MinXBorder As Byte
 Public MaxXBorder As Byte
 Public MinYBorder As Byte
 Public MaxYBorder As Byte
 
-'Status del user
-Public CurMap As Integer 'Mapa actual
-Public UserIndex As Integer
+'TODO Is this comment still valid? => Status del user
 Public UserMoving As Byte
-Public UserBody As Integer
-Public UserHead As Integer
 Public UserPos As Position 'Posicion
 Public AddtoUserPos As Position 'Si se mueve
 Public UserCharIndex As Integer
 
-Public FPS As Long
-Public FramesPerSecCounter As Long
-Private fpsLastCheck As Long
-
-'Tamaño del la vista en Tiles
-Private WindowTileWidth As Integer
-Private WindowTileHeight As Integer
-
-Private HalfWindowTileWidth As Integer
-Private HalfWindowTileHeight As Integer
-
-'Offset del desde 0,0 del main view
-Private MainViewTop As Integer
-Private MainViewLeft As Integer
-
-'Cuantos tiles el engine mete en el BUFFER cuando
-'dibuja el mapa. Ojo un tamaño muy grande puede
-'volver el engine muy lento
+'TODO Is this comment still valid? => Cuantos tiles el engine mete en el BUFFER cuando
+'TODO Is this comment still valid? => dibuja el mapa. Ojo un tamaño muy grande puede
+'TODO Is this comment still valid? => volver el engine muy lento
 Public TileBufferSize As Integer
 
-Private TileBufferPixelOffsetX As Integer
-Private TileBufferPixelOffsetY As Integer
-
-'Tamaño de los tiles en pixels
+'TODO Is this comment still valid? => Tamaño de los tiles en pixels
 Public TilePixelHeight As Integer
 Public TilePixelWidth As Integer
 
-'Number of pixels the engine scrolls per frame. MUST divide evenly into pixels per tile
-Public ScrollPixelsPerFrameX As Integer
-Public ScrollPixelsPerFrameY As Integer
-
-Dim timerElapsedTime As Single
-Dim timerTicksPerFrame As Single
-Dim engineBaseSpeed As Single
-
-
-Public NumBodies As Integer
-Public Numheads As Integer
-Public NumFxs As Integer
-
+'TODO Is this comment still valid? => Number of pixels the engine scrolls per frame. MUST divide evenly into pixels per tile
 Public NumChars As Integer
 Public LastChar As Integer
 Public NumWeaponAnims As Integer
-Public NumShieldAnims As Integer
-
-
-Private MainDestRect   As RECT
-Private MainViewRect   As RECT
-Private BackBufferRect As RECT
-
-Private MainViewWidth As Integer
-Private MainViewHeight As Integer
-
-Private MouseTileX As Byte
-Private MouseTileY As Byte
-
-
-
-
-'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿Graficos¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
+'TODO Is this comment still valid? => ¿?¿?¿?¿?¿?¿?¿?¿?¿?¿Graficos¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
 Public GrhData() As GrhData 'Guarda todos los grh
 Public BodyData() As BodyData
 Public HeadData() As HeadData
@@ -310,14 +257,7 @@ Public MapInfo As MapInfo ' Info acerca del mapa en uso
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
 
 Public bRain        As Boolean 'está raineando?
-Public bTecho       As Boolean 'hay techo?
-Public brstTick     As Long
-
-Private RLluvia(7)  As RECT  'RECT de la lluvia
-Private iFrameIndex As Byte  'Frame actual de la LL
-Private llTick      As Long  'Contador
-Private LTLluvia(4) As Integer
-
+Public bTecho       As Boolean 'TODO Is this comment still valid? => hay techo?
 Public charlist(1 To 10000) As char
 
 ' Used by GetTextExtentPoint32
@@ -354,7 +294,6 @@ Private Declare Function DeleteObject Lib "gdi32" (ByVal hObject As Long) As Lon
 
 
 'Added by Juan Martín Sotuyo Dodero
-Private Declare Function StretchBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal nSrcWidth As Long, ByVal nSrcHeight As Long, ByVal dwRop As Long) As Long
 Private Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long, ByVal crColor As Long) As Long
 Private Declare Function GetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long) As Long
 'Added by Barrin
@@ -364,18 +303,11 @@ Private Declare Function GetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Lon
 Private Declare Function QueryPerformanceFrequency Lib "kernel32" (lpFrequency As Currency) As Long
 Private Declare Function QueryPerformanceCounter Lib "kernel32" (lpPerformanceCount As Currency) As Long
 
-'Text width computation. Needed to center text.
-Private Declare Function GetTextExtentPoint32 Lib "gdi32" Alias "GetTextExtentPoint32A" (ByVal hdc As Long, ByVal lpsz As String, ByVal cbString As Long, lpSize As size) As Long
-
 Public Type tCabecera 'Cabecera de los con
     desc As String * 255
     CRC As Long
     MagicWord As Long
 End Type
-
-Public MiCabecera As tCabecera
-
-
 
 Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef tX As Byte, ByRef tY As Byte)
 '******************************************
@@ -629,41 +561,6 @@ Sub MoveScreen(ByVal nHeading As E_Heading)
     End If
 End Sub
 
-Private Function HayFogata(ByRef location As Position) As Boolean
-    Dim j As Long
-    Dim k As Long
-    
-    For j = UserPos.x - 8 To UserPos.x + 8
-        For k = UserPos.y - 6 To UserPos.y + 6
-            If InMapBounds(j, k) Then
-                If MapData(j, k).ObjGrh.grhindex = GrhFogata Then
-                    location.x = j
-                    location.y = k
-                    
-                    HayFogata = True
-                    Exit Function
-                End If
-            End If
-        Next k
-    Next j
-End Function
-
-Function NextOpenChar() As Integer
-'*****************************************************************
-'Finds next open char slot in CharList
-'*****************************************************************
-    Dim loopc As Long
-    Dim Dale As Boolean
-    
-    loopc = 1
-    Do While charlist(loopc).active And Dale
-        loopc = loopc + 1
-        Dale = (loopc <= UBound(charlist))
-    Loop
-    
-    NextOpenChar = loopc
-End Function
-
 ''
 ' Loads grh data using the new file format.
 '
@@ -705,28 +602,6 @@ Function InMapBounds(ByVal x As Integer, ByVal y As Integer) As Boolean
     End If
     
     InMapBounds = True
-End Function
-
-
-
-
-
-Function GetBitmapDimensions(ByVal BmpFile As String, ByRef bmWidth As Long, ByRef bmHeight As Long)
-'*****************************************************************
-'Gets the dimensions of a bmp
-'*****************************************************************
-    Dim BMHeader As BITMAPFILEHEADER
-    Dim BINFOHeader As BITMAPINFOHEADER
-    
-    Open BmpFile For Binary Access Read As #1
-    
-    Get #1, , BMHeader
-    Get #1, , BINFOHeader
-    
-    Close #1
-    
-    bmWidth = BINFOHeader.biWidth
-    bmHeight = BINFOHeader.biHeight
 End Function
 
 Public Sub Grh_Render_To_Hdc(ByVal desthDC As Long, grh_index As Long, ByVal screen_x As Integer, ByVal screen_y As Integer, Optional transparent As Boolean = False)
@@ -828,44 +703,6 @@ Public Function RenderSounds()
     
 End Function
 
-Function HayUserAbajo(ByVal x As Integer, ByVal y As Integer, ByVal grhindex As Integer) As Boolean
-    If grhindex > 0 Then
-        HayUserAbajo = _
-            charlist(UserCharIndex).Pos.x >= x - (GrhData(grhindex).TileWidth \ 2) _
-                And charlist(UserCharIndex).Pos.x <= x + (GrhData(grhindex).TileWidth \ 2) _
-                And charlist(UserCharIndex).Pos.y >= y - (GrhData(grhindex).TileHeight - 1) _
-                And charlist(UserCharIndex).Pos.y <= y
-    End If
-End Function
-
-Sub LoadGraphics()
-'**************************************************************
-'Author: Juan Martín Sotuyo Dodero - complete rewrite
-'Last Modify Date: 11/03/2006
-'Initializes the SurfaceDB and sets up the rain rects
-'**************************************************************
-    'New surface manager :D
-    'Call SurfaceDB.Initialize(DirectDraw, ClientSetup.bUseVideo, DirGraficos, ClientSetup.byMemory)
-    
-    'Set up te rain rects
-    RLluvia(0).Top = 0:      RLluvia(1).Top = 0:      RLluvia(2).Top = 0:      RLluvia(3).Top = 0
-    RLluvia(0).Left = 0:     RLluvia(1).Left = 128:   RLluvia(2).Left = 256:   RLluvia(3).Left = 384
-    RLluvia(0).Right = 128:  RLluvia(1).Right = 256:  RLluvia(2).Right = 384:  RLluvia(3).Right = 512
-    RLluvia(0).bottom = 128: RLluvia(1).bottom = 128: RLluvia(2).bottom = 128: RLluvia(3).bottom = 128
-    
-    RLluvia(4).Top = 128:    RLluvia(5).Top = 128:    RLluvia(6).Top = 128:    RLluvia(7).Top = 128
-    RLluvia(4).Left = 0:     RLluvia(5).Left = 128:   RLluvia(6).Left = 256:   RLluvia(7).Left = 384
-    RLluvia(4).Right = 128:  RLluvia(5).Right = 256:  RLluvia(6).Right = 384:  RLluvia(7).Right = 512
-    RLluvia(4).bottom = 256: RLluvia(5).bottom = 256: RLluvia(6).bottom = 256: RLluvia(7).bottom = 256
-    
-    'We are done!
-    'Saco esto porque el texto del cargar queda horrible
-    'AddtoRichTextBox frmCargando.status, "Hecho.", , , , 1, , False
-End Sub
-
-
-
-
 #If ConAlfaB Then
 
 Public Sub EfectoNoche(ByRef Surface As DirectDrawSurface7)
@@ -913,32 +750,6 @@ End Sub
 
 #End If
 
-Private Function GetElapsedTime() As Single
-'**************************************************************
-'Author: Aaron Perkins
-'Last Modify Date: 10/07/2002
-'Gets the time that past since the last call
-'**************************************************************
-    Dim start_time As Currency
-    Static end_time As Currency
-    Static timer_freq As Currency
-
-    'Get the timer frequency
-    If timer_freq = 0 Then
-        QueryPerformanceFrequency timer_freq
-    End If
-    
-    'Get current time
-    Call QueryPerformanceCounter(start_time)
-    
-    'Calculate elapsed time
-    GetElapsedTime = (start_time - end_time) / timer_freq * 1000
-    
-    'Get next end time
-    Call QueryPerformanceCounter(end_time)
-End Function
-
-
 Public Sub SetCharacterFx(ByVal CharIndex As Integer, ByVal fX As Integer, ByVal Loops As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -956,14 +767,6 @@ Public Sub SetCharacterFx(ByVal CharIndex As Integer, ByVal fX As Integer, ByVal
     End With
 End Sub
 
-Private Sub CleanViewPort()
-'***************************************************
-'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modify Date: 12/03/04
-'Fills the viewport with black.
-'***************************************************
-
-End Sub
 Private Sub Grh_Create_Mask(ByRef hdcsrc As Long, ByRef MaskDC As Long, ByVal src_x As Integer, ByVal src_y As Integer, ByVal src_width As Integer, ByVal src_height As Integer)
 '**************************************************************
 'Author: Juan Martín Sotuyo Dodero
@@ -973,18 +776,16 @@ Private Sub Grh_Create_Mask(ByRef hdcsrc As Long, ByRef MaskDC As Long, ByVal sr
     Dim x As Integer
     Dim y As Integer
     Dim TransColor As Long
-    Dim ColorKey As String
     
-    'ColorKey = hex(COLOR_KEY)
+    'TODO Is this comment still valid? => ColorKey = hex(COLOR_KEY)
     
-    'Check if it has an alpha component
-    'If Len(ColorKey) > 6 Then
-         'get rid of alpha
-    '    ColorKey = "&H" & Right$(ColorKey, 6)
-    'End If
-    'piluex prueba
-    'TransColor = Val(ColorKey)
-    ColorKey = "0"
+    'TODO Is this comment still valid? => Check if it has an alpha component
+    'TODO Is this comment still valid? => If Len(ColorKey) > 6 Then
+         'TODO Is this comment still valid? => get rid of alpha
+    'TODO Is this comment still valid? =>     ColorKey = "&H" & Right$(ColorKey, 6)
+    'TODO Is this comment still valid? => End If
+    'TODO Is this comment still valid? => piluex prueba
+    'TODO Is this comment still valid? => TransColor = Val(ColorKey)
     TransColor = &H0
 
     'Make it a mask (set background to black and foreground to white)
@@ -1000,4 +801,5 @@ Private Sub Grh_Create_Mask(ByRef hdcsrc As Long, ByRef MaskDC As Long, ByVal sr
         Next x
     Next y
 End Sub
+
 

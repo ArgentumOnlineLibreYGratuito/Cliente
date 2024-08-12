@@ -207,10 +207,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                               
             Case "/EST"
                 Call WriteRequestStats
-            
-            Case "/AYUDA"
-                Call WriteHelp
-                
+
             Case "/COMERCIAR"
                 If UserEstado = 1 Then 'Muerto
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -270,21 +267,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Exit Sub
                 End If
                 Call WritePartyJoin
-                
-            Case "/ENCUESTA"
-                If CantidadArgumentos = 0 Then
-                    ' Version sin argumentos: Inquiry
-                    Call WriteInquiry
-                Else
-                    ' Version con argumentos: InquiryVote
-                    If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Byte) Then
-                        Call WriteInquiryVote(ArgumentosRaw)
-                    Else
-                        'No es numerico
-                        Call ShowConsoleMsg("Para votar una opcion, escribe /encuesta NUMERODEOPCION, por ejemplo para votar la opcion 1, escribe /encuesta 1.")
-                    End If
-                End If
-        
+
             Case "/CMSG"
                 'Ojo, no usar notNullArguments porque se usa el string vacio para borrar cartel.
                 If CantidadArgumentos > 0 Then
@@ -970,26 +953,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 
             Case "/PISO"
                 Call WriteItemsInTheFloor
-                
-            Case "/ESTUPIDO"
-                If notNullArguments Then
-                    Call WriteMakeDumb(ArgumentosRaw)
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /estupido NICKNAME.")
-                End If
-                
-            Case "/NOESTUPIDO"
-                If notNullArguments Then
-                    Call WriteMakeDumbNoMore(ArgumentosRaw)
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /noestupido NICKNAME.")
-                End If
-                
-            Case "/DUMPSECURITY"
-                Call WriteDumpIPTables
-                
+
             Case "/KICKCONSE"
                 If notNullArguments Then
                     Call WriteCouncilKick(ArgumentosRaw)
@@ -1184,33 +1148,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     'Avisar que falta el parametro
                     Call ShowConsoleMsg("Faltan parámetros. Utilice /racc NPC.")
                 End If
-        
-            Case "/AI" ' 1 - 4
-                If notNullArguments And CantidadArgumentos >= 2 Then
-                    If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Byte) And ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) Then
-                        Call WriteImperialArmour(ArgumentosAll(0), ArgumentosAll(1))
-                    Else
-                        'No es numerico
-                        Call ShowConsoleMsg("Valor incorrecto. Utilice /ai ARMADURA OBJETO.")
-                    End If
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /ai ARMADURA OBJETO.")
-                End If
-                
-            Case "/AC" ' 1 - 4
-                If notNullArguments And CantidadArgumentos >= 2 Then
-                    If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Byte) And ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) Then
-                        Call WriteChaosArmour(ArgumentosAll(0), ArgumentosAll(1))
-                    Else
-                        'No es numerico
-                        Call ShowConsoleMsg("Valor incorrecto. Utilice /ac ARMADURA OBJETO.")
-                    End If
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /ac ARMADURA OBJETO.")
-                End If
-                
+
             Case "/NAVE"
                 Call WriteNavigateToggle
         

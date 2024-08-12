@@ -84,8 +84,6 @@ Private Enum ServerPacketID
     CarpenterObjects                             ' OBR
     RestOK                                       ' DOK
     ErrorMsg                                     ' ERR
-    Blind                                        ' CEGU
-    Dumb                                         ' DUMB
     ChangeNPCInventorySlot                       ' NPCI
     UpdateHungerAndThirst                        ' EHYS
     Fame                                         ' FAMA
@@ -94,8 +92,6 @@ Private Enum ServerPacketID
     SetInvisible                                 ' NOVER
     DiceRoll                                     ' DADOS
     MeditateToggle                               ' MEDOK
-    BlindNoMore                                  ' NSEGUE
-    DumbNoMore                                   ' NESTUP
     SendSkills                                   ' SKILLS
     TrainerCreatureList                          ' LSTCRI
     guildNews                                    ' GUILDNE
@@ -201,7 +197,6 @@ Private Enum ClientPacketID
     Meditate                                     '/MEDITAR
     Resucitate                                   '/RESUCITAR
     Heal                                         '/CURAR
-    Help                                         '/AYUDA
     RequestStats                                 '/EST
     CommerceStart                                '/COMERCIAR
     BankStart                                    '/BOVEDA
@@ -213,7 +208,6 @@ Private Enum ClientPacketID
     PartyLeave                                   '/SALIRPARTY
     PartyCreate                                  '/CREARPARTY
     PartyJoin                                    '/PARTY
-    Inquiry                                      '/ENCUESTA ( params )
     GuildMessage                                 '/CMSG
     PartyMessage                                 '/PMSG
     GuildOnline                                  '/ONLINECLAN
@@ -226,7 +220,6 @@ Private Enum ClientPacketID
     Punishments                                  '/PENAS
     ChangePassword                               '/CONTRASEÑA
     Gamble                                       '/APOSTAR
-    InquiryVote                                  '/ENCUESTA ( with parameters )
     LeaveFaction                                 '/RETIRAR ( with no arguments )
     BankExtractGold                              '/RETIRAR ( with arguments )
     BankDepositGold                              '/DEPOSITAR
@@ -301,9 +294,6 @@ Private Enum ClientPacketID
     AcceptRoyalCouncilMember                     '/ACEPTCONSE
     AcceptChaosCouncilMember                     '/ACEPTCONSECAOS
     ItemsInTheFloor                              '/PISO
-    MakeDumb                                     '/ESTUPIDO
-    MakeDumbNoMore                               '/NOESTUPIDO
-    DumpIPTables                                 '/DUMPSECURITY
     CouncilKick                                  '/KICKCONSE
     SetTrigger                                   '/TRIGGER
     AskTrigger                                   '/TRIGGER with no arguments
@@ -329,8 +319,6 @@ Private Enum ClientPacketID
     SystemMessage                                '/SMSG
     CreateNPC                                    '/ACC
     CreateNPCWithRespawn                         '/RACC
-    ImperialArmour                               '/AI1 - 4
-    ChaosArmour                                  '/AC1 - 4
     NavigateToggle                               '/NAVE
     ServerOpenToUsersToggle                      '/HABILITAR
     TurnOffServer                                '/APAGAR
@@ -650,13 +638,7 @@ Public Sub handle(ByVal Message As BinaryReader)
             
         Case ServerPacketID.ErrorMsg             ' ERR
             Call HandleErrorMessage(Message)
-            
-        Case ServerPacketID.Blind                ' CEGU
-            Call HandleBlind(Message)
-            
-        Case ServerPacketID.Dumb                 ' DUMB
-            Call HandleDumb(Message)
-       
+
         Case ServerPacketID.ChangeNPCInventorySlot ' NPCI
             Call HandleChangeNPCInventorySlot(Message)
             
@@ -680,13 +662,7 @@ Public Sub handle(ByVal Message As BinaryReader)
             
         Case ServerPacketID.MeditateToggle       ' MEDOK
             Call HandleMeditateToggle(Message)
-            
-        Case ServerPacketID.BlindNoMore          ' NSEGUE
-            Call HandleBlindNoMore(Message)
-            
-        Case ServerPacketID.DumbNoMore           ' NESTUP
-            Call HandleDumbNoMore(Message)
-            
+
         Case ServerPacketID.SendSkills           ' SKILLS
             Call HandleSendSkills(Message)
             
@@ -765,7 +741,6 @@ End Sub
 Private Sub HandleLogged(ByVal Message As BinaryReader)
     
     ' Variable initialization
-    UserCiego = False
     IScombate = False
     UserDescansar = False
     Nombres = True
@@ -815,7 +790,6 @@ Private Sub HandleDisconnect(ByVal Message As BinaryReader)
     UserDescansar = False
     UserNavegando = False
     bRain = False
-    bFogata = False
     SkillPoints = 0
     
     'Delete all kind of dialogs
@@ -1317,7 +1291,6 @@ End Sub
 
 Private Sub HandleUserIndexInServer(ByVal Message As BinaryReader)
     
-    UserIndex = Message.ReadInt()
 End Sub
 
 Private Sub HandleUserCharIndexInServer(ByVal Message As BinaryReader)
@@ -1863,16 +1836,6 @@ Private Sub HandleErrorMessage(ByVal Message As BinaryReader)
     
 End Sub
 
-Private Sub HandleBlind(ByVal Message As BinaryReader)
-    
-    UserCiego = True
-End Sub
-
-Private Sub HandleDumb(ByVal Message As BinaryReader)
-    
-    UserEstupido = True
-End Sub
-
 Private Sub HandleChangeNPCInventorySlot(ByVal Message As BinaryReader)
     
     Dim slot        As Byte
@@ -1967,16 +1930,6 @@ Private Sub HandleMeditateToggle(ByVal Message As BinaryReader)
     
     UserMeditar = Not UserMeditar
     UserAvisado = False
-End Sub
-
-Private Sub HandleBlindNoMore(ByVal Message As BinaryReader)
-    
-    UserCiego = False
-End Sub
-
-Private Sub HandleDumbNoMore(ByVal Message As BinaryReader)
-    
-    UserEstupido = False
 End Sub
 
 Private Sub HandleSendSkills(ByVal Message As BinaryReader)
@@ -2316,12 +2269,6 @@ Private Sub HandleChangeUserTradeSlot(ByVal Message As BinaryReader)
     
 End Sub
 
-Private Sub HandleSendNight(ByVal Message As BinaryReader)
-    
-    Dim tBool       As Boolean                   'CHECK, este handle no hace nada con lo que recibe.. porque, ehmm.. no hay noche?.. o si
-    tBool = Message.ReadBool()
-End Sub
-
 Private Sub HandleSpawnList(ByVal Message As BinaryReader)
     
     Dim creatureList() As String
@@ -2382,11 +2329,11 @@ End Sub
 
 Private Sub HandlePong(ByVal Message As BinaryReader)
     
-    Call Message.ReadInt
+    Dim Time As Long
+    Time = Message.ReadInt()
     
-    Call AddtoRichTextBox(frmMain.RecTxt, "El ping es " & (GetTickCount - pingTime) & " ms.", 255, 0, 0, True, False, False)
-    
-    pingTime = 0
+    Call AddtoRichTextBox(frmMain.RecTxt, "El ping es " & (GetTickCount - Time) & " ms.", 255, 0, 0, True, False, False)
+
 End Sub
 
 Private Sub HandleUpdateTagAndStatus(ByVal Message As BinaryReader)
@@ -3124,13 +3071,6 @@ Public Sub WriteHeal()
     Call modEngine.NetWrite(Writer_)
 End Sub
 
-Public Sub WriteHelp()
-    
-    Call Writer_.WriteInt(ClientPacketID.Help)
-    
-    Call modEngine.NetWrite(Writer_)
-End Sub
-
 Public Sub WriteRequestStats()
     
     Call Writer_.WriteInt(ClientPacketID.RequestStats)
@@ -3204,13 +3144,6 @@ End Sub
 Public Sub WritePartyJoin()
     
     Call Writer_.WriteInt(ClientPacketID.PartyJoin)
-    
-    Call modEngine.NetWrite(Writer_)
-End Sub
-
-Public Sub WriteInquiry()
-    
-    Call Writer_.WriteInt(ClientPacketID.Inquiry)
     
     Call modEngine.NetWrite(Writer_)
 End Sub
@@ -3314,15 +3247,6 @@ Public Sub WriteGamble(ByVal Amount As Integer)
     Call Writer_.WriteInt(ClientPacketID.Gamble)
     
     Call Writer_.WriteInt(Amount)
-    
-    Call modEngine.NetWrite(Writer_)
-End Sub
-
-Public Sub WriteInquiryVote(ByVal opt As Byte)
-    
-    Call Writer_.WriteInt(ClientPacketID.InquiryVote)
-    
-    Call Writer_.WriteInt(opt)
     
     Call modEngine.NetWrite(Writer_)
 End Sub
@@ -3961,31 +3885,6 @@ Public Sub WriteItemsInTheFloor()
     Call modEngine.NetWrite(Writer_)
 End Sub
 
-Public Sub WriteMakeDumb(ByVal UserName As String)
-    
-    Call Writer_.WriteInt(ClientPacketID.MakeDumb)
-    
-    Call Writer_.WriteString16(UserName)
-    
-    Call modEngine.NetWrite(Writer_)
-End Sub
-
-Public Sub WriteMakeDumbNoMore(ByVal UserName As String)
-    
-    Call Writer_.WriteInt(ClientPacketID.MakeDumbNoMore)
-    
-    Call Writer_.WriteString16(UserName)
-    
-    Call modEngine.NetWrite(Writer_)
-End Sub
-
-Public Sub WriteDumpIPTables()
-    
-    Call Writer_.WriteInt(ClientPacketID.DumpIPTables)
-    
-    Call modEngine.NetWrite(Writer_)
-End Sub
-
 Public Sub WriteCouncilKick(ByVal UserName As String)
     
     Call Writer_.WriteInt(ClientPacketID.CouncilKick)
@@ -4204,28 +4103,6 @@ Public Sub WriteCreateNPCWithRespawn(ByVal NPCIndex As Integer)
     Call Writer_.WriteInt(ClientPacketID.CreateNPCWithRespawn)
     
     Call Writer_.WriteInt(NPCIndex)
-    
-    Call modEngine.NetWrite(Writer_)
-End Sub
-
-Public Sub WriteImperialArmour(ByVal armourIndex As Byte, ByVal objectIndex As Integer)
-    
-    Call Writer_.WriteInt(ClientPacketID.ImperialArmour)
-    
-    Call Writer_.WriteInt(armourIndex)
-    
-    Call Writer_.WriteInt(objectIndex)
-    
-    Call modEngine.NetWrite(Writer_)
-End Sub
-
-Public Sub WriteChaosArmour(ByVal armourIndex As Byte, ByVal objectIndex As Integer)
-    
-    Call Writer_.WriteInt(ClientPacketID.ChaosArmour)
-    
-    Call Writer_.WriteInt(armourIndex)
-    
-    Call Writer_.WriteInt(objectIndex)
     
     Call modEngine.NetWrite(Writer_)
 End Sub
@@ -4474,8 +4351,7 @@ Public Sub WritePing()
     Call Writer_.WriteInt(ClientPacketID.Ping)
     Call Writer_.WriteInt(GetTickCount())
     
-    Call modEngine.NetWrite(Writer_)
-    Call modEngine.NetFlush
+    Call modEngine.NetWrite(Writer_, True)
     
 End Sub
 

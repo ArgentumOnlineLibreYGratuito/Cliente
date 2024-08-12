@@ -85,16 +85,15 @@ Public Sub NetClose(Optional ByVal Forcibly As Boolean = False)
     
 End Sub
 
-Public Sub NetWrite(ByVal Message As BinaryWriter, Optional ByVal Clear As Boolean = True)
+Public Sub NetWrite(ByVal Message As BinaryWriter, Optional ByVal Immediately As Boolean = False)
     
     If (Not NetConnection_ Is Nothing) Then
     
         Call NetConnection_.Write(Message)
+        Call Message.Clear
         
-        If (Clear) Then
-        
-            Call Message.Clear
-        
+        If (Immediately) Then
+            Call NetConnection_.Flush
         End If
         
     End If

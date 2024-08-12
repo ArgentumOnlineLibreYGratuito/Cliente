@@ -56,9 +56,6 @@ Public luz_dia(0 To 24) As luzxhora '¬¬ la hora 24 dura 1 minuto entre las 24 
 Public engine As New clsDX8Engine
 'JOJOJO
 
-'To get free bytes in drive
-Private Declare Function GetDiskFreeSpace Lib "kernel32" Alias "GetDiskFreeSpaceExA" (ByVal lpRootPathName As String, FreeBytesToCaller As Currency, BytesTotal As Currency, FreeBytesTotal As Currency) As Long
-
 'To get free bytes in RAM
 
 Private pUdtMemStatus As MEMORYSTATUS
@@ -80,14 +77,6 @@ Public Function General_Bytes_To_Megabytes(Bytes As Double) As Double
 Dim dblAns As Double
 dblAns = (Bytes / 1024) / 1024
 General_Bytes_To_Megabytes = format(dblAns, "###,###,##0.00")
-End Function
-
-Public Function General_Get_Free_Ram() As Double
-    'Return Value in Megabytes
-    Dim dblAns As Double
-    GlobalMemoryStatus pUdtMemStatus
-    dblAns = pUdtMemStatus.dwAvailPhys
-    General_Get_Free_Ram = General_Bytes_To_Megabytes(dblAns)
 End Function
 
 Public Function General_Get_Free_Ram_Bytes() As Long

@@ -101,21 +101,6 @@ Public Enum TIPO
     RECHAZOPJ = 3
 End Enum
 
-Public Sub SetTipo(ByVal T As TIPO)
-    Select Case T
-        Case TIPO.ALIANZA
-            Me.Caption = "Detalle de solicitud de alianza"
-            Me.Text1.MaxLength = 200
-        Case TIPO.PAZ
-            Me.Caption = "Detalle de solicitud de Paz"
-            Me.Text1.MaxLength = 200
-        Case TIPO.RECHAZOPJ
-            Me.Caption = "Detalle de rechazo de membresía"
-            Me.Text1.MaxLength = 50
-    End Select
-End Sub
-
-
 Private Sub Command1_Click()
 
 
