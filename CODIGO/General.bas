@@ -188,73 +188,6 @@ Public Function DirMapas() As String
     DirMapas = App.path & "\MAPAS\"
 End Function
 
-Sub CargarAnimArmas()
-On Error Resume Next
-
-    Dim loopc As Long
-    Dim arch As String
-    
-    arch = App.path & "\init\" & "armas.dat"
-    
-    NumWeaponAnims = Val(GetVar(arch, "INIT", "NumArmas"))
-    
-    ReDim WeaponAnimData(1 To NumWeaponAnims) As WeaponAnimData
-    
-    For loopc = 1 To NumWeaponAnims
-        InitGrh WeaponAnimData(loopc).WeaponWalk(1), Val(GetVar(arch, "ARMA" & loopc, "Dir1")), 0
-        InitGrh WeaponAnimData(loopc).WeaponWalk(2), Val(GetVar(arch, "ARMA" & loopc, "Dir2")), 0
-        InitGrh WeaponAnimData(loopc).WeaponWalk(3), Val(GetVar(arch, "ARMA" & loopc, "Dir3")), 0
-        InitGrh WeaponAnimData(loopc).WeaponWalk(4), Val(GetVar(arch, "ARMA" & loopc, "Dir4")), 0
-    Next loopc
-End Sub
-
-Sub CargarColores()
-On Error Resume Next
-    Dim archivoC As String
-    
-    archivoC = App.path & "\init\colores.dat"
-    
-    If Not FileExist(archivoC, vbArchive) Then
-'TODO : Si hay que reinstalar, porque no cierra???
-        Call MsgBox("ERROR: no se ha podido cargar los colores. Falta el archivo colores.dat, reinstale el juego", vbCritical + vbOKOnly)
-        Exit Sub
-    End If
-    
-    Dim i As Long
-    
-    For i = 0 To 48 '49 y 50 reservados para ciudadano y criminal
-        ColoresPJ(i).r = CByte(GetVar(archivoC, CStr(i), "R"))
-        ColoresPJ(i).g = CByte(GetVar(archivoC, CStr(i), "G"))
-        ColoresPJ(i).b = CByte(GetVar(archivoC, CStr(i), "B"))
-    Next i
-    
-    ColoresPJ(50).r = CByte(GetVar(archivoC, "CR", "R"))
-    ColoresPJ(50).g = CByte(GetVar(archivoC, "CR", "G"))
-    ColoresPJ(50).b = CByte(GetVar(archivoC, "CR", "B"))
-    ColoresPJ(49).r = CByte(GetVar(archivoC, "CI", "R"))
-    ColoresPJ(49).g = CByte(GetVar(archivoC, "CI", "G"))
-    ColoresPJ(49).b = CByte(GetVar(archivoC, "CI", "B"))
-End Sub
-
-Sub CargarAnimEscudos()
-On Error Resume Next
-
-    Dim loopc As Long
-    Dim arch As String
-    
-    arch = App.path & "\init\" & "escudos.dat"
-    
-    NumEscudosAnims = Val(GetVar(arch, "INIT", "NumEscudos"))
-    
-    ReDim ShieldAnimData(1 To NumEscudosAnims) As ShieldAnimData
-    
-    For loopc = 1 To NumEscudosAnims
-        InitGrh ShieldAnimData(loopc).ShieldWalk(1), Val(GetVar(arch, "ESC" & loopc, "Dir1")), 0
-        InitGrh ShieldAnimData(loopc).ShieldWalk(2), Val(GetVar(arch, "ESC" & loopc, "Dir2")), 0
-        InitGrh ShieldAnimData(loopc).ShieldWalk(3), Val(GetVar(arch, "ESC" & loopc, "Dir3")), 0
-        InitGrh ShieldAnimData(loopc).ShieldWalk(4), Val(GetVar(arch, "ESC" & loopc, "Dir4")), 0
-    Next loopc
-End Sub
 
 Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Optional ByVal red As Integer = -1, Optional ByVal green As Integer, Optional ByVal blue As Integer, Optional ByVal bold As Boolean = False, Optional ByVal italic As Boolean = False, Optional ByVal bCrLf As Boolean = False)
 '******************************************
@@ -444,7 +377,7 @@ Sub MoveTo(ByVal Direccion As E_Heading)
     If LegalOk And Not UserParalizado Then
         If Not UserDescansar And Not UserMeditar Then
             Call WriteWalk(Direccion) 'We only walk if we are not meditating or resting
-            engine.Char_Move_by_Head UserCharIndex, Direccion
+            Char_Move_by_Head UserCharIndex, Direccion
             MoveScreen Direccion
         Else
             If Not UserAvisado Then
@@ -615,22 +548,19 @@ Sub Main()
     Call modEngine_Data.LoadHelmets("Resources://Init/Helmets.ind")
     Call modEngine_Data.LoadBodies("Resources://Init/Bodies.ind")
     Call modEngine_Data.LoadFXs("Resources://Init/Effects.ind")
+    Call modEngine_Data.LoadWeapons("Resources://Init/Weapons.ind")
+    Call modEngine_Data.LoadShields("Resources://Init/Shields.ind")
 
     'If Not InitTileEngine(frmMain.hWnd, 160, 7, 32, 32, 13, 17, 9, 8, 8, 0.018) Then
     '    Call CloseClient
     'End If
-    Call engine.Engine_Init
-    Call engine.setup_ambient
+
     AddtoRichTextBox frmCargando.status, "Hecho", , , , 1
     
     Call AddtoRichTextBox(frmCargando.status, "Creando animaciones extra... ", , , , , , 1)
 
-UserMap = 1
-    
-    Call CargarAnimArmas
-    Call CargarAnimEscudos
-    Call CargarColores
-    
+    UserMap = 1
+
     AddtoRichTextBox frmCargando.status, "Hecho", , , , 1
     
     AddtoRichTextBox frmCargando.status, "Iniciando DirectSound... ", 0, 0, 0, 0, 0, True
@@ -689,22 +619,26 @@ UserMap = 1
     Dialogos.font = frmMain.font
     DialogosClanes.font = frmMain.font
 
-    engine.Start
-End Sub
+    Call Mod_TileEngine.Initialize
+    
+    Do While prgRun
+        Call modEngine.Tick
+        Call modEngine_Audio.Update(&H0, UserPos.X, UserPos.Y)
+        
+        If frmMain.WindowState <> vbMinimized And frmMain.Visible = True Then
+            Call CheckKeys
+            
+            Call Mod_TileEngine.Render
+        Else
+            Call Sleep(10&)
+        End If
+        
+        DoEvents
+    Loop
 
-Function GetVar(ByVal file As String, ByVal Main As String, ByVal var As String) As String
-'*****************************************************************
-'Gets a Var from a text file
-'*****************************************************************
-    Dim sSpaces As String ' This will hold the input that the program will retrieve
-    
-    sSpaces = Space$(100) ' This tells the computer how long the longest string can be. If you want, you can change the number 100 to any number you wish
-    
-    getprivateprofilestring Main, var, vbNullString, sSpaces, Len(sSpaces), file
-    
-    GetVar = RTrim$(sSpaces)
-    GetVar = Left$(GetVar, Len(GetVar) - 1)
-End Function
+    Call CloseClient
+
+End Sub
 
 '[CODE 002]:MatuX
 '
@@ -843,10 +777,8 @@ Public Sub CloseClient()
 'Last Modify Date: 8/14/2007
 'Frees all used resources, cleans up and leaves
 '**************************************************************
-
-    frmCargando.Show
-    AddtoRichTextBox frmCargando.status, "Liberando recursos...", 0, 0, 0, 0, 0, 1
     
+    Call SaveProperties
     Call Resolution.ResetResolution
     
     'Stop tile engine
@@ -855,7 +787,6 @@ Public Sub CloseClient()
     'Destruimos los objetos públicos creados
 
     Set CustomKeys = Nothing
-    Set SurfaceDB = Nothing
     Set Dialogos = Nothing
     Set DialogosClanes = Nothing
     Set Inventario = Nothing

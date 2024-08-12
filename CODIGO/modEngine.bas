@@ -23,6 +23,7 @@ Option Explicit
 Public Aurora_Audio    As Audio_Service
 Public Aurora_Content  As Content_Service
 Public Aurora_Graphic  As Graphic_Service
+Public Aurora_Renderer As Graphic_Renderer
 
 ' -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ' [Engine::Network]
@@ -50,7 +51,8 @@ Public Sub Initialize()
     Call Aurora_Content.AddSystemLocator("Resources", "Resources")
 
     Set Aurora_Graphic = Kernel.Graphics
-
+    Set Aurora_Renderer = Kernel.renderer
+    
 End Sub
 
 Public Sub Tick()

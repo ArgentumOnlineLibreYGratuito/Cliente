@@ -45,6 +45,10 @@ Option Explicit
 Option Base 0
 
 ''
+' Font's Scale
+Private Const SIZE As Long = 12
+
+''
 ' Maximum number of dialogs that can exist.
 Private Const MAX_DIALOGS As Byte = 100
 
@@ -76,6 +80,7 @@ Private Type dialog
     textLine()  As String
     x           As Integer
     y           As Integer
+    Z           As Single
     startTime   As Long
     lifeTime    As Long
     CharIndex   As Integer
@@ -285,7 +290,7 @@ End Function
 ' @param    y           The Y coord where to start rendering.
 ' @param    charIndex   The character whose dialog's position is being updated.
 
-Public Sub UpdateDialogPos(ByVal x As Integer, ByVal y As Integer, ByVal CharIndex As Integer)
+Public Sub UpdateDialogPos(ByVal x As Integer, ByVal y As Integer, ByVal Z As Single, ByVal CharIndex As Integer)
 '**************************************************************
 'Author: Juan Martín Sotuyo Dodero
 'Last Modify Date: 07/28/07
@@ -297,8 +302,9 @@ Public Sub UpdateDialogPos(ByVal x As Integer, ByVal y As Integer, ByVal CharInd
     
     If slot >= 0 Then
         With dialogs(slot)
-            .x = x - (MAX_LENGTH \ 2) * 3
-            .y = y - (UBound(.textLine()) * 3)
+            .x = x
+            .y = y - (UBound(.textLine()) * SIZE)
+            .Z = Z
             .renderable = True
         End With
     End If
@@ -327,12 +333,12 @@ Public Sub Render()
                 
                 removedDialogs = removedDialogs + 1
             ElseIf .renderable Then
-                offset = -(usedFont.size + 2) * UBound(.textLine())
-                
+                offset = .y
+
                 'Render it
                 For j = 0 To UBound(.textLine())
-                    Call engine.Text_Render_ext(.textLine(j), .y + offset, .x, 400, 12, .color, True, True)
-                    offset = offset + usedFont.size + 5
+                    Call DrawText(.x, offset, .Z, .textLine(j), .color, eRendererAlignmentCenterTop, SIZE, True)
+                    offset = offset + SIZE
                 Next j
                 
                 'Won't render it unless it's updated in next frmae

@@ -17,6 +17,66 @@ Option Explicit
 
 ' TODO (Wolftein): Improve structures, specially Graphics.ind
 
+Public Function LoadWeapons(ByVal Filename As String) As Boolean
+    
+    Dim File As Memory_Chunk
+    Set File = Aurora_Content.Find(Filename)
+    
+    Dim Reader As BinaryReader
+    Set Reader = File.GetReader()
+
+    If (Reader.GetAvailable() > 0) Then
+
+        Dim Length As Long
+        Length = Reader.ReadInt16()
+
+        ReDim WeaponAnimData(0 To Length) As WeaponAnimData
+
+        Dim I As Long
+        For I = 1 To Length
+            Call InitGrh(WeaponAnimData(I).WeaponWalk(1), Reader.ReadInt16(), 0)
+            Call InitGrh(WeaponAnimData(I).WeaponWalk(2), Reader.ReadInt16(), 0)
+            Call InitGrh(WeaponAnimData(I).WeaponWalk(3), Reader.ReadInt16(), 0)
+            Call InitGrh(WeaponAnimData(I).WeaponWalk(4), Reader.ReadInt16(), 0)
+        Next I
+
+        LoadWeapons = True
+    Else
+        LoadWeapons = False
+    End If
+    
+End Function
+
+Public Function LoadShields(ByVal Filename As String) As Boolean
+    
+    Dim File As Memory_Chunk
+    Set File = Aurora_Content.Find(Filename)
+    
+    Dim Reader As BinaryReader
+    Set Reader = File.GetReader()
+
+    If (Reader.GetAvailable() > 0) Then
+
+        Dim Length As Long
+        Length = Reader.ReadInt16()
+
+        ReDim ShieldAnimData(0 To Length) As ShieldAnimData
+
+        Dim I As Long
+        For I = 1 To Length
+            Call InitGrh(ShieldAnimData(I).ShieldWalk(1), Reader.ReadInt16(), 0)
+            Call InitGrh(ShieldAnimData(I).ShieldWalk(2), Reader.ReadInt16(), 0)
+            Call InitGrh(ShieldAnimData(I).ShieldWalk(3), Reader.ReadInt16(), 0)
+            Call InitGrh(ShieldAnimData(I).ShieldWalk(4), Reader.ReadInt16(), 0)
+        Next I
+
+        LoadShields = True
+    Else
+        LoadShields = False
+    End If
+    
+End Function
+
 Public Function LoadHeads(ByVal Filename As String) As Boolean
     
     Dim File As Memory_Chunk
@@ -100,10 +160,10 @@ Public Function LoadBodies(ByVal Filename As String) As Boolean
 
         Dim I As Long
         For I = 1 To Length
-            InitGrh BodyData(I).Walk(1), Reader.ReadInt16(), 0
-            InitGrh BodyData(I).Walk(2), Reader.ReadInt16(), 0
-            InitGrh BodyData(I).Walk(3), Reader.ReadInt16(), 0
-            InitGrh BodyData(I).Walk(4), Reader.ReadInt16(), 0
+            Call InitGrh(BodyData(I).Walk(1), Reader.ReadInt16(), 0)
+            Call InitGrh(BodyData(I).Walk(2), Reader.ReadInt16(), 0)
+            Call InitGrh(BodyData(I).Walk(3), Reader.ReadInt16(), 0)
+            Call InitGrh(BodyData(I).Walk(4), Reader.ReadInt16(), 0)
                 
             BodyData(I).HeadOffset.X = Reader.ReadInt16()
             BodyData(I).HeadOffset.Y = Reader.ReadInt16()

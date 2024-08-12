@@ -1181,7 +1181,7 @@ Private Sub HandleChatOverHead(ByVal Message As BinaryReader)
     
     'Only add the chat if the character exists (a CharacterRemove may have been sent to the PC / NPC area before the buffer was flushed)
     If charlist(CharIndex).active Then _
-       Call Dialogos.CreateDialog(chat, CharIndex, D3DColorXRGB(r, g, b))
+       Call Dialogos.CreateDialog(chat, CharIndex, RGBA(r, g, b, 255))
 
 End Sub
 
@@ -1390,7 +1390,7 @@ Private Sub HandleCharacterMove(ByVal Message As BinaryReader)
         End If
     End With
     
-    Call engine.Char_Move_by_Pos(CharIndex, x, y)
+    Call Char_Move_by_Pos(CharIndex, x, y)
 
     Call RefreshAllChars
 End Sub
@@ -1498,7 +1498,12 @@ Private Sub HandlePlayWave(ByVal Message As BinaryReader)
     srcX = Message.ReadInt()
     srcY = Message.ReadInt()
     
-    'TODO Call modEngine_Audio.PlayEffect(CStr(wave) & ".wav", srcX, srcY)
+    If (MapData(srcX, srcY).CharIndex > 0) Then
+        Call modEngine_Audio.PlayEffect(CStr(wave) & ".wav", charlist(MapData(srcX, srcY).CharIndex).Emitter)
+    Else
+        Call modEngine_Audio.PlayEffect(CStr(wave) & ".wav", Nothing)
+    End If
+    
 End Sub
 
 Private Sub HandleGuildList(ByVal Message As BinaryReader)

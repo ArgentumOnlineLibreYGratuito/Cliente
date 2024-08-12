@@ -1,10 +1,12 @@
 [Audio]
-MusicEnabled = true
-MusicVolume = 100
-EffectEnabled = true
-EffectVolume = 100
-InterfaceEnabled = true
-InterfaceVolume = 100
+EffectEnabled = false
+EffectVolume = 0
+InterfaceEnabled = false
+InterfaceVolume = 0
+MusicEnabled = false
+MusicVolume = 0
 
 [Graphics]
 Fullscreen = false
+se
+ = false

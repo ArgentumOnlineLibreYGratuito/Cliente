@@ -45,10 +45,6 @@ Dim UserInventory(1 To MAX_INVENTORY_SLOTS) As Inventory    'User's inventory
 Dim WithEvents InventoryWindow As PictureBox    'Placeholder where to render the inventory
 Attribute InventoryWindow.VB_VarHelpID = -1
 
-#If ConMenuesConextuales = 1 Then
-    Dim ItemMenu As Menu    'Menu to be shown as pop up
-#End If
-
 Private Sub Class_Initialize()
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -251,32 +247,8 @@ Private Function ClickItem(ByVal x As Long, ByVal y As Long) As Long
     End If
 End Function
 
-Public Sub DrawInventory()
-    Dim i As Byte
-    Dim x As Integer
-    Dim y As Integer
-    
-    For i = 1 To UBound(UserInventory)
-        If UserInventory(i).grhindex Then
-            x = ((i - 1) Mod (InventoryWindow.width / 32)) * 32 + 2
-            y = ((i - 1) \ (InventoryWindow.width / 32)) * 32 + 2
-            If InvSelectedItem = i Then
-                Call engine.Draw_FilledBox(x, y, 32, 32, D3DColorXRGB(0, 0, 0), D3DColorXRGB(255, 0, 0))
-            End If
-            Call engine.Draw_GrhIndex(UserInventory(i).grhindex, x, y)
-            Call engine.Text_Render_ext(UserInventory(i).Amount, y, x, 40, 40, D3DColorXRGB(255, 255, 255))
-            If UserInventory(i).Equipped Then
-                Call engine.Text_Render_ext("+", y + 20, x + 20, 40, 40, D3DColorXRGB(255, 255, 255))
-            End If
-        End If
-    Next i
-End Sub
+Public Sub Initialize(ByRef InvPic As PictureBox)
 
-#If ConMenuesConextuales = 1 Then   'Argument list varies!!!
-    Public Sub Initialize(ByRef DirectDraw As DirectDraw7, ByRef InvPic As PictureBox, ByRef PopUpMenu As Menu)
-#Else   'Argument list varies!!!
-    Public Sub Initialize(ByRef InvPic As PictureBox)
-#End If
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modify Date: 27/07/04
@@ -285,10 +257,6 @@ End Sub
     Set InventoryWindow = InvPic
     '\TODO
     InvSelectedItem = ClickItem(1, 1)   'If there is anything there we select the top left item
-    
-#If ConMenuesConextuales = 1 Then
-    Set ItemMenu = PopUpMenu
-#End If
 End Sub
 
 Private Sub InventoryWindow_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -334,13 +302,4 @@ Private Sub InventoryWindow_MouseUp(Button As Integer, Shift As Integer, x As Si
 
     'Get the currently clickced item
     InvSelectedItem = ClickItem(CInt(x), CInt(y))
-    
-    
-#If ConMenuesConextuales = 1 Then
-    'If it was a right click on the same item we had selected before, show popup menu
-    If Button = vbRightButton And prevSelItem = InvSelectedItem Then
-        'Show the provided menu as a popup
-        Call InventoryWindow.Parent.PopUpMenu(ItemMenu, , x, y)
-    End If
-#End If
 End Sub

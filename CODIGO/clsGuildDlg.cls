@@ -85,9 +85,9 @@ If Not p_Activo Then Exit Sub
     For i = 1 To p_CANTIDADDIALOGOS
         If Trim$(p_Dialogos(i).Texto) <> vbNullString Then
             If Left$(p_Dialogos(i).Texto, 1) = Chr(3) Then
-                Call engine.Text_Render_ext(mid(p_Dialogos(i).Texto, 2), i * 10, 5, 400, 12, &HFF00FF00)
+                'TODO Call engine.Text_Render_ext(mid(p_Dialogos(I).Texto, 2), I * 10, 5, 400, 12, &HFF00FF00)
             Else
-                Call engine.Text_Render_ext(p_Dialogos(i).Texto, i * 10, 5, 400, 12, &HFFFFFF00)
+                'TODO Call engine.Text_Render_ext(p_Dialogos(I).Texto, I * 10, 5, 400, 12, &HFFFFFF00)
             End If
         End If
     Next i

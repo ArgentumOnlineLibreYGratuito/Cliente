@@ -518,6 +518,7 @@ Begin VB.Form frmMain
       _ExtentY        =   2646
       _Version        =   393217
       BackColor       =   0
+      Enabled         =   -1  'True
       ReadOnly        =   -1  'True
       ScrollBars      =   2
       DisableNoScroll =   -1  'True
@@ -994,9 +995,7 @@ End Sub
 
 Private Sub Second_Timer()
 
-    With luz_dia(Hour(time))
-        base_light = engine.change_day_effect(day_r_old, day_g_old, day_b_old, .r, .g, .b)
-    End With
+
     If Not DialogosClanes Is Nothing Then DialogosClanes.PassTimer
 End Sub
 
