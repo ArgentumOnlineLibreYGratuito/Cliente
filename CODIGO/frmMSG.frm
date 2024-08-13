@@ -145,13 +145,6 @@ List1.Clear
 
 End Sub
 
-Private Sub List1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-If Button = vbRightButton Then
-    PopUpMenu menU_usuario
-End If
-
-End Sub
-
 Private Sub mnuBorrar_Click()
     If List1.ListIndex < 0 Then Exit Sub
     'Pablo (ToxicWaste)

@@ -116,16 +116,6 @@ Private Sub Class_Initialize()
     dialogCount = 0
 End Sub
 
-''
-' Clean up and release resources
-
-Private Sub Class_Terminate()
-'***************************************************
-'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 07/28/07
-'Clean up
-'***************************************************
-End Sub
 
 Private Function BinarySearch(ByVal CharIndex As Integer) As Integer
 '**************************************************************

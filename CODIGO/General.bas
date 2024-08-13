@@ -179,16 +179,6 @@ Public Sub InitFonts()
     End With
 End Sub
 
-
-Public Function DirGraficos() As String
-    DirGraficos = App.path & "\GRAFICOS\"
-End Function
-
-Public Function DirMapas() As String
-    DirMapas = App.path & "\MAPAS\"
-End Function
-
-
 Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Optional ByVal red As Integer = -1, Optional ByVal green As Integer, Optional ByVal blue As Integer, Optional ByVal bold As Boolean = False, Optional ByVal italic As Boolean = False, Optional ByVal bCrLf As Boolean = False)
 '******************************************
 'Adds text to a Richtext box at the bottom.

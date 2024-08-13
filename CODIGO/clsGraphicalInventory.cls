@@ -46,24 +46,6 @@ Dim Device As Long
 Dim WithEvents InventoryWindow As PictureBox    'Placeholder where to render the inventory
 Attribute InventoryWindow.VB_VarHelpID = -1
 
-Private Sub Class_Initialize()
-'***************************************************
-'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modify Date: 27/07/04
-'
-'***************************************************
-End Sub
-
-Private Sub Class_Terminate()
-'***************************************************
-'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modify Date: 27/07/04
-'
-'***************************************************
-    'If (Device > 0) Then Aurora_Graphic.DeletePass Device
-    
-End Sub
-
 Public Sub ScrollInventory(ByVal up As Boolean)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)

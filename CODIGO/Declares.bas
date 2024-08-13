@@ -97,8 +97,6 @@ Public Const bBrazoDerecho = 4
 Public Const bBrazoIzquierdo = 5
 Public Const bTorso = 6
 
-Public NumEscudosAnims As Integer
-
 Public ArmasHerrero(0 To 100) As Integer
 Public ArmadurasHerrero(0 To 100) As Integer
 Public ObjCarpintero(0 To 100) As Integer
@@ -365,7 +363,7 @@ End Type
 Public Nombres As Boolean
 
 'User status vars
-Global OtroInventario(1 To MAX_INVENTORY_SLOTS) As Inventory
+Public OtroInventario(1 To MAX_INVENTORY_SLOTS) As Inventory
 
 Public UserHechizos(1 To MAXHECHI) As Integer
 
@@ -495,8 +493,6 @@ Public Enum eTrigger
 End Enum
 
 'Server stuff
-Public stxtbuffer As String 'Holds temp raw data from server
-Public stxtbuffercmsg As String 'Holds temp raw data from server
 Public Connected As Boolean 'True when connected to server
 Public UserMap As Integer
 Public UserMapRain As Boolean

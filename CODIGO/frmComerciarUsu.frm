@@ -317,12 +317,6 @@ Private Sub Command2_Click()
     Call WriteUserCommerceEnd
 End Sub
 
-Private Sub Form_Deactivate()
-'Me.SetFocus
-'Picture1.SetFocus
-
-End Sub
-
 Private Sub Form_Load()
 'Carga las imagenes...?
 lblEstadoResp.Visible = False

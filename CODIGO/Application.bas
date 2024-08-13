@@ -20,7 +20,6 @@ Private Const WAIT_ABANDONED = &H80
 
 Private Declare Function GetActiveWindow Lib "user32" () As Long
 Private Declare Function CreateMutex Lib "kernel32" Alias "CreateMutexA" (ByRef lpMutexAttributes As SECURITY_ATTRIBUTES, ByVal bInitialOwner As Long, ByVal lpName As String) As Long
-Private Declare Function CloseHandle Lib "kernel32" (ByVal hObject As Long) As Long
 Private Declare Function WaitForSingleObject Lib "kernel32" (ByVal hHandle As Long, ByVal dwMilliseconds As Long) As Long
   
 Private Type SECURITY_ATTRIBUTES

@@ -98,11 +98,11 @@ Public Sub SetResolution()
 'Last Modified By: Juan Martín Sotuyo Dodero (Maraxus)
 ' 03/29/2008: Maraxus - Retrieves current settings storing display depth and frequency for proper restoration.
 '***************************************************
-    Dim lRes As Long
+
     Dim MidevM As typDevMODE
     Dim CambiarResolucion As Boolean
     
-    lRes = EnumDisplaySettings(0, ENUM_CURRENT_SETTINGS, MidevM)
+    Call EnumDisplaySettings(0, ENUM_CURRENT_SETTINGS, MidevM)
     
     oldResWidth = Screen.Width \ Screen.TwipsPerPixelX
     oldResHeight = Screen.Height \ Screen.TwipsPerPixelY
@@ -125,7 +125,7 @@ Public Sub SetResolution()
             .dmBitsPerPel = 16
         End With
         
-        lRes = ChangeDisplaySettings(MidevM, CDS_TEST)
+        Call ChangeDisplaySettings(MidevM, CDS_TEST)
     Else
         bNoResChange = True
     End If

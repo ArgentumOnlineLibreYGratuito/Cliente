@@ -135,7 +135,7 @@ End Sub
 Private Sub Network_OnSend(ByVal Connection As Network_Client, ByVal Message As BinaryReader)
     
     Call modEngine_Protocol.Encode(Message)
-    
+
 End Sub
 
 Private Sub Network_OnError(ByVal Connection As Network_Client, ByVal Error As Long, ByVal Description As String)

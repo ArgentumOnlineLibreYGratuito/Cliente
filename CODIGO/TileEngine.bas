@@ -172,14 +172,6 @@ Public Type MapBlock
     Trigger As Integer
 End Type
 
-'Info de cada mapa
-Public Type MapInfo
-    Music As String
-    Name As String
-    StartPos As WorldPos
-    MapVersion As Integer
-End Type
-
 Public Type EffectData
     Animacion As Integer
     OffsetX As Integer
@@ -204,15 +196,10 @@ Private timerElapsedTime As Single
 Private timerTicksPerFrame As Double
 Public engineBaseSpeed As Single
 Private lFrameTimer As Long
-Private lFrameLimiter As Long
 Private ScrollPixelsPerFrameX As Byte
 Private ScrollPixelsPerFrameY As Byte
-Private MainViewWidth As Integer
-Private MainViewHeight As Integer
 Private TileBufferSize As Integer
 
-Private MouseTileX As Byte
-Private MouseTileY As Byte
 Private WindowTileWidth As Integer
 Private WindowTileHeight As Integer
 
@@ -227,7 +214,6 @@ Public TilePixelWidth As Integer
 'TODO Is this comment still valid? => Number of pixels the engine scrolls per frame. MUST divide evenly into pixels per tile
 Public NumChars As Integer
 Public LastChar As Integer
-Public NumWeaponAnims As Integer
 'TODO Is this comment still valid? => ¿?¿?¿?¿?¿?¿?¿?¿?¿?¿Graficos¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
 Public GrhData() As GrhData 'Guarda todos los grh
 Public BodyData() As BodyData
@@ -240,7 +226,6 @@ Public CascoAnimData() As HeadData
 
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿Mapa?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
 Public MapData() As MapBlock ' Mapa
-Public MapInfo As MapInfo ' Info acerca del mapa en uso
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
 
 Public bRain        As Boolean 'está raineando?
@@ -904,7 +889,6 @@ Sub ShowNextFrame(ByVal time As Single)
     Call RenderScreen(UserPos.x - AddtoUserPos.x, UserPos.y - AddtoUserPos.y, OffsetCounterX, OffsetCounterY)
     Call Dialogos.Render
 
-    lFrameLimiter = GetTickCount
     FramesPerSecCounter = FramesPerSecCounter + 1
     timerElapsedTime = GetElapsedTime()
     timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
@@ -1086,11 +1070,8 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
     Dim maxX                As Integer  'End X pos on current map
     Dim ScreenX             As Integer  'Keeps track of where to place tile on screen
     Dim ScreenY             As Integer  'Keeps track of where to place tile on screen
-    Dim minXOffset          As Integer
-    Dim minYOffset          As Integer
     Dim PixelOffsetXTemp    As Integer 'For centering grhs
     Dim PixelOffsetYTemp    As Integer 'For centering grhs
-    Dim CurrentGrhIndex     As Integer
 
     TileBufferSize = 2
     

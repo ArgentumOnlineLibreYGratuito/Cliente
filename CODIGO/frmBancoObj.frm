@@ -264,11 +264,6 @@ Private Sub Command2_Click()
     Call WriteBankEnd
 End Sub
 
-Private Sub Form_Deactivate()
-'Me.SetFocus
-End Sub
-
-
 Private Sub Form_Load()
 'Cargamos la interfase
 'Me.Picture = LoadPicture(App.path & "\Graficos\comerciar.jpg")
