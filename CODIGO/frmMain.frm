@@ -99,12 +99,6 @@ Begin VB.Form frmMain
       Left            =   5760
       Top             =   2520
    End
-   Begin VB.Timer Second 
-      Enabled         =   0   'False
-      Interval        =   1050
-      Left            =   3600
-      Top             =   2520
-   End
    Begin VB.PictureBox PanelDer 
       AutoSize        =   -1  'True
       BackColor       =   &H00000000&
@@ -518,7 +512,6 @@ Begin VB.Form frmMain
       _ExtentY        =   2646
       _Version        =   393217
       BackColor       =   0
-      Enabled         =   -1  'True
       ReadOnly        =   -1  'True
       ScrollBars      =   2
       DisableNoScroll =   -1  'True
@@ -538,14 +531,14 @@ Begin VB.Form frmMain
       BackColor       =   &H00000000&
       BorderStyle     =   0  'None
       ForeColor       =   &H80000008&
-      Height          =   6135
+      Height          =   6240
       Left            =   120
-      ScaleHeight     =   409
-      ScaleMode       =   3  'Pixel
-      ScaleWidth      =   529
+      ScaleHeight     =   416
+      ScaleMode       =   0  'User
+      ScaleWidth      =   544
       TabIndex        =   20
-      Top             =   2040
-      Width           =   7935
+      Top             =   1980
+      Width           =   8055
    End
    Begin VB.Image PicResu 
       BorderStyle     =   1  'Fixed Single
@@ -588,14 +581,6 @@ Begin VB.Form frmMain
       Stretch         =   -1  'True
       Top             =   8100
       Width           =   510
-   End
-   Begin VB.Shape MainViewShp 
-      BorderColor     =   &H00404040&
-      Height          =   6240
-      Left            =   0
-      Top             =   2040
-      Visible         =   0   'False
-      Width           =   8190
    End
    Begin VB.Menu mnuObj 
       Caption         =   "Objeto"
@@ -984,19 +969,12 @@ End Sub
 Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
     'Send text
     If KeyCode = vbKeyReturn Then
-        If LenB(stxtbuffer) <> 0 Then Call ParseUserCommand(stxtbuffer)
+        If LenB(SendTxt.Text) <> 0 Then Call ParseUserCommand(SendTxt.Text)
         
-        stxtbuffer = ""
         SendTxt.Text = ""
         KeyCode = 0
         SendTxt.Visible = False
     End If
-End Sub
-
-Private Sub Second_Timer()
-
-
-    If Not DialogosClanes Is Nothing Then DialogosClanes.PassTimer
 End Sub
 
 '[END]'
@@ -1179,8 +1157,6 @@ Private Sub Form_Click()
                     Call WriteWorkLeftClick(tX, tY, UsingSkill)
                     UsingSkill = 0
                 End If
-            Else
-                Call AbrirMenuViewPort
             End If
         ElseIf (MouseShift And 1) = 1 Then
             If Not CustomKeys.KeyAssigned(KeyCodeConstants.vbKeyShift) Then
@@ -1216,11 +1192,6 @@ Private Sub Form_Load()
     
    Me.Left = 0
    Me.Top = 0
-End Sub
-
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    MouseX = x - MainViewShp.Left
-    MouseY = y - MainViewShp.Top
 End Sub
 
 Private Sub hlst_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -1356,37 +1327,6 @@ Private Sub RecTxt_KeyDown(KeyCode As Integer, Shift As Integer)
     End If
 End Sub
 
-Private Sub SendTxt_Change()
-'**************************************************************
-'Author: Unknown
-'Last Modify Date: 3/06/2006
-'3/06/2006: Maraxus - impedí se inserten caractéres no imprimibles
-'**************************************************************
-    If Len(SendTxt.Text) > 160 Then
-        stxtbuffer = "Soy un cheater, avisenle a un gm"
-    Else
-        'Make sure only valid chars are inserted (with Shift + Insert they can paste illegal chars)
-        Dim i As Long
-        Dim tempstr As String
-        Dim CharAscii As Integer
-        
-        For i = 1 To Len(SendTxt.Text)
-            CharAscii = Asc(mid$(SendTxt.Text, i, 1))
-            If CharAscii >= vbKeySpace And CharAscii <= 250 Then
-                tempstr = tempstr & Chr$(CharAscii)
-            End If
-        Next i
-        
-        If tempstr <> SendTxt.Text Then
-            'We only set it if it's different, otherwise the event will be raised
-            'constantly and the client will crush
-            SendTxt.Text = tempstr
-        End If
-        
-        stxtbuffer = SendTxt.Text
-    End If
-End Sub
-
 Private Sub SendTxt_KeyPress(KeyAscii As Integer)
     If Not (KeyAscii = vbKeyBack) And _
        Not (KeyAscii >= vbKeySpace And KeyAscii <= 250) Then _
@@ -1397,11 +1337,10 @@ Private Sub SendCMSTXT_KeyUp(KeyCode As Integer, Shift As Integer)
     'Send text
     If KeyCode = vbKeyReturn Then
         'Say
-        If stxtbuffercmsg <> "" Then
-            Call ParseUserCommand("/CMSG " & stxtbuffercmsg)
+        If SendCMSTXT.Text <> "" Then
+            Call ParseUserCommand("/CMSG " & SendCMSTXT.Text)
         End If
 
-        stxtbuffercmsg = ""
         SendCMSTXT.Text = ""
         KeyCode = 0
         Me.SendCMSTXT.Visible = False
@@ -1412,92 +1351,4 @@ Private Sub SendCMSTXT_KeyPress(KeyAscii As Integer)
     If Not (KeyAscii = vbKeyBack) And _
        Not (KeyAscii >= vbKeySpace And KeyAscii <= 250) Then _
         KeyAscii = 0
-End Sub
-
-Private Sub SendCMSTXT_Change()
-    If Len(SendCMSTXT.Text) > 160 Then
-        stxtbuffercmsg = "Soy un cheater, avisenle a un GM"
-    Else
-        'Make sure only valid chars are inserted (with Shift + Insert they can paste illegal chars)
-        Dim i As Long
-        Dim tempstr As String
-        Dim CharAscii As Integer
-        
-        For i = 1 To Len(SendCMSTXT.Text)
-            CharAscii = Asc(mid$(SendCMSTXT.Text, i, 1))
-            If CharAscii >= vbKeySpace And CharAscii <= 250 Then
-                tempstr = tempstr & Chr$(CharAscii)
-            End If
-        Next i
-        
-        If tempstr <> SendCMSTXT.Text Then
-            'We only set it if it's different, otherwise the event will be raised
-            'constantly and the client will crush
-            SendCMSTXT.Text = tempstr
-        End If
-        
-        stxtbuffercmsg = SendCMSTXT.Text
-    End If
-End Sub
-
-Private Sub AbrirMenuViewPort()
-#If (ConMenuseConextuales = 1) Then
-
-If tX >= MinXBorder And tY >= MinYBorder And _
-    tY <= MaxYBorder And tX <= MaxXBorder Then
-    If MapData(tX, tY).CharIndex > 0 Then
-        If charlist(MapData(tX, tY).CharIndex).invisible = False Then
-        
-            Dim i As Long
-            Dim m As New frmMenuseFashion
-            
-            Load m
-            m.SetCallback Me
-            m.SetMenuId 1
-            m.ListaInit 2, False
-            
-            If charlist(MapData(tX, tY).CharIndex).Nombre <> "" Then
-                m.ListaSetItem 0, charlist(MapData(tX, tY).CharIndex).Nombre, True
-            Else
-                m.ListaSetItem 0, "<NPC>", True
-            End If
-            m.ListaSetItem 1, "Comerciar"
-            
-            m.ListaFin
-            m.Show , Me
-
-        End If
-    End If
-End If
-
-#End If
-End Sub
-
-Public Sub CallbackMenuFashion(ByVal MenuId As Long, ByVal Sel As Long)
-Select Case MenuId
-
-Case 0 'Inventario
-    Select Case Sel
-    Case 0
-    Case 1
-    Case 2 'Tirar
-        Call TirarItem
-    Case 3 'Usar
-        If MainTimer.Check(TimersIndex.UseItemWithDblClick) Then
-            Call UsarItem
-        End If
-    Case 3 'equipar
-        Call EquiparItem
-    End Select
-    
-Case 1 'Menu del ViewPort del engine
-    Select Case Sel
-    Case 0 'Nombre
-        Call WriteLeftClick(tX, tY)
-        
-    Case 1 'Comerciar
-        Call WriteLeftClick(tX, tY)
-        Call WriteCommerceStart
-    End Select
-End Select
 End Sub

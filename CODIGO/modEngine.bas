@@ -39,8 +39,9 @@ Private NetProtocol_   As Network_Protocol
 Public Sub Initialize()
 
     Dim Configuration As Kernel_Properties
-    Configuration.WindowWidth = 800
-    Configuration.WindowHeight = 600
+    Configuration.WindowHandle = frmMain.renderer.hWnd
+    Configuration.WindowWidth = frmMain.renderer.ScaleWidth
+    Configuration.WindowHeight = frmMain.renderer.ScaleHeight
     Configuration.WindowTitle = "Argentum Online v12.1"
     
     Call Kernel.Initialize(eKernelModeClient, Configuration)

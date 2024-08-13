@@ -337,14 +337,14 @@ Picture1.SetFocus
 End Sub
 
 Private Sub list1_Click()
-DibujaGrh Inventario.grhindex(List1.ListIndex + 1)
+'TODODibujaGrh Inventario.GrhIndex(List1.ListIndex + 1)
 
 End Sub
 
 Public Sub DibujaGrh(Grh As Integer)
 
 
-Call Grh_Render_To_Hdc(Picture1.hdc, (Grh), 0, 0)
+'TODOCall Grh_Render_To_Hdc(Picture1.hDC, (Grh), 0, 0)
 
 End Sub
 

@@ -29,7 +29,7 @@ Begin VB.Form frmOpciones
       Caption         =   "Cambiar Contraseña"
       Height          =   375
       Left            =   960
-      TabIndex        =   13
+      TabIndex        =   8
       Top             =   3600
       Width           =   2775
    End
@@ -37,7 +37,7 @@ Begin VB.Form frmOpciones
       Caption         =   "Configurar Teclas"
       Height          =   375
       Left            =   960
-      TabIndex        =   12
+      TabIndex        =   7
       Top             =   3120
       Width           =   2775
    End
@@ -47,14 +47,14 @@ Begin VB.Form frmOpciones
       ForeColor       =   &H00FFFFFF&
       Height          =   975
       Left            =   240
-      TabIndex        =   7
+      TabIndex        =   2
       Top             =   600
       Width           =   4215
       Begin MSComctlLib.Slider Slider1 
          Height          =   255
          Index           =   0
          Left            =   1080
-         TabIndex        =   10
+         TabIndex        =   5
          Top             =   240
          Width           =   3015
          _ExtentX        =   5318
@@ -71,7 +71,7 @@ Begin VB.Form frmOpciones
          Height          =   255
          Index           =   1
          Left            =   120
-         TabIndex        =   9
+         TabIndex        =   4
          Top             =   600
          Width           =   855
       End
@@ -82,7 +82,7 @@ Begin VB.Form frmOpciones
          Height          =   255
          Index           =   0
          Left            =   120
-         TabIndex        =   8
+         TabIndex        =   3
          Top             =   240
          Width           =   855
       End
@@ -90,7 +90,7 @@ Begin VB.Form frmOpciones
          Height          =   255
          Index           =   1
          Left            =   1080
-         TabIndex        =   11
+         TabIndex        =   6
          Top             =   600
          Width           =   3015
          _ExtentX        =   5318
@@ -100,57 +100,6 @@ Begin VB.Form frmOpciones
          LargeChange     =   10
          Max             =   100
          TickStyle       =   3
-      End
-   End
-   Begin VB.Frame Frame1 
-      BackColor       =   &H00000000&
-      Caption         =   "Diálogos de clan"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   750
-      Left            =   255
-      TabIndex        =   2
-      Top             =   1665
-      Width           =   4230
-      Begin VB.TextBox txtCantMensajes 
-         Alignment       =   2  'Center
-         Height          =   285
-         Left            =   2925
-         MaxLength       =   1
-         TabIndex        =   5
-         Text            =   "5"
-         Top             =   315
-         Width           =   450
-      End
-      Begin VB.OptionButton optPantalla 
-         BackColor       =   &H00000000&
-         Caption         =   "En pantalla,"
-         ForeColor       =   &H00FFFFFF&
-         Height          =   270
-         Left            =   1800
-         TabIndex        =   4
-         Top             =   315
-         Value           =   -1  'True
-         Width           =   1560
-      End
-      Begin VB.OptionButton optConsola 
-         BackColor       =   &H00000000&
-         Caption         =   "En consola"
-         ForeColor       =   &H00FFFFFF&
-         Height          =   270
-         Left            =   105
-         TabIndex        =   3
-         Top             =   315
-         Width           =   1560
-      End
-      Begin VB.Label Label2 
-         BackStyle       =   0  'Transparent
-         Caption         =   "mensajes"
-         ForeColor       =   &H00FFFFFF&
-         Height          =   240
-         Left            =   3480
-         TabIndex        =   6
-         Top             =   345
-         Width           =   750
       End
    End
    Begin VB.CommandButton Command2 
@@ -291,27 +240,10 @@ Private Sub Form_Load()
         Check1(1).value = vbUnchecked
         Slider1(1).Enabled = False
     End If
-    
-    txtCantMensajes.Text = CStr(DialogosClanes.CantidadDialogos)
-    
-    If DialogosClanes.Activo Then
-        optConsola.value = False
-        optPantalla.value = True
-    Else
-        optConsola.value = True
-        optPantalla.value = False
-    End If
-    
+
     loading = False     'Enable sounds when setting check's values
 End Sub
 
-Private Sub optConsola_Click()
-    DialogosClanes.Activo = False
-End Sub
-
-Private Sub optPantalla_Click()
-    DialogosClanes.Activo = True
-End Sub
 
 Private Sub Slider1_Change(index As Integer)
     Select Case index
@@ -329,13 +261,4 @@ Private Sub Slider1_Scroll(index As Integer)
         Case 1
             modEngine_Audio.EffectVolume = Slider1(1).value
     End Select
-End Sub
-
-Private Sub txtCantMensajes_LostFocus()
-    txtCantMensajes.Text = Trim$(txtCantMensajes.Text)
-    If IsNumeric(txtCantMensajes.Text) Then
-        DialogosClanes.CantidadDialogos = Trim$(txtCantMensajes.Text)
-    Else
-        txtCantMensajes.Text = 5
-    End If
 End Sub

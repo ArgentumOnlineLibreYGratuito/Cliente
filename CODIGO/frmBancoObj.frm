@@ -365,8 +365,8 @@ Select Case index
                 Label1(4).Visible = False
         End Select
         
-        If UserBancoInventory(List1(0).ListIndex + 1).Amount <> 0 Then _
-            Call Grh_Render_To_Hdc(Picture1.hdc, (UserBancoInventory(List1(0).ListIndex + 1).grhindex), 0, 0)
+        'If UserBancoInventory(List1(0).ListIndex + 1).Amount <> 0 Then _
+        'TODO    Call Grh_Render_To_Hdc(Picture1.hDC, (UserBancoInventory(List1(0).ListIndex + 1).GrhIndex), 0, 0)
     Case 1
         Label1(0).Caption = Inventario.ItemName(List1(1).ListIndex + 1)
         Label1(2).Caption = Inventario.Amount(List1(1).ListIndex + 1)
@@ -385,8 +385,8 @@ Select Case index
                 Label1(4).Visible = False
         End Select
         
-        If Inventario.Amount(List1(1).ListIndex + 1) <> 0 Then _
-            Call Grh_Render_To_Hdc(Picture1.hdc, (Inventario.grhindex(List1(1).ListIndex + 1)), 0, 0)
+        'TODOIf Inventario.Amount(List1(1).ListIndex + 1) <> 0 Then _
+        'TODO    Call Grh_Render_To_Hdc(Picture1.hDC, (Inventario.GrhIndex(List1(1).ListIndex + 1)), 0, 0)
 End Select
 
 If Label1(2).Caption = 0 Then ' 27/08/2006 - GS > No mostrar imagen ni nada, cuando no ahi nada que mostrar.

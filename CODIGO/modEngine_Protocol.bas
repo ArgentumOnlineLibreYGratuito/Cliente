@@ -375,8 +375,6 @@ End Sub
 
 Public Sub OnClose()
     Dim i As Long
-    
-    frmMain.Second.Enabled = False
     Connected = False
 
     frmConnect.MousePointer = vbNormal
@@ -1240,7 +1238,6 @@ Private Sub HandleGuildChat(ByVal Message As BinaryReader)
     
     chat = Message.ReadString16()
     
-    If Not DialogosClanes.Activo Then
         If InStr(1, chat, "~") Then
             str = ReadField(2, chat, 126)
             If Val(str) > 255 Then
@@ -1269,10 +1266,6 @@ Private Sub HandleGuildChat(ByVal Message As BinaryReader)
                 Call AddtoRichTextBox(frmMain.RecTxt, chat, .red, .green, .blue, .bold, .italic)
             End With
         End If
-    Else
-        Call DialogosClanes.PushBackText(ReadField(1, chat, 126))
-    End If
-    
 End Sub
 
 Private Sub HandleShowMessageBox(ByVal Message As BinaryReader)

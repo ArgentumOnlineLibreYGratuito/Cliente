@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "clsGrapchicalInventory"
+Attribute VB_Name = "clsGraphicalInventory"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
@@ -41,6 +41,7 @@ Dim InvSelectedItem As Long             'Currently selected item
 'Dim InvSurface As DirectDrawSurface7            'DD Surface used to render everything
 
 Dim UserInventory(1 To MAX_INVENTORY_SLOTS) As Inventory    'User's inventory
+Dim Device As Long
 
 Dim WithEvents InventoryWindow As PictureBox    'Placeholder where to render the inventory
 Attribute InventoryWindow.VB_VarHelpID = -1
@@ -59,6 +60,8 @@ Private Sub Class_Terminate()
 'Last Modify Date: 27/07/04
 '
 '***************************************************
+    'If (Device > 0) Then Aurora_Graphic.DeletePass Device
+    
 End Sub
 
 Public Sub ScrollInventory(ByVal up As Boolean)
@@ -129,13 +132,13 @@ Public Property Get Def(ByVal slot As Byte) As Integer
     Def = UserInventory(slot).Def
 End Property
 
-Public Property Get grhindex(ByVal slot As Byte) As Integer
+Public Property Get GrhIndex(ByVal slot As Byte) As Integer
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modify Date: 27/07/04
 'Retrieves the grh index of the selected item
 '***************************************************
-    grhindex = UserInventory(slot).grhindex
+    GrhIndex = UserInventory(slot).GrhIndex
 End Property
 
 Public Property Get Valor(ByVal slot As Byte) As Single
@@ -210,7 +213,7 @@ Public Sub SetItem(ByVal slot As Byte, ByVal eOBJIndex As Integer, ByVal eAmount
         .Amount = eAmount
         .Def = eDef
         .Equipped = eEquipped
-        .grhindex = eGrhIndex
+        .GrhIndex = eGrhIndex
         .MaxHit = eMaxHit
         .MinHit = eMinHit
         .Name = eName
@@ -221,7 +224,7 @@ Public Sub SetItem(ByVal slot As Byte, ByVal eOBJIndex As Integer, ByVal eAmount
 
 End Sub
 
-Private Function ClickItem(ByVal x As Long, ByVal y As Long) As Long
+Private Function ClickItem(ByVal X As Long, ByVal Y As Long) As Long
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modify Date: 27/07/04
@@ -231,15 +234,15 @@ Private Function ClickItem(ByVal x As Long, ByVal y As Long) As Long
     Dim temp_x As Long
     Dim temp_y As Long
     
-    temp_x = x \ 32
-    temp_y = y \ 32
+    temp_x = X \ 32
+    temp_y = Y \ 32
     
     TempItem = temp_x + (temp_y + InventoryOffset) * (InventoryWindow.ScaleWidth \ 32) + 1
     
     'Make sure it's within limits
     If TempItem <= MAX_INVENTORY_SLOTS Then
         'Make sure slot isn't empty
-        If UserInventory(TempItem).grhindex Then
+        If UserInventory(TempItem).GrhIndex Then
             ClickItem = TempItem
         Else
             ClickItem = 0
@@ -257,9 +260,62 @@ Public Sub Initialize(ByRef InvPic As PictureBox)
     Set InventoryWindow = InvPic
     '\TODO
     InvSelectedItem = ClickItem(1, 1)   'If there is anything there we select the top left item
+    
+    Device = Aurora_Graphic.CreatePassFromDisplay(InvPic.hWnd, InvPic.ScaleWidth, InvPic.ScaleHeight)
 End Sub
 
-Private Sub InventoryWindow_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
+Public Sub DrawInventory()
+    Dim I As Byte
+    Dim X As Integer
+    Dim Y As Integer
+    
+    Dim Viewport As Math_Rectf
+    Viewport.X1 = 0: Viewport.X2 = InventoryWindow.ScaleWidth
+    Viewport.Y1 = 0: Viewport.Y2 = InventoryWindow.ScaleHeight
+    
+    
+    Aurora_Graphic.Prepare Device, Viewport, eClearAll, &H0, 1, 0
+    
+        
+    Dim Camera As New Graphic_Camera
+    Call Camera.SetOrthographic(0, InventoryWindow.ScaleWidth, InventoryWindow.ScaleHeight, 0, 1000, -1000)
+    Call Camera.Compute ' TODO: Camera movement
+            
+    Call Aurora_Renderer.Begin(Camera, 0)
+    
+    For I = 1 To UBound(UserInventory)
+        With UserInventory(I)
+          
+          If .GrhIndex Then
+      
+                  X = ((I - 1) Mod (InventoryWindow.Width / 32)) * 32 + 2
+                  Y = ((I - 1) \ (InventoryWindow.Width / 32)) * 32 + 2
+    
+                  Call DrawGrhIndex(.GrhIndex, X, Y, -1, 1, &HFFFFFFFF)
+                 
+                  If .Amount > 0 Then Call DrawText(X + 1, Y + 1, -0.5, CStr(.Amount), RGBA(255, 255, 255, 255), eRendererAlignmentLeftTop, 10, True)
+                 
+                  If .Equipped Then
+                      Call DrawText(X + 32 - 8, Y + 32 - 10, -0.25, "E", RGBA(255, 255, 0, 255), eRendererAlignmentLeftTop, 10, True)
+                  End If
+                  
+                  If InvSelectedItem = I Then
+                      Call DrawGrhIndex(2, X, Y, 0, 0)
+                  End If
+          End If
+        End With
+
+    Next I
+    
+    Call Aurora_Renderer.End
+
+    
+    Aurora_Graphic.Commit Device, False, False
+    
+End Sub
+
+Private Sub InventoryWindow_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modify Date: 27/07/04
@@ -271,11 +327,11 @@ Private Sub InventoryWindow_MouseMove(Button As Integer, Shift As Integer, x As 
     Dim TempItem As Integer
     
     'Exit if it got outside the control's area
-    If x < 0 Or y < 0 Or x > InventoryWindow.width Or y > InventoryWindow.height Then _
+    If X < 0 Or Y < 0 Or X > InventoryWindow.Width Or Y > InventoryWindow.Height Then _
         Exit Sub
     
-    temp_x = x \ 32
-    temp_y = y \ 32
+    temp_x = X \ 32
+    temp_y = Y \ 32
     
     TempItem = temp_x + (temp_y + InventoryOffset) * (InventoryWindow.ScaleWidth \ 32) + 1
     
@@ -284,7 +340,7 @@ Private Sub InventoryWindow_MouseMove(Button As Integer, Shift As Integer, x As 
     End If
 End Sub
 
-Private Sub InventoryWindow_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub InventoryWindow_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modify Date: 27/07/04
@@ -295,11 +351,11 @@ Private Sub InventoryWindow_MouseUp(Button As Integer, Shift As Integer, x As Si
     Dim prevSelItem As Long
     
     'Exit if it got outside the control's area
-    If x < 0 Or y < 0 Or x > InventoryWindow.width Or y > InventoryWindow.height Then _
+    If X < 0 Or Y < 0 Or X > InventoryWindow.Width Or Y > InventoryWindow.Height Then _
         Exit Sub
     
     prevSelItem = InvSelectedItem
 
     'Get the currently clickced item
-    InvSelectedItem = ClickItem(CInt(x), CInt(y))
+    InvSelectedItem = ClickItem(CInt(X), CInt(Y))
 End Sub

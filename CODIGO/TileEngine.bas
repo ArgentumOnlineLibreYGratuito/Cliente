@@ -207,8 +207,6 @@ Private lFrameTimer As Long
 Private lFrameLimiter As Long
 Private ScrollPixelsPerFrameX As Byte
 Private ScrollPixelsPerFrameY As Byte
-Private TileBufferPixelOffsetX As Integer
-Private TileBufferPixelOffsetY As Integer
 Private MainViewWidth As Integer
 Private MainViewHeight As Integer
 Private TileBufferSize As Integer
@@ -260,7 +258,6 @@ End Enum
 '       [END]
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
 
-Private Device_ As Long
 Private Technique_1_ As Graphic_Pipeline
 Private Technique_2_ As Graphic_Pipeline
 Private Font_ As Graphic_Font
@@ -566,10 +563,6 @@ Function InMapBounds(ByVal x As Integer, ByVal y As Integer) As Boolean
     InMapBounds = True
 End Function
 
-Public Sub Grh_Render_To_Hdc(ByVal desthDC As Long, grh_index As Long, ByVal screen_x As Integer, ByVal screen_y As Integer, Optional transparent As Boolean = False)
-    ' TODO
-End Sub
-
 Public Sub Engine_MoveScreen(ByVal nHeading As E_Heading)
 '******************************************
 'Starts the screen moving in a direction
@@ -746,12 +739,12 @@ End Sub
 
 Public Sub Initialize()
                                           
-    HalfWindowTileHeight = (frmMain.renderer.ScaleHeight / 32) \ 2
-    HalfWindowTileWidth = (frmMain.renderer.ScaleWidth / 32) \ 2
+    WindowTileWidth = frmMain.renderer.ScaleWidth / 32
+    WindowTileHeight = frmMain.renderer.ScaleHeight / 32
+    HalfWindowTileWidth = WindowTileWidth \ 2
+    HalfWindowTileHeight = WindowTileHeight \ 2
     
     TileBufferSize = 9
-    TileBufferPixelOffsetX = (TileBufferSize - 1) * 32
-    TileBufferPixelOffsetY = (TileBufferSize - 1) * 32
 
     TilePixelWidth = 32
     TilePixelHeight = 32
@@ -770,14 +763,11 @@ Public Sub Initialize()
     UserPos.x = 50
     UserPos.y = 50
     
-    MinXBorder = XMinMapSize + (frmMain.renderer.ScaleWidth / 64)
-    MaxXBorder = XMaxMapSize - (frmMain.renderer.ScaleWidth / 64)
-    MinYBorder = YMinMapSize + (frmMain.renderer.ScaleHeight / 64)
-    MaxYBorder = YMaxMapSize - (frmMain.renderer.ScaleHeight / 64)
-    
-    ' Initialize Device
-    Device_ = Aurora_Graphic.CreatePassFromDisplay(frmMain.renderer.hWnd, frmMain.renderer.ScaleWidth, frmMain.renderer.ScaleHeight)
-    
+    MinXBorder = XMinMapSize + HalfWindowTileWidth
+    MaxXBorder = XMaxMapSize - HalfWindowTileWidth
+    MinYBorder = YMinMapSize + HalfWindowTileWidth
+    MaxYBorder = YMaxMapSize - HalfWindowTileWidth
+
     ' Initialize Techniques
     Set Technique_1_ = Aurora_Content.Load("Resources://Pipeline/Sprite.effect", eResourceTypePipeline)
     Set Technique_2_ = Aurora_Content.Load("Resources://Pipeline/Sprite_Alpha.effect", eResourceTypePipeline)
@@ -794,11 +784,13 @@ Public Sub Render()
     Viewport.Y1 = 0
     Viewport.Y2 = frmMain.renderer.ScaleHeight
     
-    Call Aurora_Graphic.Prepare(Device_, Viewport, eClearAll, &HFFFF, 1, 0)
+    Call Aurora_Graphic.Prepare(&H0, Viewport, eClearAll, &HFFFF, 1, 0)
     
     Call ShowNextFrame(&H0)
     
-    Call Aurora_Graphic.Commit(Device_, False, False)
+    Call Aurora_Graphic.Commit(&H0, False, False)
+    
+    Call Inventario.DrawInventory
     
 End Sub
 
@@ -1217,4 +1209,35 @@ Private Sub Draw_Grh(ByRef Grh As Grh, ByVal x As Long, ByVal y As Long, ByVal Z
     
 End Sub
 
-
+Sub DrawGrhIndex(ByVal GrhIndex As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal Z As Single, ByVal Center As Byte, Optional ByVal color As Long = -1, Optional ByVal Angle As Integer = 0)
+    If (GrhIndex = 0) Then Exit Sub
+    
+    With GrhData(GrhIndex)
+        'Center Grh over X,Y pos
+        If Center Then
+            If .TileWidth <> 1 Then
+                X = X - Int(.TileWidth * TilePixelWidth / 2) + TilePixelWidth \ 2
+            End If
+            
+            If .TileHeight <> 1 Then
+                Y = Y - Int(.TileHeight * TilePixelHeight) + TilePixelHeight
+            End If
+        End If
+                            
+        Dim Texture As Graphic_Texture
+        Set Texture = Aurora_Content.Load("Resources://Texture/" + CStr(.FileNum) + ".png", eResourceTypeTexture)
+        
+        Dim Source As Math_Rectf, destination As Math_Rectf
+        Source.X1 = .sX / Texture.GetWidth()
+        Source.Y1 = .sY / Texture.GetHeight
+        Source.X2 = Source.X1 + .pixelWidth / Texture.GetWidth()
+        Source.Y2 = Source.Y1 + .pixelHeight / Texture.GetHeight()
+        destination.X1 = X
+        destination.Y1 = Y
+        destination.X2 = X + .pixelWidth
+        destination.Y2 = Y + .pixelHeight
+        
+        Call Draw(destination, Source, Z, Angle, color, .FileNum, False)
+    End With
+  
+End Sub

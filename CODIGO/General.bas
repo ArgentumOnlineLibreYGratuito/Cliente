@@ -452,8 +452,6 @@ On Error Resume Next
     End If
 End Sub
 
-'TODO : Si bien nunca estuvo allí, el mapa es algo independiente o a lo sumo dependiente del engine, no va acá!!!
-
 Function ReadField(ByVal Pos As Integer, ByRef Text As String, ByVal SepASCII As Byte) As String
 '*****************************************************************
 'Gets a field from a delimited string
@@ -525,13 +523,8 @@ Sub Main()
     'Set resolution BEFORE the loading form is displayed, therefore it will be centered.
     Call Resolution.SetResolution
     
-    frmCargando.Show
-    frmCargando.Refresh
-    
     frmConnect.version = "v" & App.Major & "." & App.Minor & " Build: " & App.Revision
 
-    AddtoRichTextBox frmCargando.status, "Iniciando constantes... ", 0, 0, 0, 0, 0, 1
-    
     Call InicializarNombres
 
     ' Initialize FONTTYPES
@@ -540,9 +533,6 @@ Sub Main()
     frmOldPersonaje.NameTxt.Text = ""
     frmOldPersonaje.PasswordTxt.Text = ""
     
-    AddtoRichTextBox frmCargando.status, "Hecho", , , , 1
-    
-    AddtoRichTextBox frmCargando.status, "Iniciando motor gráfico... ", 0, 0, 0, 0, 0, 1
     Call modEngine_Data.LoadGraphics("Resources://Init/Graphics.ind")
     Call modEngine_Data.LoadHeads("Resources://Init/Heads.ind")
     Call modEngine_Data.LoadHelmets("Resources://Init/Helmets.ind")
@@ -555,19 +545,8 @@ Sub Main()
     '    Call CloseClient
     'End If
 
-    AddtoRichTextBox frmCargando.status, "Hecho", , , , 1
-    
-    Call AddtoRichTextBox(frmCargando.status, "Creando animaciones extra... ", , , , , , 1)
-
     UserMap = 1
 
-    AddtoRichTextBox frmCargando.status, "Hecho", , , , 1
-    
-    AddtoRichTextBox frmCargando.status, "Iniciando DirectSound... ", 0, 0, 0, 0, 0, True
-    
-    'Inicializamos el sonido
-    'Call Audio.Initialize(frmMain.hWnd, App.path & "\WAV\", App.path & "\MIDI\")
-    
     'Enable / Disable audio
     modEngine_Audio.MusicEnabled = Configuration.Audio_MusicEnabled
     modEngine_Audio.MusicVolume = Configuration.Audio_MusicVolume
@@ -581,11 +560,6 @@ Sub Main()
     
     Call modEngine_Audio.PlayMusic(MIdi_Inicio & ".mp3")
     
-    AddtoRichTextBox frmCargando.status, "Hecho", , , , 1, , False
-    AddtoRichTextBox frmCargando.status, "                    ¡Bienvenido a Argentum Online!", , , , 1
-
-    Unload frmCargando
-
     frmConnect.Visible = True
     
     'Inicialización de variables globales
@@ -617,7 +591,6 @@ Sub Main()
     
     'Set the dialog's font
     Dialogos.font = frmMain.font
-    DialogosClanes.font = frmMain.font
 
     Call Mod_TileEngine.Initialize
     
@@ -765,9 +738,7 @@ Public Sub CleanDialogs()
 '**************************************************************
     'Clean console and dialogs
     frmMain.RecTxt.Text = vbNullString
-    
-    Call DialogosClanes.RemoveDialogs
-    
+
     Call Dialogos.RemoveAllDialogs
 End Sub
 
@@ -788,7 +759,6 @@ Public Sub CloseClient()
 
     Set CustomKeys = Nothing
     Set Dialogos = Nothing
-    Set DialogosClanes = Nothing
     Set Inventario = Nothing
     Set MainTimer = Nothing
 

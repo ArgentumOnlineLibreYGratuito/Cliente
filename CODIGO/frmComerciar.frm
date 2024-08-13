@@ -378,7 +378,7 @@ Select Case index
                 Label1(4).Visible = False
         End Select
         
-        Call Grh_Render_To_Hdc(Picture1.hDC, (NPCInventory(List1(0).ListIndex + 1).grhindex), 0, 0)
+        'TODO Call Grh_Render_To_Hdc(Picture1.hDC, (NPCInventory(List1(0).ListIndex + 1).GrhIndex), 0, 0)
         
         End If
     
@@ -404,7 +404,7 @@ Select Case index
                 Label1(4).Visible = False
         End Select
         
-        Call Grh_Render_To_Hdc(Picture1.hDC, Inventario.grhindex(List1(1).ListIndex + 1), 0, 0)
+        'TODO Call Grh_Render_To_Hdc(Picture1.hDC, Inventario.GrhIndex(List1(1).ListIndex + 1), 0, 0)
         
         End If
         

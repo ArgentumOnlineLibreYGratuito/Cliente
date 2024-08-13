@@ -43,9 +43,9 @@ Public Const SERVER_PORT    As Long = 7666
 Public Const SEPARATOR As String * 1 = vbNullChar
 
 'Objetos públicos
-Public DialogosClanes As New clsGuildDlg
+
 Public Dialogos As New clsDialogs
-Public Inventario As New clsGrapchicalInventory
+Public Inventario As New clsGraphicalInventory
 
 Public CustomKeys As New clsCustomKeys
 
