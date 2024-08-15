@@ -16,6 +16,7 @@ Attribute VB_Name = "modEngine_Protocol"
 Option Explicit
 
 
+
 Private Enum ServerPacketID
     logged                                       ' LOGGED
     RemoveDialogs                                ' QTDL
@@ -197,6 +198,7 @@ Private Enum ClientPacketID
     Meditate                                     '/MEDITAR
     Resucitate                                   '/RESUCITAR
     Heal                                         '/CURAR
+    Help                                         '/AYUDA
     RequestStats                                 '/EST
     CommerceStart                                '/COMERCIAR
     BankStart                                    '/BOVEDA
@@ -739,7 +741,6 @@ End Sub
 Private Sub HandleLogged(ByVal Message As BinaryReader)
     
     ' Variable initialization
-    IScombate = False
     UserDescansar = False
     Nombres = True
     
@@ -782,7 +783,6 @@ Private Sub HandleDisconnect(ByVal Message As BinaryReader)
     
     'Reset global vars
     UserParalizado = False
-    IScombate = False
     pausa = False
     UserMeditar = False
     UserDescansar = False
@@ -1080,6 +1080,10 @@ Private Sub HandlePosUpdate(ByVal Message As BinaryReader)
     'Set char
     MapData(UserPos.x, UserPos.y).CharIndex = UserCharIndex
     charlist(UserCharIndex).Pos = UserPos
+    
+    Call UpdateSceneCharacter(UserCharIndex)
+    Call Partitioner_.Update(charlist(UserCharIndex).Node)
+
     
     'Are we under a roof
     bTecho = IIf(MapData(UserPos.x, UserPos.y).Trigger = 1 Or _
@@ -1426,6 +1430,9 @@ Private Sub HandleCharacterChange(ByVal Message As BinaryReader)
         If tempint <> 0 Then .Casco = CascoAnimData(tempint)
         
         Call SetCharacterFx(CharIndex, Message.ReadInt(), Message.ReadInt())
+                
+        Call UpdateSceneCharacter(CharIndex)
+        Call Partitioner_.Update(.Node)
     End With
     
     Call RefreshAllChars
@@ -1439,9 +1446,17 @@ Private Sub HandleObjectCreate(ByVal Message As BinaryReader)
     x = Message.ReadInt()
     y = Message.ReadInt()
     
-    MapData(x, y).ObjGrh.grhindex = Message.ReadInt()
+    With MapData(X, Y)
+        .ObjGrh.GrhIndex = Message.ReadInt()
     
-    Call InitGrh(MapData(x, y).ObjGrh, MapData(x, y).ObjGrh.grhindex)
+        Call InitGrh(.ObjGrh, .ObjGrh.GrhIndex)
+    
+        If (.ObjGrh.GrhIndex > 0) Then
+            Call UpdateSceneEntity(.OBJInfo.Node, -1, X, Y, 5, GrhData(.ObjGrh.GrhIndex).TileWidth, GrhData(.ObjGrh.GrhIndex).TileHeight)
+            Call Partitioner_.Insert(.OBJInfo.Node)
+        End If
+    End With
+    
 End Sub
 
 Private Sub HandleObjectDelete(ByVal Message As BinaryReader)
@@ -1451,7 +1466,16 @@ Private Sub HandleObjectDelete(ByVal Message As BinaryReader)
     
     x = Message.ReadInt()
     y = Message.ReadInt()
-    MapData(x, y).ObjGrh.grhindex = 0
+    
+    
+    With MapData(X, Y)
+        Call Partitioner_.Remove(.OBJInfo.Node)
+        
+        ' TODO: Emitter
+        
+        .ObjGrh.GrhIndex = 0
+    End With
+    
 End Sub
 
 Private Sub HandleBlockPosition(ByVal Message As BinaryReader)
@@ -2463,13 +2487,6 @@ End Sub
 Public Sub WritePickUp()
     
     Call Writer_.WriteInt(ClientPacketID.PickUp)
-    
-    Call modEngine.NetWrite(Writer_)
-End Sub
-
-Public Sub WriteCombatModeToggle()
-    
-    Call Writer_.WriteInt(ClientPacketID.CombatModeToggle)
     
     Call modEngine.NetWrite(Writer_)
 End Sub

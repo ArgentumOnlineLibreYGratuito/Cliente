@@ -88,7 +88,6 @@ Private mappedKeys(1 To NUM_CUSTOM_KEYS) As Integer
 '@param mKeyAttack Key for attacking other Users/NPCs
 '@param mKeyTalk Key for talking (to all)
 '@param mKeyTalkWithGuild Key for talking (only to guild members)
-'@param mKeyToggleFPS Key for toggling the FPS counter
 '@param mKeyShowOptions Key for showing the "Options" form
 '@param mKeyMeditate Key for start/stop meditation
 '@param mKeyCastSpellMacro Key for start/stop the Cast Spell Macro
@@ -115,7 +114,6 @@ Public Enum eKeyType
     mKeyAttack
     mKeyTalk
     mKeyTalkWithGuild
-    mKeyToggleFPS
     mKeyShowOptions
     mKeyMeditate
     mKeyCastSpellMacro
@@ -360,7 +358,6 @@ Public Sub LoadDefaults()
     mappedKeys(eKeyType.mKeyAttack) = KeyCodeConstants.vbKeyControl
     mappedKeys(eKeyType.mKeyTalk) = KeyCodeConstants.vbKeyReturn
     mappedKeys(eKeyType.mKeyTalkWithGuild) = KeyCodeConstants.vbKeyDelete
-    mappedKeys(eKeyType.mKeyToggleFPS) = KeyCodeConstants.vbKeyF4
     mappedKeys(eKeyType.mKeyShowOptions) = KeyCodeConstants.vbKeyF5
     mappedKeys(eKeyType.mKeyMeditate) = KeyCodeConstants.vbKeyF6
     mappedKeys(eKeyType.mKeyCastSpellMacro) = KeyCodeConstants.vbKeyF7

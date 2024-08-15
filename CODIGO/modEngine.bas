@@ -127,9 +127,14 @@ End Sub
 
 Private Sub Network_OnRecv(ByVal Connection As Network_Client, ByVal Message As BinaryReader)
     
-    Call modEngine_Protocol.Decode(Message)
-    Call modEngine_Protocol.handle(Message)
+        
+    While (Message.GetAvailable() > 0)
     
+        Call modEngine_Protocol.Decode(Message)
+        Call modEngine_Protocol.handle(Message)
+    
+    Wend
+
 End Sub
 
 Private Sub Network_OnSend(ByVal Connection As Network_Client, ByVal Message As BinaryReader)

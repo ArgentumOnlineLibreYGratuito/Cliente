@@ -743,8 +743,7 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
                     Call AgarrarItem
                 
                 Case CustomKeys.BindedKey(eKeyType.mKeyToggleCombatMode)
-                    Call WriteCombatModeToggle
-                    IScombate = Not IScombate
+                    UserCombate = Not UserCombate
                 
                 Case CustomKeys.BindedKey(eKeyType.mKeyEquipObject)
                     Call EquiparItem
@@ -800,11 +799,6 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
                 SendCMSTXT.SetFocus
             End If
 
-        Case CustomKeys.BindedKey(eKeyType.mKeyToggleFPS)
-            FPSFLAG = Not FPSFLAG
-            If Not FPSFLAG Then _
-                frmMain.Caption = "Argentum Online" & " v " & App.Major & "." & App.Minor & "." & App.Revision
-        
         Case CustomKeys.BindedKey(eKeyType.mKeyShowOptions)
             Call frmOpciones.Show(vbModeless, frmMain)
         
@@ -836,6 +830,12 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
             Call WriteQuit
             
         Case CustomKeys.BindedKey(eKeyType.mKeyAttack)
+            'If not in combat mode, can't attack
+            If Not UserCombate Then
+                Call ShowConsoleMsg("No estás en modo de combate, presiona la tecla ""C"" para pasar al modo combate.", FontTypeNames.FONTTYPE_INFO)
+                Exit Sub
+            End If
+        
             If Shift <> 0 Then Exit Sub
             
             If Not MainTimer.Check(TimersIndex.Arrows, False) Then Exit Sub 'Check if arrows interval has finished.
@@ -859,7 +859,6 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
                 SendTxt.Visible = True
                 SendTxt.SetFocus
             End If
-            
     End Select
 End Sub
 
@@ -1046,10 +1045,13 @@ End Sub
 
 Private Sub cmdLanzar_Click()
     If hlst.List(hlst.ListIndex) <> "(None)" And MainTimer.Check(TimersIndex.Work, False) Then
+        If Not UserCombate Then
+            Call ShowConsoleMsg("Debes estar en modo de combate para lanzar este hechizo.", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
+
         If UserEstado = 1 Then
-            With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
-            End With
+            Call ShowConsoleMsg("¡¡Estás muerto!!", FONTTYPE_INFO)
         Else
             Call WriteCastSpell(hlst.ListIndex + 1)
             Call WriteWork(eSkill.Magia)

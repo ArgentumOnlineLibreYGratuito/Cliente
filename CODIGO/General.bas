@@ -523,13 +523,13 @@ Sub Main()
     frmOldPersonaje.NameTxt.Text = ""
     frmOldPersonaje.PasswordTxt.Text = ""
     
-    Call modEngine_Data.LoadGraphics("Resources://Init/Graphics.ind")
-    Call modEngine_Data.LoadHeads("Resources://Init/Heads.ind")
-    Call modEngine_Data.LoadHelmets("Resources://Init/Helmets.ind")
-    Call modEngine_Data.LoadBodies("Resources://Init/Bodies.ind")
-    Call modEngine_Data.LoadFXs("Resources://Init/Effects.ind")
-    Call modEngine_Data.LoadWeapons("Resources://Init/Weapons.ind")
-    Call modEngine_Data.LoadShields("Resources://Init/Shields.ind")
+    Call Mod_TileEngine.LoadGraphics("Resources://Init/Graphics.ind")
+    Call Mod_TileEngine.LoadHeads("Resources://Init/Heads.ind")
+    Call Mod_TileEngine.LoadHelmets("Resources://Init/Helmets.ind")
+    Call Mod_TileEngine.LoadBodies("Resources://Init/Bodies.ind")
+    Call Mod_TileEngine.LoadFXs("Resources://Init/Effects.ind")
+    Call Mod_TileEngine.LoadWeapons("Resources://Init/Weapons.ind")
+    Call Mod_TileEngine.LoadShields("Resources://Init/Shields.ind")
 
     'If Not InitTileEngine(frmMain.hWnd, 160, 7, 32, 32, 13, 17, 9, 8, 8, 0.018) Then
     '    Call CloseClient
@@ -585,9 +585,6 @@ Sub Main()
     Call Mod_TileEngine.Initialize
     
     Do While prgRun
-        Call modEngine.Tick
-        Call modEngine_Audio.Update(&H0, UserPos.X, UserPos.Y)
-        
         If frmMain.WindowState <> vbMinimized And frmMain.Visible = True Then
             Call CheckKeys
             
@@ -597,6 +594,9 @@ Sub Main()
         End If
         
         DoEvents
+        
+        Call modEngine.Tick
+        Call modEngine_Audio.Update(&H0, UserPos.X, UserPos.Y)
     Loop
 
     Call CloseClient

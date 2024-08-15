@@ -150,17 +150,21 @@ Public Type char
     priv As Byte
     
     Emitter As Audio_Emitter
+    Node As Partitioner_Item
 End Type
 
 'Info de un objeto
 Public Type Obj
     OBJIndex As Integer
     Amount As Integer
+    
+    Node As Partitioner_Item
 End Type
 
 'Tipo de las celdas del mapa
 Public Type MapBlock
     Graphic(1 To 4) As Grh
+    Nodes(1 To 4)   As Partitioner_Item
     CharIndex As Integer
     ObjGrh As Grh
 
@@ -243,9 +247,10 @@ End Enum
 '       [END]
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
 
-Private Technique_1_ As Graphic_Pipeline
-Private Technique_2_ As Graphic_Pipeline
+Public Technique_1_ As Graphic_Pipeline
+Public Technique_2_ As Graphic_Pipeline
 Private Font_ As Graphic_Font
+Public Partitioner_ As Partitioner
 
 
 'Very percise counter 64bit system counter
@@ -312,6 +317,13 @@ On Error Resume Next
         
         'Make active
         .active = 1
+                
+        ' Create virtual sound source
+        Set .Emitter = modEngine_Audio.CreateEmitter(X, Y)
+        
+        ' Quad-tree
+        Call UpdateSceneCharacter(CharIndex)
+        Call Partitioner_.Insert(.Node)
     End With
     
     'Plot on map
@@ -332,13 +344,18 @@ On Error Resume Next
         Loop
     End If
     
+    Call Partitioner_.Remove(charlist(CharIndex).Node)
+    
     MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).CharIndex = 0
     
     'Remove char's dialog
     Call Dialogos.RemoveDialog(CharIndex)
     
     Call ResetCharInfo(CharIndex)
-    
+                
+    ' Destroy virtual sound source
+    Call modEngine_Audio.DeleteEmitter(charlist(CharIndex).Emitter, False)
+        
     'Update NumChars
     NumChars = NumChars - 1
 End Sub
@@ -451,6 +468,12 @@ On Error Resume Next
         If .FxIndex = FxMeditar.CHICO Or .FxIndex = FxMeditar.GRANDE Or .FxIndex = FxMeditar.MEDIANO Or .FxIndex = FxMeditar.XGRANDE Or .FxIndex = FxMeditar.XXGRANDE Then
             .FxIndex = 0
         End If
+        
+        
+        Call modEngine_Audio.UpdateEmitter(.Emitter, nX, nY)
+        Call UpdateSceneCharacter(CharIndex)
+        Call Partitioner_.Update(.Node)
+
     End With
     
     If Not EstaPCarea(CharIndex) Then Call Dialogos.RemoveDialog(CharIndex)
@@ -647,7 +670,11 @@ Public Sub Char_Move_by_Head(ByVal CharIndex As Integer, ByVal nHeading As E_Hea
         .Pos.x = nX
         .Pos.y = nY
         MapData(x, y).CharIndex = 0
-        
+                
+        Call modEngine_Audio.UpdateEmitter(.Emitter, nX, nY)
+        Call UpdateSceneCharacter(CharIndex)
+        Call Partitioner_.Update(.Node)
+
         .MoveOffsetX = -1 * (32 * addx)
         .MoveOffsetY = -1 * (32 * addy)
         
@@ -705,6 +732,10 @@ On Error Resume Next
         .Pos.x = nX
         .Pos.y = nY
         
+         Call modEngine_Audio.UpdateEmitter(.Emitter, nX, nY)
+         Call UpdateSceneCharacter(CharIndex)
+         Call Partitioner_.Update(.Node)
+
         .MoveOffsetX = -1 * (32 * addx)
         .MoveOffsetY = -1 * (32 * addy)
         
@@ -769,7 +800,7 @@ Public Sub Render()
     Viewport.Y1 = 0
     Viewport.Y2 = frmMain.renderer.ScaleHeight
     
-    Call Aurora_Graphic.Prepare(&H0, Viewport, eClearAll, &HFFFF, 1, 0)
+    Call Aurora_Graphic.Prepare(&H0, Viewport, eClearAll, -1, 1, 0)
     
     Call ShowNextFrame(&H0)
     
@@ -915,7 +946,7 @@ Private Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, 
     Dim Pos As Integer
     Dim line As String
     Dim color As Long
-    
+
     With charlist(CharIndex)
         If .Moving Then
             'If needed, move left and right
@@ -1048,91 +1079,93 @@ Private Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, 
     End With
 End Sub
 
-
-
-
 Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer)
-'**************************************************************
-'Author: Aaron Perkins
-'Last Modify Date: 8/14/2007
-'Last modified by: Juan Martín Sotuyo Dodero (Maraxus)
-'Renders everything to the viewport
-'**************************************************************
-    Dim y                   As Integer  'Keeps track of where on map we are
-    Dim x                   As Integer  'Keeps track of where on map we are
-    Dim screenminY          As Integer  'Start Y pos on current screen
-    Dim screenmaxY          As Integer  'End Y pos on current screen
-    Dim screenminX          As Integer  'Start X pos on current screen
-    Dim screenmaxX          As Integer  'End X pos on current screen
-    Dim minY                As Integer  'Start Y pos on current map
-    Dim maxY                As Integer  'End Y pos on current map
-    Dim minX                As Integer  'Start X pos on current map
-    Dim maxX                As Integer  'End X pos on current map
-    Dim ScreenX             As Integer  'Keeps track of where to place tile on screen
-    Dim ScreenY             As Integer  'Keeps track of where to place tile on screen
-    Dim PixelOffsetXTemp    As Integer 'For centering grhs
-    Dim PixelOffsetYTemp    As Integer 'For centering grhs
+    Dim ScreenMinY      As Long  'Start Y pos on current screen
+    Dim ScreenMaxY      As Long  'End Y pos on current screen
+    Dim ScreenMinX      As Long  'Start X pos on current screen
+    Dim ScreenMaxX      As Long  'End X pos on current screen
+    Dim MinY            As Long  'Start Y pos on current map
+    Dim MaxY            As Long  'End Y pos on current map
+    Dim MinX            As Long  'Start X pos on current map
+    Dim MaxX            As Long  'End X pos on current map
+    Dim X               As Long
+    Dim Y               As Long
+    Dim Drawable        As Long
+    Dim DrawableX       As Long
+    Dim DrawableY       As Long
+    Dim DrawableType    As Long
 
-    TileBufferSize = 2
-    
     'Figure out Ends and Starts of screen
     screenminY = tiley - HalfWindowTileHeight
     screenmaxY = tiley + HalfWindowTileHeight
     screenminX = tilex - HalfWindowTileWidth
     screenmaxX = tilex + HalfWindowTileWidth
     
-    minY = screenminY - TileBufferSize
-    maxY = screenmaxY + TileBufferSize
-    minX = screenminX - TileBufferSize
-    maxX = screenmaxX + TileBufferSize
+    'Figure out Ends and Starts of map
+    MinY = ScreenMinY
+    MaxY = ScreenMaxY
+    MinX = ScreenMinX
+    MaxX = ScreenMaxX
+
+    If PixelOffsetY < 0 Then
+        MaxY = MaxY + 1
+    ElseIf PixelOffsetY > 0 Then
+        MinY = MinY - 1
+    End If
+    If PixelOffsetX < 0 Then
+        MaxX = MaxX + 1
+    ElseIf PixelOffsetX > 0 Then
+        MinX = MinX - 1
+    End If
     
-    'Make sure mins and maxs are allways in map bounds
-    If minY < XMinMapSize Then minY = YMinMapSize
+    If MinY < YMinMapSize Then MinY = YMinMapSize
     If maxY > YMaxMapSize Then maxY = YMaxMapSize
     If minX < XMinMapSize Then minX = XMinMapSize
     If maxX > XMaxMapSize Then maxX = XMaxMapSize
 
-    ScreenY = (minY - screenminY)
     For y = minY To maxY
-        ScreenX = (minX - screenminX)
+        DrawableY = (Y - ScreenMinY) * TilePixelHeight + PixelOffsetY
+        
         For x = minX To maxX
-            PixelOffsetXTemp = ScreenX * 32 + PixelOffsetX
-            PixelOffsetYTemp = ScreenY * 32 + PixelOffsetY
-            
-                With MapData(x, y)
-                    
-                    Call Draw_Grh(.Graphic(1), PixelOffsetXTemp, PixelOffsetYTemp, GetDepth(1, x, y), 0, 1)
-                            
-                    If .Graphic(2).grhindex <> 0 Then
-                        Call Draw_Grh(.Graphic(2), PixelOffsetXTemp, PixelOffsetYTemp, GetDepth(2, x, y), 1, 1)
-                    End If
-                    
-                    'Object Layer **********************************
-                    If .ObjGrh.grhindex <> 0 Then
-                        Call Draw_Grh(.ObjGrh, PixelOffsetXTemp, PixelOffsetYTemp, GetDepth(3, x, y), 1, 1)
-                    End If
-    
-                    'Char layer ************************************
-                    If .CharIndex <> 0 Then
-                        Call Char_Render(.CharIndex, PixelOffsetXTemp, PixelOffsetYTemp, x, y)
-                    End If
-                    '*************************************************
-                    
-                    'Layer 3 *****************************************
-                    If .Graphic(3).grhindex <> 0 Then
-                        Call Draw_Grh(.Graphic(3), PixelOffsetXTemp, PixelOffsetYTemp, GetDepth(3, x, y), 1, 1)
-                    End If
-                                    
-                    'Layer 4 *****************************************
-                    If .Graphic(4).grhindex <> 0 Then
-                        Call Draw_Grh(.Graphic(4), PixelOffsetXTemp, PixelOffsetYTemp, GetDepth(4, x, y), 1, 1, True)
-                    End If
-                End With
-                
-            ScreenX = ScreenX + 1
+            DrawableX = (X - ScreenMinX) * TilePixelWidth + PixelOffsetX
+        
+            Call Draw_Grh(MapData(X, Y).Graphic(1), DrawableX, DrawableY, -1#, 0, 1)
         Next x
-        ScreenY = ScreenY + 1
     Next y
+
+ 
+    Dim Results() As Partitioner_Item
+    
+    ' Get the entities from the quadtree.
+    Call Partitioner_.Query(MinX - 1, MinY - 1, MaxX + 1, MaxY + 1, Results)
+
+    For Drawable = 0 To UBound(Results)
+        With Results(Drawable)
+            
+            X = .X
+            Y = .Y
+            DrawableX = (.X - ScreenMinX) * TilePixelWidth + PixelOffsetX
+            DrawableY = (.Y - ScreenMinY) * TilePixelHeight + PixelOffsetY
+            DrawableType = .Type
+            
+            With MapData(.X, .Y)
+                Select Case (DrawableType)
+                    Case 2
+                        Call Draw_Grh(.Graphic(2), DrawableX, DrawableY, GetDepth(2, X, Y), 1, 1)
+                    Case 3
+                        Call Draw_Grh(.Graphic(3), DrawableX, DrawableY, GetDepth(3, X, Y), 1, 1)
+                    Case 4
+                        If (Not bTecho) Then
+                            Call Draw_Grh(.Graphic(4), DrawableX, DrawableY, GetDepth(4, X, Y), 1, 1, True)
+                        End If
+                    Case 5
+                        Call Draw_Grh(.ObjGrh, DrawableX, DrawableY, GetDepth(3, X, Y, 2), 1, 1)
+                    Case 6
+                        Call Char_Render(.CharIndex, DrawableX, DrawableY, X, Y)
+                End Select
+            End With
+        End With
+   Next Drawable
 
 End Sub
 
@@ -1222,3 +1255,444 @@ Sub DrawGrhIndex(ByVal GrhIndex As Integer, ByVal X As Integer, ByVal Y As Integ
     End With
   
 End Sub
+
+Public Function LoadWeapons(ByVal Filename As String) As Boolean
+    
+    Dim File As Memory_Chunk
+    Set File = Aurora_Content.Find(Filename)
+    
+    Dim Reader As BinaryReader
+    Set Reader = File.GetReader()
+
+    If (Reader.GetAvailable() > 0) Then
+
+        Dim Length As Long
+        Length = Reader.ReadInt16()
+
+        ReDim WeaponAnimData(0 To Length) As WeaponAnimData
+
+        Dim I As Long
+        For I = 1 To Length
+            Call InitGrh(WeaponAnimData(I).WeaponWalk(1), Reader.ReadInt16(), 0)
+            Call InitGrh(WeaponAnimData(I).WeaponWalk(2), Reader.ReadInt16(), 0)
+            Call InitGrh(WeaponAnimData(I).WeaponWalk(3), Reader.ReadInt16(), 0)
+            Call InitGrh(WeaponAnimData(I).WeaponWalk(4), Reader.ReadInt16(), 0)
+        Next I
+
+        LoadWeapons = True
+    Else
+        LoadWeapons = False
+    End If
+    
+End Function
+
+Public Function LoadShields(ByVal Filename As String) As Boolean
+    
+    Dim File As Memory_Chunk
+    Set File = Aurora_Content.Find(Filename)
+    
+    Dim Reader As BinaryReader
+    Set Reader = File.GetReader()
+
+    If (Reader.GetAvailable() > 0) Then
+
+        Dim Length As Long
+        Length = Reader.ReadInt16()
+
+        ReDim ShieldAnimData(0 To Length) As ShieldAnimData
+
+        Dim I As Long
+        For I = 1 To Length
+            Call InitGrh(ShieldAnimData(I).ShieldWalk(1), Reader.ReadInt16(), 0)
+            Call InitGrh(ShieldAnimData(I).ShieldWalk(2), Reader.ReadInt16(), 0)
+            Call InitGrh(ShieldAnimData(I).ShieldWalk(3), Reader.ReadInt16(), 0)
+            Call InitGrh(ShieldAnimData(I).ShieldWalk(4), Reader.ReadInt16(), 0)
+        Next I
+
+        LoadShields = True
+    Else
+        LoadShields = False
+    End If
+    
+End Function
+
+Public Function LoadHeads(ByVal Filename As String) As Boolean
+    
+    Dim File As Memory_Chunk
+    Set File = Aurora_Content.Find(Filename)
+    
+    Dim Reader As BinaryReader
+    Set Reader = File.GetReader()
+
+    If (Reader.GetAvailable() > 0) Then
+        ' TODO: Remove Header
+        Call Reader.Skip(263)
+        
+        Dim Length As Long
+        Length = Reader.ReadInt16()
+
+        ReDim HeadData(0 To Length) As HeadData
+
+        Dim I As Long
+        For I = 1 To Length
+            Call InitGrh(HeadData(I).Head(1), Reader.ReadInt16(), 0)
+            Call InitGrh(HeadData(I).Head(2), Reader.ReadInt16(), 0)
+            Call InitGrh(HeadData(I).Head(3), Reader.ReadInt16(), 0)
+            Call InitGrh(HeadData(I).Head(4), Reader.ReadInt16(), 0)
+        Next I
+
+        LoadHeads = True
+    Else
+        LoadHeads = False
+    End If
+    
+End Function
+
+Public Function LoadHelmets(ByVal Filename As String) As Boolean
+    
+    Dim File As Memory_Chunk
+    Set File = Aurora_Content.Find(Filename)
+    
+    Dim Reader As BinaryReader
+    Set Reader = File.GetReader()
+
+    If (Reader.GetAvailable() > 0) Then
+        ' TODO: Remove Header
+        Call Reader.Skip(263)
+        
+        Dim Length As Long
+        Length = Reader.ReadInt16()
+
+        ReDim CascoAnimData(0 To Length) As HeadData
+
+        Dim I As Long
+        For I = 1 To Length
+            Call InitGrh(CascoAnimData(I).Head(1), Reader.ReadInt16(), 0)
+            Call InitGrh(CascoAnimData(I).Head(2), Reader.ReadInt16(), 0)
+            Call InitGrh(CascoAnimData(I).Head(3), Reader.ReadInt16(), 0)
+            Call InitGrh(CascoAnimData(I).Head(4), Reader.ReadInt16(), 0)
+        Next I
+    
+        LoadHelmets = True
+    Else
+        LoadHelmets = False
+    End If
+    
+End Function
+
+Public Function LoadBodies(ByVal Filename As String) As Boolean
+    
+    Dim File As Memory_Chunk
+    Set File = Aurora_Content.Find(Filename)
+    
+    Dim Reader As BinaryReader
+    Set Reader = File.GetReader()
+
+    If (Reader.GetAvailable() > 0) Then
+        ' TODO: Remove Header
+        Call Reader.Skip(263)
+        
+        Dim Length As Long
+        Length = Reader.ReadInt16()
+    
+        ReDim BodyData(0 To Length) As BodyData
+
+        Dim I As Long
+        For I = 1 To Length
+            Call InitGrh(BodyData(I).Walk(1), Reader.ReadInt16(), 0)
+            Call InitGrh(BodyData(I).Walk(2), Reader.ReadInt16(), 0)
+            Call InitGrh(BodyData(I).Walk(3), Reader.ReadInt16(), 0)
+            Call InitGrh(BodyData(I).Walk(4), Reader.ReadInt16(), 0)
+                
+            BodyData(I).HeadOffset.X = Reader.ReadInt16()
+            BodyData(I).HeadOffset.Y = Reader.ReadInt16()
+        Next I
+    
+        LoadBodies = True
+    Else
+        LoadBodies = False
+    End If
+    
+End Function
+
+Public Function LoadFXs(ByVal Filename As String) As Boolean
+    
+    Dim File As Memory_Chunk
+    Set File = Aurora_Content.Find(Filename)
+    
+    Dim Reader As BinaryReader
+    Set Reader = File.GetReader()
+
+    If (Reader.GetAvailable() > 0) Then
+        ' TODO: Remove Header
+        Call Reader.Skip(263)
+        
+        Dim Length As Long
+        Length = Reader.ReadInt16()
+    
+        ReDim FxData(0 To Length) As EffectData
+        
+        Dim I As Long
+        For I = 1 To Length
+            FxData(I).Animacion = Reader.ReadInt16()
+            FxData(I).OffsetX = Reader.ReadInt16()
+            FxData(I).OffsetY = Reader.ReadInt16()
+        Next I
+    
+        LoadFXs = True
+    Else
+        LoadFXs = False
+    End If
+    
+End Function
+
+Public Function LoadGraphics(ByVal Filename As String) As Boolean
+    
+    Dim File As Memory_Chunk
+    Set File = Aurora_Content.Find(Filename)
+    
+    Dim Reader As BinaryReader
+    Set Reader = File.GetReader()
+
+    If (Reader.GetAvailable() > 0) Then
+        ' TODO: Remove Header
+        Call Reader.Skip(4)
+        
+        Dim Length As Long
+        Length = Reader.ReadInt32()
+    
+        ReDim GrhData(1 To Length) As GrhData
+        
+        While (Reader.GetAvailable() > 0)
+            Dim index As Long
+            index = Reader.ReadInt32()
+            
+            With GrhData(index)
+                .NumFrames = Reader.ReadInt16()
+                      
+                ReDim .Frames(0 To .NumFrames)
+            
+                If (.NumFrames > 1) Then
+                    Dim Frame As Long
+                    For Frame = 1 To .NumFrames
+                        .Frames(Frame) = Reader.ReadInt32()
+                    Next Frame
+                    
+                    .Speed = Reader.ReadReal32()
+                    .pixelHeight = GrhData(.Frames(1)).pixelHeight
+                    .pixelWidth = GrhData(.Frames(1)).pixelWidth
+                    .TileWidth = GrhData(.Frames(1)).TileWidth
+                    .TileHeight = GrhData(.Frames(1)).TileHeight
+                Else
+                    .FileNum = Reader.ReadInt32()
+                    .sX = Reader.ReadInt16()
+                    .sY = Reader.ReadInt16()
+                    .pixelWidth = Reader.ReadInt16()
+                    .pixelHeight = Reader.ReadInt16()
+
+                    .TileWidth = .pixelWidth / 32
+                    .TileHeight = .pixelHeight / 32
+                
+                    .Frames(1) = index
+                End If
+            End With
+        Wend
+
+        LoadGraphics = True
+    Else
+        LoadGraphics = False
+    End If
+    
+End Function
+
+Public Function LoadMap(ByVal Filename As String) As Boolean
+    
+    Dim File As Memory_Chunk
+    Set File = Aurora_Content.Find(Filename)
+    
+    Dim Reader As BinaryReader
+    Set Reader = File.GetReader()
+    
+    If (Reader.GetAvailable() > 0) Then
+        Call Reader.Skip(2)
+        Call Reader.Skip(263)
+        Call Reader.Skip(8)
+        
+        Dim X As Long
+        Dim Y As Long
+        
+        
+        Set Partitioner_ = New Partitioner
+        
+        For Y = YMinMapSize To YMaxMapSize
+            For X = XMinMapSize To XMaxMapSize
+                Dim ByFlags As Long
+                ByFlags = Reader.ReadInt8()
+                    
+                With MapData(X, Y)
+                    .Blocked = (ByFlags And 1)
+                    
+                    'Layer 1
+                    .Graphic(1).GrhIndex = Reader.ReadInt16()
+                    Call InitGrh(.Graphic(1), .Graphic(1).GrhIndex)
+
+                    'Layer 2 used?
+                    If ByFlags And 2 Then
+                        .Graphic(2).GrhIndex = Reader.ReadInt16()
+                        Call InitGrh(.Graphic(2), .Graphic(2).GrhIndex)
+                                            
+                        With GrhData(.Graphic(2).GrhIndex)
+                            Call UpdateSceneEntity(MapData(X, Y).Nodes(2), -1, X, Y, 2, .TileWidth, .TileHeight)
+                        End With
+                        Call Partitioner_.Insert(.Nodes(2))
+                        
+                    Else
+                        .Graphic(2).GrhIndex = 0
+                    End If
+                        
+                    'Layer 3 used?
+                    If ByFlags And 4 Then
+                        .Graphic(3).GrhIndex = Reader.ReadInt16()
+                        Call InitGrh(.Graphic(3), .Graphic(3).GrhIndex)
+                                                 
+                        With GrhData(.Graphic(3).GrhIndex)
+                            Call UpdateSceneEntity(MapData(X, Y).Nodes(3), -1, X, Y, 3, .TileWidth, .TileHeight)
+                        End With
+                        Call Partitioner_.Insert(.Nodes(3))
+                        
+                    Else
+                        .Graphic(3).GrhIndex = 0
+                    End If
+                        
+                    'Layer 4 used?
+                    If ByFlags And 8 Then
+                        .Graphic(4).GrhIndex = Reader.ReadInt16()
+                        Call InitGrh(.Graphic(4), .Graphic(4).GrhIndex)
+                                                                         
+                        With GrhData(.Graphic(4).GrhIndex)
+                            Call UpdateSceneEntity(MapData(X, Y).Nodes(4), -1, X, Y, 4, .TileWidth, .TileHeight)
+                        End With
+                        Call Partitioner_.Insert(.Nodes(4))
+                        
+                    Else
+                        .Graphic(4).GrhIndex = 0
+                    End If
+                    
+                    'Trigger used?
+                    If ByFlags And 16 Then
+                        .Trigger = Reader.ReadInt16()
+                    Else
+                        .Trigger = 0
+                    End If
+                    
+                    'Erase NPCs
+                    If .CharIndex > 0 Then
+                        Call EraseChar(.CharIndex)
+                    End If
+                    
+                    'Erase OBJs
+                    .ObjGrh.GrhIndex = 0
+                End With
+            Next X
+        Next Y
+ 
+        LoadMap = True
+    Else
+        LoadMap = False
+        
+    End If
+    
+End Function
+
+
+Public Sub UpdateSceneEntity(ByRef Node As Partitioner_Item, ByVal Id As Long, ByVal X As Long, ByVal Y As Long, ByVal Subtype As Long, ByVal Width As Long, ByVal Height As Long)
+    
+    Node.Id = Id
+    Node.Type = Subtype
+    Node.X = X
+    Node.Y = Y
+    Node.RectX1 = (X - Width / 2#)
+    Node.RectY1 = (Y - Height)
+    Node.RectX2 = Node.RectX1 + Width
+    Node.RectY2 = Node.RectY1 + Height
+
+End Sub
+
+Public Sub UpdateSceneCharacter(ByVal CharIndex As Long)
+    Dim Width As Single, Height As Single
+    Call GetCharacterDimension(CharIndex, Width, Height)
+
+    With charlist(CharIndex)
+        .Node.Id = CharIndex
+        .Node.Type = 6
+        .Node.X = .Pos.X
+        .Node.Y = .Pos.Y
+        .Node.RectX1 = (.Pos.X - Width / 2#)
+        .Node.RectY1 = (.Pos.Y + IIf(.Nombre <> vbNullString, 1, 0) - Height)
+        .Node.RectX2 = .Node.RectX1 + Width
+        .Node.RectY2 = .Node.RectY1 + Height
+    End With
+End Sub
+
+Private Function GetCharacterDimension(ByVal CharIndex As Integer, ByRef RangeX As Single, ByRef RangeY As Single)
+    Dim I As Long
+    
+    Dim BestX As Long
+    Dim BestY As Long
+            
+    With charlist(CharIndex)
+    
+        ' Try to calculate the best width and height using all four direction of the entity's body
+        If (.iBody <> 0) Then
+            For I = 1 To 4
+                If (GrhData(.Body.Walk(I).GrhIndex).TileWidth > RangeX) Then
+                    RangeX = GrhData(.Body.Walk(I).GrhIndex).TileWidth
+                End If
+                If (GrhData(.Body.Walk(I).GrhIndex).TileHeight > RangeY) Then
+                    RangeY = GrhData(.Body.Walk(I).GrhIndex).TileHeight
+                End If
+            Next I
+        End If
+                
+        ' Try to calculate the best width and height using all four direction of the entity's body
+        If (.iHead <> 0) Then
+
+            For I = 1 To 4
+                If (GrhData(.Head.Head(I).GrhIndex).TileWidth > RangeX) Then
+                    RangeX = GrhData(.Head.Head(I).GrhIndex).TileWidth
+                End If
+                If (GrhData(.Head.Head(I).GrhIndex).TileHeight > BestY) Then
+                    BestY = GrhData(.Head.Head(I).GrhIndex).TileHeight
+                End If
+            Next I
+
+            RangeY = RangeY + BestY
+        End If
+            
+        If (.Nombre <> vbNullString) Then
+            RangeY = RangeY + 2
+            
+            BestX = Len(.Nombre) * 16 / 32
+            If (BestX > RangeX) Then RangeX = BestX
+        End If
+        
+            
+        ' FX Too!
+        BestX = 0
+        BestY = 0
+        
+            If (.fX.GrhIndex <> 0) Then
+                If (GrhData(.fX.GrhIndex).TileWidth > BestX) Then
+                    BestX = GrhData(.fX.GrhIndex).TileWidth
+                End If
+                If (GrhData(.fX.GrhIndex).TileHeight > BestY) Then
+                    BestY = GrhData(.fX.GrhIndex).TileHeight
+                End If
+            End If
+            
+        If (RangeX < BestX) Then RangeX = BestX
+        If (RangeY < BestY) Then RangeY = BestY
+
+    End With
+
+End Function

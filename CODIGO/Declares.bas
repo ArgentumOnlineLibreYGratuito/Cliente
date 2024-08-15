@@ -390,9 +390,8 @@ Public UserExp As Long
 Public UserReputacion As tReputacion
 Public UserEstadisticas As tEstadisticasUsu
 Public UserDescansar As Boolean
-Public FPSFLAG As Boolean
 Public pausa As Boolean
-Public IScombate As Boolean
+Public UserCombate As Boolean
 Public UserParalizado As Boolean
 Public UserNavegando As Boolean
 Public UserHogar As eCiudad
