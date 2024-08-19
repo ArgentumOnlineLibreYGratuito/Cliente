@@ -1,0 +1,291 @@
+.window {
+	background: unset;
+}
+
+.window .wrapper {
+    width: *;
+    height: *;
+    position: relative;
+    flow: horizontal;
+}
+
+.window .wrapper h1 {
+	width: auto;
+	height: auto;
+	display: block;
+    position: absolute;
+    z-index: 4;
+    top: 0px;
+    left: 20px;
+	font-size: 4rem;
+	font-weight: var(--bold);
+	color: var(--title-text);
+	text-align: center;
+	text-shadow: 1px 1px 0px var(--black);
+	margin-bottom: 2rem;
+}
+
+.window .wrapper .characters-panel {
+    width: 18%;
+    min-width: 300px;
+    height: *;
+    padding: 20px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    z-index: 4;
+    flow: vertical;
+    background: rgba(0, 0, 0, 0.5);
+    border-left: 1px solid var(--outline);
+}
+
+.window .wrapper .characters-panel h2 {
+    width: 100%;
+    font-size: 1.5rem;
+    font-weight: var(--bold);
+    text-align: center;
+    color: var(--text-l);
+    text-shadow: 1px 1px 0px var(--black);
+    margin-bottom: 1rem;
+}
+
+.window .wrapper .characters-panel .characters-wrapper {
+    width: *;
+    height: *;
+    padding: 1rem;
+    flow: vertical;
+    overflow-x: hidden;
+    overflow-y: auto;
+    vertical-scrollbar: custom-vertical-scrollbar;
+    margin: 0px auto 2rem auto;
+}
+
+.window .wrapper .characters-panel .characters-wrapper .char {
+    cursor: pointer;
+    width: 100%;
+    padding: 0px 0.5rem;
+    flow: vertical;
+    display: block;
+    background: var(--character-bg);
+    border-radius: 4px;
+    border: 1px solid var(--character-border-bg);
+    box-shadow: inset 0px 0px 15px 5px var(--character-shadow-bg);
+    margin: 0px auto 1rem auto;
+}
+
+.window .wrapper .characters-panel .characters-wrapper .char:last-child {
+    margin: 0px auto;
+}
+
+.window .wrapper .characters-panel .characters-wrapper .char:hover {
+    background: var(--character-hover-bg);
+    border: 1px solid var(--character-hover-border-bg);
+    box-shadow: inset 0px 0px 15px 5px var(--character-hover-shadow-bg);
+}
+
+.window .wrapper .characters-panel .characters-wrapper .char.selected {
+    background: var(--character-selected-bg);
+    border: 1px solid var(--character-selected-border-bg);
+    box-shadow: 0px 0px 10px 5px var(--character-selected-shadow-bg), inset 0px 0px 15px 5px var(--character-shadow-bg);
+}
+
+.window .wrapper .characters-panel .characters-wrapper .char .name {
+    font-size: 1rem;
+    font-weight: var(--bold);
+    text-align: left;
+    color: var(--title-text);
+    text-shadow: 1px 1px 0px var(--black);
+    margin: 0px;
+}
+
+.window .wrapper .characters-panel .characters-wrapper .char .char-info {
+    width: 100%;
+    flow: horizontal;
+    display: block;
+    margin: 0px;
+}
+
+.window .wrapper .characters-panel .characters-wrapper .char .char-info .char-level {
+    width: auto;
+    flow: horizontal;
+    display: inline-block;
+}
+
+.window .wrapper .characters-panel .characters-wrapper .char .char-info .char-level span {
+    font-size: 0.8rem;
+    font-weight: var(--regular);
+    text-align: left;
+    color: var(--text-l);
+    text-shadow: 1px 1px 0px var(--black);
+}
+
+.window .wrapper .characters-panel .characters-wrapper .char .char-info .char-level span:last-child {
+    margin-left: 2px;
+}
+
+.window .wrapper .characters-panel .characters-wrapper .char .char-info .class {
+    font-size: 0.8rem;
+    font-weight: var(--regular);
+    text-align: left;
+    color: var(--text);
+    text-shadow: 1px 1px 0px var(--black);
+    margin-left: 5px;
+}
+
+.window .wrapper .characters-panel .characters-wrapper .char .location {
+    font-size: 0.8rem;
+    font-weight: var(--regular);
+    text-align: left;
+    color: var(--character-city);
+    text-shadow: 1px 1px 0px var(--black);
+}
+
+.window .wrapper .characters-panel .button-wrapper {
+    width: 100%;
+    display: block;
+    flow: vertical;
+    margin: 0px;
+}
+
+.window .wrapper .characters-panel .button-wrapper .button {
+    width: auto;
+    min-width: 200px;
+    height: 40px;
+    padding: * 1rem;
+    display: inline-block;
+    flow: vertical;
+    font-size: 1rem;
+    margin: 0px auto 0.5rem auto;
+}
+
+.window .wrapper .characters-panel .button-wrapper .button:last-child {
+    margin: 0px auto;
+}
+
+.del-char {
+	width: 400px;
+	height: auto;
+	height: * !important;
+	min-height: 100px;
+	max-height: max-content;
+	padding: 6px;
+	display: none;
+	flow: vertical;
+	background: var(--window-bg);
+    border: 2px solid var(--window-border-bg);
+	box-shadow: 0px 0px 10px 5px var(--black), inset 0px 0px 10px 1px var(--window-border-shadow);
+	margin: *;
+}
+
+.del-char.active {
+	display: block;
+}
+
+.del-char .wrapper {
+    width: *;
+    height: * !important;
+    max-height: max-content;
+	flow: vertical;
+    display: block;
+	position: relative;
+}
+
+.del-char .wrapper .header {
+    width: *;
+    height: auto;
+    min-height: 30px;
+    flow: horizontal;
+	position: relative;
+    margin-bottom: 1rem;
+}
+
+.del-char .wrapper .header .title {
+	width: 90%;
+    flow: vertical;
+    font-family: var(--font);
+    font-size: 1.25rem;
+	text-align: center;
+	text-shadow: 1px 1px 0px var(--black);
+    color: var(--title-text);
+    padding-top: *;
+    padding-bottom: *;
+	margin: 0px auto;
+}
+
+.del-char .wrapper .header .mini-button {
+    width: 24px;
+    height: 24px;
+	display: block;
+    flow: vertical;
+	position: absolute;
+	top: 2px;
+	right: 2px;
+}
+
+.del-char .wrapper p {
+    font-size: 1rem;
+	font-weight: var(--regular);
+	text-align: center;
+	text-decoration: none;
+	color: var(--text);
+    margin-bottom: 1rem;
+}
+
+.del-char .wrapper p b {
+    font-weight: var(--regular);
+    color: var(--title-text);
+}
+
+.del-char .wrapper .title {
+    margin-bottom: 0px;
+}
+
+.del-char .wrapper input {
+	width: 80%;
+	padding: 0;
+	font-size: 1rem;
+	color: var(--text);
+	text-align: center;
+	background: var(--black);
+	border: none;
+	border-radius: 3px;
+	margin: 0px auto 1rem auto;
+}
+
+.del-char .wrapper .button {
+    cursor: pointer !important;
+	width: 80%;
+	height: 40px;
+	font-size: 1.25rem;
+	padding: * 0px;
+	flow: vertical;
+    font-family: var(--font);
+	font-weight: var(--regular);
+	background: var(--mini-button-bg);
+	text-align: center;
+	color: var(--text);
+	border: 1px solid var(--mini-button-border-bg);
+	box-shadow: 0px 0px 3px 1px var(--black), inset 0px 3px 0px rgba(255, 255, 255, 0.2), inset 0px 0px 0px 2px var(--black);
+    border-radius: 2px;
+	margin: 0px auto 0.5rem auto;
+}
+
+.del-char .wrapper .button:hover {
+    color: var(--white);
+  	background: var(--mini-button-hover-bg);
+}
+
+.del-char .wrapper .button.marked {
+	color: var(--white);
+	background: var(--mini-button-hover-bg);
+	box-shadow: 0px 0px 3px 1px var(--black), inset 0px 3px 0px rgba(255, 255, 255, 0.2), inset 0px 0px 0px 2px var(--black);
+}
+
+.del-char .wrapper .system {
+	width: 80%;
+	margin: 1rem auto !important;
+}
+
+.del-char .wrapper .system p {
+    margin: 0px auto;
+}

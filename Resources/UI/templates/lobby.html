@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="../assets/css/lobby.css">
+        <style>@import url(../assets/css/lang.css);</style>
+        <script|module>
+            import {setLang} from "../js/lang.js";
+
+            document.on("change", "form", function(evt, form) {
+                setLang(form.value.lang);
+            });
+        </script>
+    </head>
+    <body>
+        <div class="window big-border">
+            <div class="tb"></div>
+            <div class="lr"></div>
+            <div class="ctb"></div>
+            <div class="clr"></div>
+
+            <div id="render" class="wrapper">
+                <h1.x>global_name</h1>
+
+                <div class="characters-panel">
+                    <h2.x>account_character_list</h2>
+
+                    <div class="characters-wrapper">
+                    </div>
+
+                    <div class="button-wrapper">
+                        <button.x class="button" id="connect_character" disabled>account_enter_character_button</button>
+                        <button.x class="button">account_create_new_character_button</button>
+                        <button.x id="delete_character" class="button" disabled>account_delete_character_button</button>
+                        <button.x id="logout" class="button">account_logout_button</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal">
+            <div class="del-char small-border">
+                <div class="wrapper">
+                    <div class="header">
+                        <span.x class="title">account_delete_character</span>
+            
+                        <button id="delete_char_x" class="mini-button" tabindex="-1">x</button>
+                    </div>
+
+                    <p><span.x>account_are_you_sure</span> <b></b>?</p>
+            
+                    <p.x class="title">account_enter_password</p>
+            
+                    <input class="center-input" type="password" password-char="*" name="password">
+            
+                    <div class="system">
+                        <p.x></p>
+                    </div>
+
+                    <button.x id="delete_character_confirm" class="button">account_confirm_button</button>
+                </div>
+            </div>
+        </div>
+
+        <script src="../js/lobby.js"></script>
+    </body>    
+</html>

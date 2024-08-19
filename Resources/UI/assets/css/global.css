@@ -1,0 +1,744 @@
+*, *::before, *::after {
+	padding: 0;
+	margin: 0;
+	outline: none !important;
+	line-height: normal;
+	word-break: break-word !important;
+	box-sizing: border-box;
+	font-rendering-mode: sub-pixel; /* Better rendering than snap-pixel */
+}
+
+html {
+	width: 100vw;
+	height: 100vh;
+	display: block;
+	flow: vertical;
+	margin: 0;
+	padding: 0;
+	background: transparent !important;
+}
+
+body {
+	width: 100vw;
+	height: 100vh;
+	display: block;
+	overflow: hidden;
+	position: relative;
+	background: transparent !important;
+	padding: 0px !important;
+	margin: 0px !important;
+	vertical-scrollbar: custom-vertical-scrollbar;
+}
+
+body h1, body h2, body h3, body h4, body b {
+	font-family: var(--font);
+	font-weight: var(--regular);
+}
+
+body a {
+	cursor: pointer;
+	text-decoration: none;
+}
+
+body a:focus {
+	border-color: var(--outline) !important;
+    outline: 5dip glow var(--outline) -1dip !important;
+}
+
+body input {
+	cursor: pointer;
+	display: block;
+	font-family: var(--font);
+	padding: 0;
+	font-size: 1rem;
+	color: var(--text);
+	text-align: center !important;
+	background: var(--black);
+    border: 1px solid var(--input-border) !important;
+    box-shadow: 0px 0px 5px 1px var(--window-border-shadow);
+}
+
+body input:focus {
+	border-color: var(--outline) !important;
+    outline: 5dip glow var(--outline) -1dip !important;
+}
+
+body input:not(:focus) {
+	text-selection: var(--text) !important none !important;
+}
+
+.center-input:empty:not(:focus)::before {
+	word-wrap: break-word;
+}
+
+.center-input:focus::before {
+	display: none;
+}
+
+.center-input:focus:empty {
+	caret-color: transparent;
+}
+
+.center-input:focus:empty::after {
+	content: "";
+	display: inline-block;
+	width: 0.1ch;
+	height: *;
+	padding: 0px !important;
+	vertical-align: center;
+	animation: blink 0.85s steps(2) infinite;
+}
+
+.center-input:focus::after {
+	display: none;
+}
+
+@keyframes blink {
+	0% {
+		opacity: 0;
+	}
+}
+
+body input[type="checkbox"] {
+	style-set: custom-checkbox;
+}
+
+body input[type="hslider"] {
+	style-set: custom-hslider;
+}
+
+body select {
+	cursor: pointer;
+	font-family: var(--font);
+	padding: 3px;
+	border: none;
+	border-radius: 3px;
+	style-set: custom-select;
+}
+
+body select:focus {
+	border-color: var(--outline) !important;
+    outline: 5dip glow var(--outline) -1dip !important;
+}
+
+body button {
+	behavior: button;
+	cursor: pointer;
+	font-family: var(--font);
+	white-space: wrap !important;
+	line-height: 21px !important;
+	border: none;
+}
+
+body button:focus {
+	border-color: var(--outline) !important;
+    outline: 5dip glow var(--outline) -1dip !important;
+}
+
+body #render {
+	width: *;
+	height: *;
+	flow: vertical;
+	position: relative;
+	overflow: hidden;
+	z-index: 0;
+	margin: 0 !important;
+	background-image: var(--connect-bg);
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+body .window {
+	width: *;
+	height: *;
+	flow: vertical;
+	padding: 12px;
+	position: relative;
+	overflow: hidden;
+	z-index: 0;
+	margin: 0 !important;
+}
+
+body .window .wrapper {
+	width: *;
+	height: *;
+	flow: vertical;
+	position: relative;
+	z-index: 3;
+}
+
+body .modal {
+	width: 100vw;
+	height: 100vh;
+	display: none;
+	position: fixed;
+	top: 0;
+	bottom: *;
+    left: 0;
+    right: *;
+    z-index: 4;
+	overflow: hidden;
+	background: rgba(0, 0, 0, 0.5);
+}
+
+body .modal.active {
+	display: block;
+}
+
+body #submain {
+	behavior: frame;
+	width: 100%;
+	height: 100%;
+	display: none;
+	flow: vertical;
+	position: absolute;
+	top: 0;
+	bottom: *;
+    left: 0;
+    right: *;
+    z-index: 4;
+	overflow: hidden;
+	background: rgba(0, 0, 0, 0.5) !important;
+	margin: * !important;
+}
+
+body #submain.active {
+	display: block;
+}
+
+body .main-modal {
+	width: 100%;
+	height: 100%;
+	display: block;
+	position: relative;
+	background: none !important;
+	padding: 0px !important;
+	margin: 0px !important;
+}
+
+body .over-main-modal {
+	width: 100%;
+	height: 100%;
+	display: none;
+	position: absolute;
+	top: 0;
+	bottom: *;
+    left: 0;
+	right: *;
+	z-index: 5;
+	overflow: hidden;
+	background: rgba(0, 0, 0, 0.2) !important;
+}
+
+body .over-main-modal.active {
+	display: block;
+}
+
+/* Start of the CSS of the big border */
+.big-border {
+	width: 100vw;
+	height: 100vh;
+	display: block;
+	overflow: hidden;
+	position: relative;
+	z-index: 1;
+}
+
+.big-border .tb::before {
+	width: 100vw;
+	height: 12px;
+	display: block;
+	position: absolute;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	background-image: var(--window-border);
+	background-repeat: repeat-x;
+}
+
+.big-border .tb::after {
+	width: 100vw;
+	height: 12px;
+	display: block;
+	position: absolute;
+	z-index: 1;
+	left: 0;
+	bottom: 1px;
+	transform: rotate(180deg);
+	background-image: var(--window-border);
+	background-repeat: repeat-x;
+}
+
+.big-border .lr::before {
+	width: 100vh;
+	height: 12px;
+	display: block;
+	position: absolute;
+	z-index: 1;
+	background-image: var(--window-border);
+	background-repeat: repeat-x;
+	top: 100%;
+	left: 0;
+	white-space: nowrap;
+	transform: rotate(270deg);
+	transform-origin: left top;
+}
+
+.big-border .lr::after {
+	width: 100vh;
+	height: 12px;
+	display: block;
+	position: absolute;
+	z-index: 1;
+	background-image: var(--window-border);
+	background-repeat: repeat-x;
+	top: 100%;
+	right: 1px;
+	white-space: nowrap;
+	transform: rotate(90deg);
+	transform-origin: right top;
+}
+
+.big-border .ctb::before, .big-border .ctb::after, .big-border .clr::before, .big-border .clr::after {
+	width: 12px;
+	height: 12px;
+	display: block;
+	position: absolute;
+	z-index: 1;
+	background-image: var(--window-corner);
+	background-repeat: no-repeat;
+	transform-origin: center;
+}
+
+.big-border .ctb::before, .big-border .ctb::after {
+	top: 0px;
+}
+
+.big-border .ctb::before {
+	left: 0;
+}
+
+.big-border .ctb::after {
+	right: 1px;
+	transform: rotate(90deg);
+}
+
+.big-border .clr::before, .big-border .clr::after {
+	bottom: 1px;	
+}
+
+.big-border .clr::before {
+	left: 0;
+	transform: rotate(270deg);
+}
+
+.big-border .clr::after {
+	right: 1px;
+	transform: rotate(180deg);
+}
+/* End of the CSS of the big border */
+
+.small-border {
+	border: 4px solid var(--small-border-bg);
+    box-shadow: inset 0px 0px 10px 5px var(--window-border-shadow);
+}
+
+.hidden {
+	width: 0;
+	height: 0;
+	opacity: 0;
+	display: none;
+	overflow: hidden;
+	cursor: none;
+}
+
+.button {
+	cursor: pointer;
+	padding: 0px 0.5rem;
+    font-family: var(--font);
+	font-weight: var(--regular);
+	background: var(--mini-button-bg);
+	text-align: center;
+	color: var(--text);
+	border: 1px solid var(--mini-button-border-bg);
+	box-shadow: 0px 0px 3px 1px var(--black), inset 0px 3px 0px rgba(255, 255, 255, 0.2), inset 0px 0px 0px 2px var(--black);
+    border-radius: 2px;
+}
+
+.button:hover {
+    color: var(--white);
+  	background: var(--mini-button-hover-bg);
+}
+
+.button:disabled {
+	background: var(--disabled-bg);
+}
+
+.button.marked {
+	color: var(--white);
+	background: var(--mini-button-hover-bg);
+	box-shadow: 0px 0px 3px 1px var(--black), inset 0px 3px 0px rgba(255, 255, 255, 0.2), inset 0px 0px 0px 2px var(--black);
+}
+
+.mini-button {
+	cursor: pointer;
+	flow: vertical;
+	font-size: 1rem;
+	text-align: center;
+	color: var(--text);
+    text-shadow: 1px 1px 0px var(--black);
+	background: var(--mini-button-bg);
+	box-shadow: 0px 0px 3px 1px var(--black), inset 0px 3px 0px rgba(255, 255, 255, 0.2), inset 0px 0px 0px 2px var(--black);
+	border: 1px solid var(--mini-button-border-bg);
+    border-radius: 2px;
+}
+
+.mini-button:hover {
+    color: var(--white);
+  	background: var(--mini-button-hover-bg);
+}
+
+.marked {
+	box-shadow: 0px 0px 5px 3px var(--orange-l);
+}
+
+.system {
+	display: none;
+	flow: horizontal-wrap;
+	border-radius: 4px;
+	box-shadow: 0px 0px 0px 1px var(--black), inset 0px 0px 10px 1px var(--black);
+	border: 1px solid var(--red);
+}
+
+.system p {
+	width: 100%;
+	padding: 0.4rem 0.5rem 0.5rem 0.5rem;
+	font-size: 1rem;
+	font-weight: var(--regular);
+	text-align: center;
+	text-shadow: 1px 1px 0px var(--black);
+	word-break: break-word !important;
+	margin: 0px;
+}
+
+.system.error {
+	display: block;
+	background: var(--red);
+}
+
+.system.error p {
+	color: var(--red-l);
+}
+
+/* Custom checkbox */
+@set custom-checkbox {
+	:root{
+		cursor: pointer !important;
+		height: 18px; 
+		width: 18px;
+		vertical-align: middle;
+		background: var(--black);
+    }
+
+	:root::marker {
+		size: 14dip;
+		margin: *;
+		stroke: none;
+		stroke-width: 0;
+		background: var(--mini-button-bg);
+		background-repeat: no-repeat;
+		background-position: 50% 50%;
+		box-shadow: inset 0px 0px 3px 1px var(--mini-button-shadow);
+		border-radius: 2dip;
+	}
+
+	:root:active::marker {
+		outline: none !important;
+		size: 14dip;
+	}
+
+	:root:hover::marker {
+		box-shadow: 0px 0px 5px 1px var(--mini-button-border-bg);
+	}
+
+	:root:checked::marker {
+		background-image: url(path:M1671 566q0 40-28 68l-724 724-136 136q-28 28-68 28t-68-28l-136-136-362-362q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 295 656-657q28-28 68-28t68 28l136 136q28 28 28 68z);
+		background-size: 9dip;
+		background-color: var(--mini-button-hover-bg);
+		fill: var(--text-l);
+	}
+
+	:root:disabled::marker {
+		background-size: 9dip;
+		background-color: color(widget-disabled);
+		color: color(widget-disabled-text);
+		fill: color(widget-disabled-text);
+	}
+
+	:root:tab-focus {
+		border-radius: length(border-radius);
+		outline: 2dip solid color(button-hover) 0dip;
+	}
+
+	input:root {
+	  behavior: check;
+	  cursor: default;
+	  vertical-align: middle;
+	}
+
+	:not(input):root {
+		behavior: check; 
+		cursor: pointer;
+		white-space: nowrap;
+		vertical-align: baseline;
+	}
+}
+
+/* Custom vertical scrollbar */
+@set custom-vertical-scrollbar {
+	.prev {
+		height: 15dip;
+		flow: vertical;
+		font-size: 0.6rem;
+		text-align: center;
+		color: var(--text);
+		background: var(--mini-button-bg);
+		box-shadow: 0px 0px 3px 1px var(--black), inset 0px 3px 0px rgba(255, 255, 255, 0.2), inset 0px 0px 0px 2px var(--black);
+		border: 1px solid var(--mini-button-border-bg);
+		foreground-image: url('../images/ui/window/scroll-b-prev.png'); 
+		foreground-position: 50% 50%;
+		foreground-repeat: no-repeat;
+	}
+	
+	.prev:hover {
+		background: var(--mini-button-hover-bg);
+		foreground-image: url('../images/ui/window/scroll-b-prev-h.png'); 
+	}
+	
+	.prev:active {
+		background: var(--mini-button-hover-bg);
+		border: 1px solid var(--character-hover-border-bg);
+	}
+	
+	.next {
+		height: 15dip;
+		flow: vertical;
+		font-size: 0.6rem;
+		text-align: center;
+		color: var(--text);
+		background: var(--mini-button-bg);
+		box-shadow: 0px 0px 3px 1px var(--black), inset 0px 3px 0px rgba(255, 255, 255, 0.2), inset 0px 0px 0px 2px var(--black);
+		border: 1px solid var(--mini-button-border-bg);
+		foreground-image: url('../images/ui/window/scroll-b-next.png'); 
+		foreground-position: 50% 50%;
+		foreground-repeat: no-repeat;
+	}
+	
+	.next:hover {
+		background: var(--mini-button-hover-bg);
+		foreground-image: url('../images/ui/window/scroll-b-next-h.png'); 
+	}
+	
+	.next:active {
+		background: var(--mini-button-hover-bg);
+		border: 1px solid var(--character-hover-border-bg);
+	}
+	
+	.base, .next-page, .prev-page {
+		background: var(--window-border-shadow);
+		border: 1px solid var(--window-border-bg);
+		box-shadow: inset 0px 0px 8px 2px var(--window-border-shadow);
+	}
+
+	.slider {
+		background: var(--character-bg);
+		box-shadow: inset 0px 0px 8px 2px var(--window-border-bg);
+	}
+
+	.slider:hover {
+		background: var(--character-hover-bg);
+		box-shadow: inset 0px 0px 8px 2px var(--window-border-bg);
+	}
+
+	.slider:active {
+		background: var(--character-hover-bg);
+		box-shadow: inset 0px 0px 8px 2px var(--window-border-bg);
+	}
+	
+	.next:disabled, .slider:disabled, .prev:disabled {
+		height: 0;
+		border: none;
+		foreground-image: none;
+	}
+	
+	.base:disabled {
+		width: 0;
+		height: 0;
+		display: none;
+		opacity: 0;
+	}
+	
+	.base {
+		width: 15dip;
+	}
+
+	.corner {
+		background-color: transparent;
+	}
+}
+
+/* Custom select */
+@set custom-select {
+	:root { 
+		behavior: dropdown-select;
+		flow: horizontal;  /* caption, button*/
+		vertical-align: baseline;
+		height: max-content;
+		overflow-x: hidden;
+		padding: 0;
+		content-isolate: isolate; /* content does not match document rules */
+	}
+
+  	/* caption portion of the combobox */
+  	:root > caption {
+		display: block;
+		behavior: clickable;
+		overflow-x: hidden; 
+		width: *; /* everything left from the button */
+		height: *; /* takes full height */
+		min-height: 1.2em;
+		padding: 3px;
+		vertical-align: middle;
+		white-space: pre;
+		color: var(--text);
+		background: var(--mini-button);
+		box-shadow: inset 0px 0px 3px 1px var(--button-shadow);
+		border: 2px solid var(--button-border);
+  	}
+
+	/* dropdown button of the combobox */
+	:root > button {
+		cursor: pointer;
+		display: block;
+		vertical-align: middle;
+		width: 20px;
+		padding: 0;
+		height: *;
+		background-image: none;
+		foreground-image: url(stock:chevron-down); /* that arrow */
+		foreground-repeat: no-repeat;
+		foreground-position: 50% 50%;
+		behavior: clickable; 
+		white-space: nowrap;
+		color: var(--text);
+		background: var(--mini-button);
+		box-shadow: inset 0px 0px 3px 1px var(--button-shadow);
+		border: 2px solid var(--button-border);
+  	}
+
+  	/* popup select element */
+  	:root > popup.list {
+		margin: 0;
+		overflow-x: hidden; 
+		overflow-y: auto; 
+		display: block;
+		visibility: collapse; /* invisible normally */
+		behavior: select;
+		width: *;
+		padding: 0;
+		color: var(--text);
+		text-shadow: 1px 1px 0px var(--black) !important;
+		background: var(--mini-button);
+		box-shadow: inset 0px 0px 3px 1px var(--button-shadow);
+		border: 2px solid var(--button-border);
+  	}
+
+  	:root > popup:empty {
+		content: " ";
+	}
+
+  	:root > popup:popup {
+    	visibility: visible; /* visible when popup */
+  	}
+
+	:root > popup:popup > option {
+		padding: 3px 0px !important;
+	}
+
+	:root > popup:popup > option:hover {
+		cursor: pointer !important;
+		color: var(--white) !important;
+		text-shadow: 1px 1px 0px var(--black) !important;
+		background: var(--mini-button-h) !important;
+		box-shadow: inset 0px 0px 3px 1px var(--button-shadow) !important;
+	}
+
+  	:root > popup > option:empty {
+		min-width: 0.6em;
+		height: 1.2em;
+		flow: text;
+	}
+}
+
+/* Custom horizontal slider */
+@set custom-hslider {
+	:root {
+		height: 8px;
+		display: inline-block;
+		behavior: slider;
+		cursor: default;
+		vertical-align: middle;
+		content-vertical-align: middle;
+		min-width: 0;
+		flow: stack;
+	}
+	
+	:root:disabled {
+		background: rgba(0, 0, 0, 0.4);
+	}
+
+	:root:disabled > button {
+		background: var(--text-d);
+	}
+
+	:root[inverted] {
+		background-position: right 0px top 0px;
+		horizontal-align: right;
+	}
+
+	:root > button, :root > .slider {
+		cursor: pointer !important;
+		width: 18px;
+		height: 18px;
+		background: var(--button);
+		border: 2px solid var(--button-border);
+		display: block;
+		behavior: none;
+		margin: *;
+		padding: 0;
+		border-radius: 50%;
+		margin-left: var(slider-position, 0px);
+		transform: translate(-50%, 0);
+	}
+
+	:root > button:hover {
+		cursor: pointer !important;
+		background: var(--button-h);
+	}
+
+	:root > button:active {
+		cursor: pointer !important;
+		background: var(--button-a);
+		border: 2px solid var(--button-border-a);
+	}
+
+	:root[inverted] > button, :root[inverted] > .slider, :root:rtl > button, :root:rtl > .slider { 
+		margin-left: *;
+		transform: translate(50%,0);
+		margin-right: var(slider-position, 0px);
+	}
+	
+	:root:tab-focus{ 
+		outline: 1px dotted invert -1px; 
+	}
+}

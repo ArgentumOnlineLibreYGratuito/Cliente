@@ -1,0 +1,247 @@
+@font-face {
+	font-family: "Grenze Gotisch";
+	src: url("../fonts/GrenzeGotisch-Regular.ttf");
+	font-weight: 400;
+}
+
+@font-face {
+	font-family: "Grenze Gotisch";
+	src: url("../fonts/GrenzeGotisch-Bold.ttf");
+	font-weight: 600;
+}
+
+*, *::before, *::after {
+	padding: 0;
+	margin: 0;
+	outline: none !important;
+	line-height: normal;
+	word-break: break-word !important;
+	box-sizing: border-box;
+	font-rendering-mode: sub-pixel; /* Better rendering than snap-pixel */
+}
+
+/* Root itself manages all the CSS variables */
+:root {
+	--font: 'Grenze Gotisch';
+	--regular: 400;
+	--bold: 600;
+
+	--black: #000;
+	--white: #fff;
+	--red: #410909;
+	--red-l: #b86464;
+	--red-d: #240505;
+
+    --title-text: #a78668;
+	--title-text-h: #c09f81;
+	--text: #9e9e9e;
+	--text-l: #c7c7c7;
+
+    --outline: #4e3f3b;
+
+    --window-bg: #1a1512;
+    --window-border-bg: #271e1d;
+    --window-border-shadow: #14100f;
+
+    --mini-button-bg: #410909;
+    --mini-button-border-bg: #61534f;
+    --mini-button-shadow: #231b19;
+    --mini-button-hover-bg: #640909;
+	--disabled-bg: #3d3d3d;
+
+    --small-border-bg: #231b19;
+    --small-border-shadow: var(--black);
+
+    --input-border: #382c28;
+
+	--character-bg: #3d332d;
+	--character-border-bg: #61534f;
+	--character-shadow-bg: #231b19;
+
+	--character-hover-bg: #4b3f38;
+	--character-hover-border-bg: #6e5f5b;
+	--character-hover-shadow-bg: #312624;
+
+	--character-selected-bg: #4b3f38;
+	--character-selected-border-bg: #6e5f5b;
+	--character-selected-shadow-bg: #c09f81;
+
+	--character-city: #df9554;
+
+	--window-border: url("../images/ui/window/wb.png");
+	--window-corner: url("../images/ui/window/wc.png");
+	--connect-bg: url('../images/backgrounds/connect.jpg');
+	--settings-bg: url('../images/ui/window/cog.png');
+	--exit-bg: url('../images/ui/window/exit.png');
+    
+	font-family: var(--font);
+	font-size: 16px;
+	font-weight: var(--regular);
+	color: var(--text);
+	margin: 0;
+	text-selection-caret-color: #ffffff !important;
+	outline: none !important;
+	outline-color: none !important;
+	outline-width: 0 !important;
+	outline-style: none !important;
+	outline-offset: none !important;
+}
+
+html {
+	width: 100vw;
+	height: 100vh;
+	display: block;
+	flow: vertical;
+	margin: 0;
+	padding: 0;
+	background: transparent;
+}
+
+body {
+	width: 100vw;
+	height: 100vh;
+	display: block;
+	overflow: hidden;
+	position: relative;
+	background: transparent;
+	padding: 0;
+	margin: 0;
+	vertical-scrollbar: custom-vertical-scrollbar;
+}
+
+body button {
+	behavior: button;
+	cursor: pointer;
+	font-family: var(--font);
+	white-space: wrap !important;
+	line-height: 21px !important;
+	border: none;
+}
+
+body #main {
+	behavior: frame;
+	width: 100vw;
+	height: 100vh;
+	display: block;
+	flow: vertical;
+	position: absolute;
+	top: 0;
+	bottom: *;
+    left: 0;
+    right: *;
+	z-index: 0;
+	margin: 0 !important;
+}
+
+body .index-modal {
+	width: 100vw;
+	height: 100vh;
+	display: none;
+	position: fixed;
+	top: 0;
+	bottom: *;
+    left: 0;
+    right: *;
+    z-index: 3;
+	overflow: hidden;
+	background: rgba(0, 0, 0, 0.5);
+}
+
+body .index-modal.active {
+	display: block;
+}
+
+body .index-modal .msgbox {
+	width: 400px;
+	height: auto;
+	min-height: 100px;
+	max-height: max-content;
+	padding: 6px;
+	display: none;
+	flow: vertical;
+	background: var(--window-bg);
+    border: 2px solid var(--window-border-bg);
+	box-shadow: 0px 0px 10px 5px var(--black), inset 0px 0px 10px 1px var(--window-border-shadow);
+	margin: *;
+}
+
+body .index-modal .msgbox.active {
+	display: block;
+}
+
+body .index-modal .msgbox .wrapper {
+    width: *;
+    height: * !important;
+	max-height: max-content;
+	flow: vertical;
+	position: relative;
+	display: block;
+}
+
+body .index-modal .msgbox .wrapper .header {
+    width: *;
+    height: auto;
+    min-height: 30px;
+    flow: horizontal;
+	position: relative;
+    margin-bottom: 1rem;
+}
+
+body .index-modal .msgbox .wrapper .header .title {
+	width: 90%;
+    flow: vertical;
+    font-family: var(--font);
+    font-size: 1.25rem;
+	text-align: center;
+	text-shadow: 1px 1px 0px var(--black);
+    color: var(--title-text);
+    padding-top: *;
+    padding-bottom: *;
+	margin: 0px auto;
+}
+
+body .index-modal .msgbox .wrapper .header .mini-button {
+    width: 24px;
+    height: 24px;
+	display: block;
+    flow: vertical;
+	position: absolute;
+	top: 2px;
+	right: 2px;
+}
+
+body .index-modal .msgbox .wrapper p {
+    font-size: 0.9rem;
+    font-weight: var(--regular);
+    text-align: center;
+    color: var(--text);
+	text-shadow: 1px 1px 0px var(--black);
+    margin-bottom: 0.5rem;
+}
+
+.hidden {
+	width: 0;
+	height: 0;
+	opacity: 0;
+	display: none;
+	overflow: hidden;
+	cursor: none;
+}
+
+.mini-button {
+	cursor: pointer;
+	flow: vertical;
+	font-size: 1rem;
+	text-align: center;
+	color: var(--text);
+    text-shadow: 1px 1px 0px var(--black);
+	background: var(--mini-button-bg);
+	box-shadow: 0px 0px 3px 1px var(--black), inset 0px 3px 0px rgba(255, 255, 255, 0.2), inset 0px 0px 0px 2px var(--black);
+	border: 1px solid var(--mini-button-border-bg);
+    border-radius: 2px;
+}
+
+.mini-button:hover {
+    color: var(--white);
+  	background: var(--mini-button-hover-bg);
+}

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="../assets/css/gateway.css">
+        <style>@import url(../assets/css/lang.css);</style>
+        <script|module>
+            import {setLang} from "../js/lang.js";
+
+            document.on("change", "form", function(evt, form) {
+                setLang(form.value.lang);
+            });
+        </script>
+    </head>
+    <body>
+        <div class="window big-border">
+            <div class="tb"></div>
+            <div class="lr"></div>
+            <div class="ctb"></div>
+            <div class="clr"></div>
+
+            <div class="wrapper">
+                <button id="account_settings" class="button"></button>
+                <button id="exit" class="button"></button>
+
+                <div class="centered">
+                    <h1.x>global_name</h1>
+
+                    <div class="connect-wrapper small-border">
+                        <div class="field">
+                            <span.x class="title">connect_username</span>
+                            <input class="center-input" type="text" name="account" autofocus>
+                        </div>
+
+                        <div class="field">
+                            <span.x class="title">connect_password</span>
+                            <input class="center-input" type="password" name="password">
+                        </div>
+
+                        <div class="system">
+                            <p.x></p>
+                        </div>
+                    </div>
+
+                    <div class="button-wrapper">
+                        <button.x id="create_account" class="button">connect_create_button</button>
+                        <button.x id="login" class="button">connect_enter_button</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal">
+            <div class="create-account">
+                <div class="wrapper">
+                    <div class="header">
+                        <span.x class="title">create_account_title</span>
+
+                        <button class="mini-button" tabindex="-1">x</button>
+                    </div>
+
+                    <div class="field">
+                        <span.x class="title">create_account_username</span>
+                        <input class="center-input" type="text" name="username">
+                    </div>
+
+                    <div class="field">
+                        <span.x class="title">create_account_email</span>
+                        <input class="center-input" type="text" name="email">
+                    </div>
+
+                    <div class="field">
+                        <span.x class="title">create_account_password</span>
+                        <input class="center-input" type="password" name="password">
+                    </div>
+
+                    <div class="field">
+                        <span.x class="title" data-translate>create_account_repeat_password</span>
+                        <input class="center-input" type="password" name="confirm_password">
+                    </div>
+
+                    <div class="special-field">
+                        <input id="tos" class="center-input" type="checkbox" name="tos">
+                        <label for="tos">
+                            <span.x>create_account_tos_one</span>
+                            <a.x href='' target='_blank'>create_account_tandc</a>
+                            <span.x>create_account_tos_two</span>
+                            <span.x>global_name</span>
+                        </label>
+                    </div>
+
+                    <div class="system">
+                        <p.x></p>
+                    </div>
+
+                    <button.x id="account_create" class="button">create_account_create_button</button>
+                </div>
+            </div>
+        </div>
+        
+        <script src="../js/gateway.js"></script>
+    </body>    
+</html>
