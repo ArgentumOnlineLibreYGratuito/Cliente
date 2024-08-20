@@ -70,14 +70,33 @@ document.on('ready',function() {
     // Create character button action
     CREATE_BUTTON.addEventListener('click', function() {
         const charName = document.$('input[name="newchar_name"]').value;
+        const charEmail = document.$('input[name="newchar_email"]').value;
+        const charPwd = document.$('input[name="newchar_pwd"]').value;
 
         document.$('.char .box .system').classList.remove('error');
         document.$('.char .box .system p').textContent = '';
 
-        if (charName.length === 0) {
-            globalShowError(document, '.char .box .system', 'character_create_empty_name');
+        if (charName.length === 0 || charEmail.length === 0 || charPwd.length === 0) {
+            globalShowError(document, '.char .box .system', 'character_create_error_empty_fields');
             return;
         }
+
+        if (!isEmail(charEmail)) {
+            globalShowError(document, '.char .box .system', 'character_create_error_invalid_email');
+            return;
+        }
+
+        /*
+        if (EMAIL_ALREADY_IN_USE) {
+            globalShowError(document, '.char .box .system', 'character_create_error_email_already_used');
+            return;
+        }
+
+        if (NICKNAME_ALREADY_IN_USE) {
+            globalShowError(document, '.char .box .system', 'character_create_error_name_already_used');
+            return;
+        }
+        */
 
         if (charGender < 0) {
             globalShowError(document, '.char .box .system', 'character_create_empty_gender');

@@ -77,10 +77,13 @@ const translation = {
     "character_create_back": "Volver",
     "character_create_throwdices": "Tirar dados",
     "character_create_next": "Crear personaje",
-    "character_create_empty_name": "debes introducir un nombre para crear tu nuevo personaje.",
-    "character_create_empty_gender": "debes seleccionar el género de tu personaje.",
-    "character_create_empty_race": "debes seleccionar la raza de tu personaje.",
-    "character_create_empty_class": "debes seleccionar la clase de tu personaje."
+    "character_create_error_empty_fields": "debes completar todos los campos para crear tu personaje.",
+    "character_create_error_invalid_email": "dirección de email inválida, prueba con otra.",
+    "character_create_error_name_already_used": "este nombre ya existe, prueba con otro.",
+    "character_create_error_email_already_used": "este email ya se encuentra en uso, prueba con otro.",
+    "character_create_error_empty_gender": "debes seleccionar el género de tu personaje.",
+    "character_create_error_empty_race": "debes seleccionar la raza de tu personaje.",
+    "character_create_error_empty_class": "debes seleccionar la clase de tu personaje."
 }
 
 export default translation;

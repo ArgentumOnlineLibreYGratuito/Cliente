@@ -77,10 +77,13 @@ const translation = {
     "character_create_back": "Back",
     "character_create_throwdices": "Throw dices",
     "character_create_next": "Create character",
-    "character_create_empty_name": "you must enter a name to create your new character.",
-    "character_create_empty_gender": "you must select the gender of your character.",
-    "character_create_empty_race": "you must select the race of your character.",
-    "character_create_empty_class": "you must select the class of your character."
+    "character_create_error_empty_fields": "you must complete all the fields to create your character.",
+    "character_create_error_invalid_email": "invalid email address, try with a different one.",
+    "character_create_error_name_already_used": "this name already exist, try another one.",
+    "character_create_error_email_already_used": "this email is already in use, try another one.",
+    "character_create_error_empty_gender": "you must select the gender of your character.",
+    "character_create_error_empty_race": "you must select the race of your character.",
+    "character_create_error_empty_class": "you must select the class of your character."
 }
 
 export default translation;

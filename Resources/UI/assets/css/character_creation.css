@@ -53,6 +53,23 @@
     font-size: 1.5rem;
 }
 
+.window .wrapper .char .box .box-dual {
+	width: *;
+	flow: horizontal;
+}
+
+.window .wrapper .char .box .box-dual .field {
+	width: 48%;
+}
+
+.window .wrapper .char .box .box-dual .field:first-child {
+	margin-right: *;
+}
+
+.window .wrapper .char .box .box-dual .field:last-child {
+	margin-left: *;
+}
+
 .window .wrapper .char .box-trio {
 	width: *;
 	min-width: 600px;
