@@ -24,30 +24,27 @@ export function setLang(langName) {
 }
 
 export function translate() {
-    // Checks for child elements and translate them
-    if (this.children.length > 0) {
-        for(let child of this.children) {
-            let childKey = child.innerText;
+    function translateElement(element) {
+        let key = element.innerText;
 
-            child.translate = () => {
-                let childNewText = translation[childKey];
-                if(childNewText) child.innerText = childNewText;
-            }
+        element.translate = () => {
+            const newText = translation[key];
+            if (newText) element.innerText = newText;
+        };
 
-            child.translate();
-        }
-
-        this.children[0].click(); // Hack to re-paint the translated child
+        element.translate();
     }
 
-    let key = this.innerText;
-
-    this.translate = () => {
-        const newText = translation[key];
-        if(newText) this.innerText = newText;
+    function translateAll() {
+        const elements = document.querySelectorAll('.x');
+        elements.forEach(translateElement);
     }
 
-    this.translate();
+    if (this.classList.contains('x')) {
+        translateElement(this);
+    }
+
+    translateAll();
 }
 
 setLang(document.attributes["lang"] || "spanish");
