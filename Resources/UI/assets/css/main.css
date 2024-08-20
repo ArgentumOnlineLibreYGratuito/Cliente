@@ -1,0 +1,795 @@
+.window {
+    background: var(--window-bg);
+    background-repeat: repeat;
+}
+
+.window .wrapper {
+    flow: horizontal !important;
+    padding: 6px;
+}
+
+.window .wrapper .main-left {
+    width: *;
+    flow: vertical;
+    margin: 0 12px 0 0;
+}
+
+.window .wrapper .main-left .console {
+    width: *;
+    min-height: 83px;
+    height: 83px;
+    padding: 4px;
+    flow: vertical;
+    text-align: left;
+    color: var(--console);
+    background: var(--black);
+    overflow-x: hidden;
+    overflow-y: scroll;
+    margin: 0 0 0.3rem 0;
+}
+
+.window .wrapper .main-left .console p {
+    font-size: 0.7rem;
+}
+
+.window .wrapper .main-left .chat {
+    width: *;
+    min-height: 22px;
+    padding: 8px 4px;
+    font-size: 0.8rem;
+    display: block;
+    color: var(--white);
+    text-align: left !important;
+    border: 1px solid var(--window-border-bg);
+    margin-bottom: 0.3rem;
+}
+
+.window .wrapper .main-left .chat:disabled {
+    border: 1px solid var(--black) !important;
+}
+
+.window .wrapper .main-left .rect {
+    behavior: aurora-drawing;
+    width: *;
+    height: *;
+    flow: vertical;
+    background: var(--black);
+    border: 1px solid var(--border);
+}
+
+.window .wrapper .main-left .equipment {
+  width: *;
+  flow: horizontal;
+}
+
+.window .wrapper .main-left .equipment .box {
+  width: 70px;
+  flow: horizontal;
+  position: relative;
+  margin-left: *;
+  margin-right: *;
+}
+
+.window .wrapper .main-left .equipment .box .icons {
+  position: absolute;
+  bottom: -4px;
+  left: -20px;
+  margin: auto 0px;
+}
+
+.window .wrapper .main-left .equipment .box span {
+  width: *;
+  min-width: 50px;
+  height: auto;
+  padding: 3px 8px;
+  flow: vertical;
+  font-size: 0.7rem;
+  font-weight: var(--bold);
+  text-align: center;
+  color: var(--text-d);
+  background: var(--black);
+  border-radius: 3px;
+  margin: auto 0px;
+}
+
+.window .wrapper .main-right {
+  width: 208px;
+  height: *;
+  flow: vertical;
+  display: block;
+  margin: 0;
+}
+
+.window .wrapper .main-right .header {
+    width: *;
+    height: auto;
+    min-height: 20px;
+    display: block;
+    flow: horizontal;
+    margin-bottom: 1rem;
+}
+
+.window .wrapper .main-right .header .fps {
+    width: 80px;
+    display: block;
+    flow: horizontal;
+    padding: 0;
+    font-size: 0.7rem;
+    font-weight: var(--bold);
+    text-align: left;
+    vertical-align: middle;
+    color: var(--text);
+    text-shadow: 1px 1px 0px var(--black);
+    margin: 0;
+}
+
+.window .wrapper .main-right .header .fps span:last-child {
+    margin-left: 5px;
+}
+
+.window .wrapper .main-right .header .mini-button {
+  width: 18px;
+  height: 18px;
+  display: block;
+  font-size: 1rem;
+  flow: vertical;
+  padding: 0 0 3px 0;
+  text-align: center;
+  margin: 0 0 0 *;
+}
+
+.window .wrapper .main-right .nickname {
+  width: *;
+  padding: 2px 5px 3px 5px;
+  display: block;
+  flow: vertical;
+  font-size: 0.8rem;
+  font-weight: var(--bold);
+  text-align: center;
+  color: var(--text-l);
+  background: var(--black);
+  border-radius: 3px;
+  margin: 0px auto 0.3rem auto;
+}
+
+.window .wrapper .main-right .char-level {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  margin: 0px auto 0.2rem auto;
+}
+
+.window .wrapper .main-right .char-level .desc {
+  font-size: 0.8rem;
+  font-weight: var(--bold);
+  text-align: left;
+  color: var(--text);
+  text-shadow: 1px 1px 0px var(--black);
+  margin-right: 5px;
+}
+
+.window .wrapper .main-right .char-level .level {
+  font-size: 0.8rem;
+  font-weight: var(--bold);
+  text-align: left;
+  color: var(--text);
+  text-shadow: 1px 1px 0px var(--black);
+}
+
+.window .wrapper .main-right .experience-bar {
+  width: 200px;
+  height: 17px;
+  flow: horizontal;
+  background: var(--black);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--black);
+  margin: 0px auto 0.2rem auto;
+}
+
+.window .wrapper .main-right .experience-bar .block {
+  width: *;
+  height: 22px;
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 1;
+  margin: auto;
+}
+
+.window .wrapper .main-right .experience-bar .exp-bar {
+  width: 100%; /* Width of the experience bar */
+}
+
+.window .wrapper .main-right .experience-bar .percentage-exp {
+  width: *;
+  font-size: 0.8rem;
+  font-weight: var(--bold);
+  text-align: center;
+  color: var(--cyan);
+  text-shadow: 1px 1px 0px var(--black);
+  position: absolute;
+  top: -2px;
+  z-index: 3;
+  margin: auto;
+}
+
+.window .wrapper .main-right .experience {
+  width: *;
+  flow: horizontal;
+  margin-bottom: 1rem;
+}
+
+.window .wrapper .main-right .experience .desc {
+  width: auto;
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: var(--bold);
+  text-align: center;
+  color: var(--text);
+  text-shadow: 1px 1px 0px var(--black);
+  margin-left: *;
+}
+
+.window .wrapper .main-right .experience .exp {
+  width: auto;
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: var(--bold);
+  color: var(--text);
+  text-align: center;
+  text-shadow: 1px 1px 0px var(--black);
+  margin-left: 5px;
+  margin-right: *;
+}
+
+.window .wrapper .main-right .inventory {
+  width: *;
+  height: 254px;
+  flow: vertical;
+  display: block;
+}
+
+.window .wrapper .main-right .inventory .items, .window .wrapper .main-right .inventory .spells {
+  width: *;
+  display: none;
+  flow: vertical;
+}
+
+.window .wrapper .main-right .inventory .items.active, .window .wrapper .main-right .inventory .spells.active {
+  display: block;
+}
+
+.window .wrapper .main-right .inventory .items .button-wrapper, .window .wrapper .main-right .inventory .spells .button-wrapper {
+  width: *;
+  display: block;
+  flow: horizontal;
+  border-spacing: *;
+  margin-bottom: 0.5rem;
+}
+
+.window .wrapper .main-right .inventory .items .button-wrapper button {
+  cursor: pointer;
+  height: 20px;
+  padding: 0px;
+  font-family: var(--font);
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: var(--regular);
+  color: var(--text);
+  background: none;
+  text-align: center;
+  text-shadow: 1px 1px 0px var(--black);
+}
+
+.window .wrapper .main-right .inventory .items .button-wrapper button:focus {
+  border-color: none !important;
+  outline: none !important;
+}
+
+.window .wrapper .main-right .inventory .items .button-wrapper button:hover {
+  color: var(--text);
+}
+
+.window .wrapper .main-right .inventory .items.active .button-wrapper button:first-child {
+  color: var(--red-l) !important;
+}
+
+.window .wrapper .main-right .inventory .items .box {
+  width: 173px;
+  height: 173px;
+  display: block;
+  overflow: hidden;
+  box-shadow: 0px 0px 0px 1px var(--black);
+  margin: 0px auto;
+}
+
+.window .wrapper .main-right .inventory .items .box .render {
+  behavior: aurora-drawing;
+  width: 165px;
+  height: 165px;
+  display: block;
+  background: var(--black);
+}
+
+.window .wrapper .main-right .inventory .spells {
+  width: *;
+  display: none;
+  flow: vertical;
+  position: relative;
+}
+
+.window .wrapper .main-right .inventory .spells.active {
+  display: block;
+}
+
+.window .wrapper .main-right .inventory .spells .button-wrapper button {
+  cursor: pointer;
+  height: 20px;
+  padding: 0px;
+  font-family: var(--font);
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: var(--regular);
+  color: var(--text);
+  background: none;
+  text-align: center;
+  text-shadow: 1px 1px 0px var(--black);
+}
+
+.window .wrapper .main-right .inventory .spells .button-wrapper button:focus {
+  border-color: none !important;
+  outline: none !important;
+}
+
+.window .wrapper .main-right .inventory .spells .button-wrapper button:hover {
+  color: var(--text);
+}
+
+.window .wrapper .main-right .inventory .spells.active .button-wrapper button:last-child {
+  color: var(--red-l) !important;
+}
+
+.window .wrapper .main-right .inventory .spells .box {
+  width: 173px;
+  height: 173px;
+  display: block;
+  box-shadow: 0px 0px 0px 1px var(--black);
+  margin: 0px auto;
+}
+
+.window .wrapper .main-right .inventory .spells .box .spell-list {
+  width: *;
+  height: 161px;
+  min-height: 161px;
+  max-height: 161px;
+  background: var(--black);
+  box-shadow: inset 0px 0px 5px 1px var(--window-border-shadow);
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.window .wrapper .main-right .inventory .spells .box .spell-list li {
+  width: *;
+  height: auto;
+  padding: 2px;
+  display: block;
+  list-style: none;
+  font-size: 0.7rem;
+  font-weight: var(--bold);
+  color: var(--text);
+  text-shadow: 1px 1px 0px var(--black);
+  overflow: hidden;
+  position: relative;
+}
+
+.window .wrapper .main-right .inventory .spells .box .spell-list li.selected {
+  color: var(--text-l);
+  background: var(--spell-selected);
+}
+
+.window .wrapper .main-right .inventory .move-spells {
+  display: none;
+  position: absolute;
+  top: 27px;
+  right: -2px;
+}
+
+.window .wrapper .main-right .inventory .spells.active .move-spells {
+  display: block;
+}
+
+.window .wrapper .main-right .inventory .move-spells .mini-button {
+  width: 18px;
+  height: 18px;
+  display: block;
+  font-size: 0.8rem;
+  z-index: 3;
+  margin: 2px 0px 5px 0px;
+}
+
+.window .wrapper .main-right .inventory .move-spells .mini-button:first-child {
+  foreground-image: url('../images/ui/window/scroll-b-prev.png'); 
+  foreground-position: 50% 50%;
+  foreground-repeat: no-repeat;
+}
+
+.window .wrapper .main-right .inventory .move-spells .mini-button:last-child {
+  foreground-image: url('../images/ui/window/scroll-b-next.png'); 
+  foreground-position: 50% 50%;
+  foreground-repeat: no-repeat;
+  margin-bottom: 0px;
+}
+
+.window .wrapper .main-right .inventory .spells-buttons {
+  width: 85%;
+  display: block;
+  flow: horizontal;
+  margin: 0.5rem * 0px *
+}
+
+.window .wrapper .main-right .inventory .spells-buttons .button.cast {
+  width: 75%;
+  height: 35px;
+  padding: * 0px;
+  display: block;
+  flow: vertical;
+  font-size: 1.1rem;
+  text-align: center;
+  text-shadow: 1px 1px 0px var(--black);
+  margin: 0px * * 0px;
+}
+
+.window .wrapper .main-right .inventory .spells-buttons .button.info {
+  width: 20%;
+  height: 35px;
+  padding: * 0px;
+  display: block;
+  flow: vertical;
+  font-size: 1.1rem;
+  text-align: center;
+  text-shadow: 1px 1px 0px var(--black);
+  margin: 0px 0px * *;
+}
+
+.window .wrapper .main-right .bars-and-buttons {
+  width: *;
+  flow: horizontal;
+}
+
+.window .wrapper .main-right .bars-and-buttons .bars-container {
+  width: 50%;
+  flow: vertical;
+}
+
+.window .wrapper .main-right .bars-and-buttons .bars-container .potions {
+  width: *;
+  flow: horizontal;
+  margin-bottom: 1.5rem;
+}
+
+.window .wrapper .main-right .bars-and-buttons .bars-container .potions .dexterity {
+  width: auto;
+  display: block;
+  flow: horizontal;
+}
+
+.window .wrapper .main-right .bars-and-buttons .bars-container .potions .dexterity .icons {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+}
+
+.window .wrapper .main-right .bars-and-buttons .bars-container .potions .dexterity .dex {
+  display: inline-block;
+  padding: 2px 6px 2px 5px;
+  font-size: 0.8rem;
+  font-weight: var(--bold);
+  text-align: center;
+  color: var(--dexterity);
+  background: var(--black);
+  border-radius: 3px;
+  margin-top: 5px;
+}
+
+.window .wrapper .main-right .bars-and-buttons .bars-container .potions .strength {
+  width: auto;
+  display: block;
+  flow: horizontal;
+}
+
+.window .wrapper .main-right .bars-and-buttons .bars-container .potions .strength .icons {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+}
+
+.window .wrapper .main-right .bars-and-buttons .bars-container .potions .strength .str {
+  display: inline-block;
+  padding: 2px 6px 2px 5px;
+  font-size: 0.8rem;
+  font-weight: var(--bold);
+  text-align: center;
+  color: var(--strength);
+  background: var(--black);
+  border-radius: 3px;
+  margin-top: 5px;
+}
+
+.window .wrapper .main-right .bars-and-buttons .bars-container .bars-wrapper {
+  width: *;
+  flow: vertical;
+}
+
+.window .wrapper .main-right .bars-and-buttons .bars-container .bars-wrapper .bar-holder {
+  width: 100px;
+  height: 13px;
+  flow: horizontal;
+  background: var(--black);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin: 0px auto 0.5rem auto;
+}
+
+.window .wrapper .main-right .bars-and-buttons .bars-container .bars-wrapper .bar-holder .block {
+  width: *;
+  height: 13px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  margin: auto;
+}
+
+.window .wrapper .main-right .bars-and-buttons .bars-container .bars-wrapper .bar-holder .stamina {
+  width: 100%; /* Width of the stamina bar */
+}
+
+.window .wrapper .main-right .bars-and-buttons .bars-container .bars-wrapper .bar-holder .mana {
+  width: 100%; /* Width of the mana bar */
+}
+
+.window .wrapper .main-right .bars-and-buttons .bars-container .bars-wrapper .bar-holder .health {
+  width: 100%; /* Width of the health bar */
+}
+
+.window .wrapper .main-right .bars-and-buttons .bars-container .bars-wrapper .bar-holder .hunger {
+  width: 100%; /* Width of the hunger bar */
+}
+
+.window .wrapper .main-right .bars-and-buttons .bars-container .bars-wrapper .bar-holder .thirst {
+  width: 100%; /* Width of the thirst bar */
+}
+
+.window .wrapper .main-right .bars-and-buttons .bars-container .bars-wrapper .bar-holder span {
+  width: *;
+  height: *;
+  font-family: var(--font-text);
+  font-size: 0.8rem;
+  font-weight: var(--regular);
+  text-align: center;
+  color: var(--white);
+  text-shadow: 1px 1px 0px var(--black);
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  right: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  margin: auto;
+}
+
+.window .wrapper .main-right .bars-and-buttons .bars-container .coords {
+  width: 100px;
+  height: 21px;
+  padding: 0px 5px 5px 5px;
+  flow: vertical;
+  font-size: 0.8rem;
+  font-weight: var(--regular);
+  text-align: center;
+  color: var(--yellow);
+  background: var(--black);
+  border-radius: 3px;
+  margin: 1.7rem auto 0px auto;
+}
+
+.window .wrapper .main-right .bars-and-buttons .gold-and-buttons {
+  width: 50%;
+  display: block;
+  flow: vertical;
+}
+
+.window .wrapper .main-right .bars-and-buttons .gold-and-buttons .gold-wrapper {
+  width: 90%;
+  display: block;
+  flow: horizontal;
+  position: relative;
+  z-index: 2;
+  margin-top: 5px;
+  margin-bottom: 1.5rem;
+  margin-right: 0;
+  margin-left: *;
+}
+
+.window .wrapper .main-right .bars-and-buttons .gold-and-buttons .gold-wrapper .icons {
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: block;
+  position: absolute;
+  top: -5px;
+  left: -8px;
+  z-index: 3;
+  margin: auto 0px;
+  border-radius: 0;
+}
+
+.window .wrapper .main-right .bars-and-buttons .gold-and-buttons .gold-wrapper .amount {
+  width: *;
+  height: 21px;
+  display: block;
+  padding: 0px 5px 0px 10px;
+  font-size: 0.8rem;
+  font-weight: var(--bold);
+  text-align: right;
+  color: var(--yellow);
+  background: var(--black);
+  border-radius: 0px 3px 3px 0px;
+}
+
+.window .wrapper .main-right .bars-and-buttons .gold-and-buttons .buttons-wrapper {
+  width: 95%;
+  height: auto;
+  display: block;
+  flow: vertical;
+  margin: 0px 0px 0px *;
+}
+
+.window .wrapper .main-right .bars-and-buttons .gold-and-buttons .buttons-wrapper .mini-button {
+  width: 90%;
+  height: 21px;
+  display: block;
+  flow: vertical;
+  padding: * 0px;
+  font-size: 0.8rem;
+  text-shadow: 1px 1px 0px var(--black);
+  box-shadow: inset 0px 0px 8px 3px var(--button-shadow);
+  border-radius: 3px;
+  margin-bottom: 0.2rem;
+  margin-left: *;
+}
+
+.window .wrapper .main-right .bars-and-buttons .gold-and-buttons .locks-and-macros {
+  width: *;
+  flow: horizontal;
+  margin-top: 0.8rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.window .wrapper .main-right .bars-and-buttons .gold-and-buttons .locks-and-macros .box {
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  background: var(--black);
+  border: 1px solid var(--border);
+  position: relative;
+  margin-right: 2px;
+}
+
+.window .wrapper .main-right .bars-and-buttons .gold-and-buttons .locks-and-macros .box:last-child {
+    margin-right: 0px;
+}
+
+.window .wrapper .main-right .bars-and-buttons .gold-and-buttons .locks-and-macros .box.active {
+    border: 1px solid var(--button-h);
+}
+
+.window .wrapper .main-right .bars-and-buttons .gold-and-buttons .locks-and-macros .box.active .icons {
+    opacity: 1;
+}
+
+.window .wrapper .main-right .bars-and-buttons .gold-and-buttons .locks-and-macros .box .icons {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  top: -5px;
+  left: -4px;
+  z-index: 1;
+  opacity: 0.5;
+}
+
+.bars {
+  display: block;
+  background: url('../images/ui/bars.png') no-repeat 0 0;
+}
+
+.bar-experience {
+  width: 200px;
+  height: 22px;
+  background-position: 0 0;
+}
+
+.bar-stamina {
+  width: *;
+  height: 13px;
+  background-position: 0 -23px;
+}
+
+.bar-mana {
+  width: *;
+  height: 13px;
+  background-position: 0 -36px;
+}
+
+.bar-health {
+  width: *;
+  height: 13px;
+  background-position: 0 -49px;
+}
+
+.bar-hunger {
+  width: *;
+  height: 13px;
+  background-position: 0 -62px;
+}
+
+.bar-thirst {
+  width: *;
+  height: 13px;
+  background-position: 0 -75px;
+}
+
+.icons {
+  width: 32px;
+  height: 32px;
+  display: block;
+  background: url('../images/ui/icons.png') no-repeat 0 0;
+}
+
+.icons.armor {
+    background-position: 0 0;
+}
+
+.icons.helmet {
+    background-position: -32px 0;
+}
+
+.icons.shield {
+    background-position: -64px 0;
+}
+
+.icons.weapon {
+    background-position: -96px 0;
+}
+
+.icons.gold {
+    background-position: -128px 0;
+}
+
+.icons.dexterity {
+    background-position: -160px 0;
+}
+
+.icons.strength {
+    background-position: -192px 0;
+}
+
+.icons.resurrection {
+    background-position: -224px 0;
+}
+
+.icons.attack {
+    background-position: 0 -32px;
+}
+
+.icons.spellmacro {
+    background-position: -32px -32px;
+}
+
+.icons.workmacro {
+    background-position: -64px -32px;
+}

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="../assets/css/main.css">
+        <style>@import url(../assets/css/lang.css);</style>
+        <script|module>
+            import {setLang} from "../js/lang.js";
+
+            document.on("change", "form", function(evt, form) {
+                setLang(form.value.lang);
+            });
+        </script>
+    </head>
+    <body>
+        <div class="window big-border">
+            <div class="tb"></div>
+            <div class="lr"></div>
+            <div class="ctb"></div>
+            <div class="clr"></div>
+
+            <div class="wrapper">
+                <div class="main-left">
+                    <richtext class="console"></richtext>
+
+                    <input class="input chat" type="text" name="chat" tabindex="1" disabled>
+
+                    <div class="rect"></div>
+                </div>
+
+                <div class="main-right">
+                    <div class="header">
+                        <div class="fps">
+                            <span.x>fps</span>
+                            <span>0</span>
+                        </div>
+
+                        <button class="mini-button">x</button>
+                    </div>
+
+                    <div id="nickname" class="nickname">Nickname</div>
+
+                    <div class="char-level">
+                        <span.x class="desc">level</span>
+                        <span id="level_value" class="level">1</span>
+                    </div>
+
+                    <div class="experience-bar">
+                        <!--
+                            Modifying the width: % of the latest div class:
+                                "bars bar-experience block" >>> this class "exp-bar"
+                            changes the width of the bar
+                        -->
+                        <div id="exp_perc_bar" class="bars bar-experience block exp-bar"></div>
+                        <span id="exp_perc_value" class="percentage-exp">[0%]</span>
+                    </div>
+
+                    <div class="experience">
+                        <span.x class="desc">exp</span>
+                        <span id="exp_value" class="exp">0/0</span>
+                    </div>
+
+                    <div class="inventory">
+                        <div class="items active">
+                            <div class="button-wrapper">
+                                <button.x id="inv_inventory">main_inventory</button>
+                                <button.x id="inv_spells">main_spells</button>
+                            </div>
+
+                            <div class="box small-border">
+                                <div class="render">
+                                    <!--
+                                        Render here your inventory
+                                    -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="spells">
+                            <div class="button-wrapper">
+                                <button.x id="sp_inventory">main_inventory</button>
+                                <button.x id="sp_spells">main_spells</button>
+                            </div>
+
+                            <div class="box small-border">
+                                <ul class="spell-list">
+                                    <!-- 
+                                        "selected" class emulate the selection of the spell
+                                    -->
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li> 
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li> 
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li> 
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li> 
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                    <li.x>main_spells_empty</li>
+                                </ul>
+                            </div>
+
+                            <div class="move-spells">
+                                <button class="mini-button"></button>
+                                <button class="mini-button"></button>
+                            </div>
+
+                            <div class="spells-buttons">
+                                <button.x class="button cast">main_spells_cast</button>
+                                <button.x class="button info">main_spells_help</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bars-and-buttons">
+                        <div class="bars-container">
+                            <div class="potions">
+                                <div class="dexterity">
+                                    <div class="icons dexterity"></div>
+                                    <div id="agi" class="dex">00</div>
+                                </div>
+
+                                <div class="strength">
+                                    <div class="icons strength"></div>
+                                    <div id="str" class="str">00</div>
+                                </div>
+                            </div>
+
+                            <div class="bars-wrapper">
+                                <!-- 
+                                    Modifying the width: % of the latest class inside:
+                                        "bars bar-name block" >>> this next class
+                                    changes the width of the bar
+                                -->
+                                <div class="bar-holder">
+                                    <div id="stamina_bar" class="bars bar-stamina block stamina"></div>
+                                    <span id="stamina_value" class="bar-stamina">0/0</span>
+                                </div>
+
+                                <div class="bar-holder">
+                                    <div id="mana_bar" class="bars bar-mana block mana"></div>
+                                    <span id="mana_value" class="bar-mana">0/0</span>
+                                </div>
+
+                                <div class="bar-holder">
+                                    <div id="health_bar" class="bars bar-health block health"></div>
+                                    <span id="health_value" class="bar-health">0/0</span>
+                                </div>
+
+                                <div class="bar-holder">
+                                    <div id="hunger_bar" class="bars bar-hunger block hunger"></div>
+                                    <span id="hunger_value" class="bar-hunger">0/0</span>
+                                </div>
+
+                                <div class="bar-holder">
+                                    <div id="thirst_bar" class="bars bar-thirst block thirst"></div>
+                                    <span id="thirst_value" class="bar-thirst">0/0</span>
+                                </div>
+                            </div>
+
+                            <span id="coordinates" class="coords">0 x: 00 y: 00</span>
+                        </div>
+
+                        <div class="gold-and-buttons">
+                            <div class="gold-wrapper">
+                                <button class="icons gold"></button>
+                                <span id="gold_value" class="amount">0</span>
+                            </div>
+
+                            <div class="buttons-wrapper">
+                                <button.x id="map" class="mini-button">main_buttons_map</button>
+                                <button.x id="group" class="mini-button">main_buttons_party</button>
+                                <button.x id="options" class="mini-button">main_buttons_options</button>
+                                <button.x id="stats" class="mini-button">main_buttons_stats</button>
+                                <button.x id="guilds" class="mini-button">main_buttons_guilds</button>
+                            </div>
+
+                            <div class="locks-and-macros">
+                                <!--
+                                    Add active class here to show it active
+                                -->
+                                <div class="box ">
+                                    <div class="icons resurrection"></div>
+                                </div>
+    
+                                <div class="box ">
+                                    <div class="icons attack"></div>
+                                </div>
+    
+                                <div class="box ">
+                                    <div class="icons spellmacro"></div>
+                                </div>
+    
+                                <div class="box ">
+                                    <div class="icons workmacro"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="submain" tabindex="-1" content-style="../assets/css/global.css"></div>
+        
+        <script src="../js/main.js"></script>
+    </body>    
+</html>

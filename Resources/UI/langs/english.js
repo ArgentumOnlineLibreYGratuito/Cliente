@@ -2,6 +2,8 @@ const translation = {
     "global_name": "Argentum",
     "global_error_offline": "server offline.",
     "level": "Level",
+    "fps": "FPS:",
+    "exp": "Exp:",
     "male": "Male",
     "female": "Female",
     "human": "Human",
@@ -83,7 +85,17 @@ const translation = {
     "character_create_error_email_already_used": "this email is already in use, try another one.",
     "character_create_error_empty_gender": "you must select the gender of your character.",
     "character_create_error_empty_race": "you must select the race of your character.",
-    "character_create_error_empty_class": "you must select the class of your character."
+    "character_create_error_empty_class": "you must select the class of your character.",
+    "main_inventory": "Inventory",
+    "main_spells": "Spells",
+    "main_spells_empty": "(Empty)",
+    "main_spells_cast": "Cast",
+    "main_spells_help": "?",
+    "main_buttons_map": "Map",
+    "main_buttons_party": "Party",
+    "main_buttons_options": "Options",
+    "main_buttons_stats": "Statistics",
+    "main_buttons_guilds": "Guilds"
 }
 
 export default translation;
