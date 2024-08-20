@@ -607,33 +607,18 @@ body .over-main-modal.active {
 		width: *; /* everything left from the button */
 		height: *; /* takes full height */
 		min-height: 1.2em;
-		padding: 3px;
+		padding: 0px;
 		vertical-align: middle;
 		white-space: pre;
 		color: var(--text);
-		background: var(--mini-button);
-		box-shadow: inset 0px 0px 3px 1px var(--button-shadow);
-		border: 2px solid var(--button-border);
+		background: var(--black);
+		box-shadow: 0px 0px 5px 1px var(--window-border-shadow);
+		border: 1px solid var(--input-border);
   	}
 
 	/* dropdown button of the combobox */
 	:root > button {
-		cursor: pointer;
-		display: block;
-		vertical-align: middle;
-		width: 20px;
-		padding: 0;
-		height: *;
-		background-image: none;
-		foreground-image: url(stock:chevron-down); /* that arrow */
-		foreground-repeat: no-repeat;
-		foreground-position: 50% 50%;
-		behavior: clickable; 
-		white-space: nowrap;
-		color: var(--text);
-		background: var(--mini-button);
-		box-shadow: inset 0px 0px 3px 1px var(--button-shadow);
-		border: 2px solid var(--button-border);
+		display: none;
   	}
 
   	/* popup select element */
@@ -645,12 +630,12 @@ body .over-main-modal.active {
 		visibility: collapse; /* invisible normally */
 		behavior: select;
 		width: *;
-		padding: 0;
+		padding: 0px;
 		color: var(--text);
 		text-shadow: 1px 1px 0px var(--black) !important;
-		background: var(--mini-button);
-		box-shadow: inset 0px 0px 3px 1px var(--button-shadow);
-		border: 2px solid var(--button-border);
+		background: var(--window-bg);
+		box-shadow: inset 0px 0px 3px 1px var(--window-border-shadow);
+		border: 1px solid var(--input-border);
   	}
 
   	:root > popup:empty {
@@ -662,15 +647,15 @@ body .over-main-modal.active {
   	}
 
 	:root > popup:popup > option {
-		padding: 3px 0px !important;
+		padding: 3px !important;
 	}
 
 	:root > popup:popup > option:hover {
 		cursor: pointer !important;
 		color: var(--white) !important;
 		text-shadow: 1px 1px 0px var(--black) !important;
-		background: var(--mini-button-h) !important;
-		box-shadow: inset 0px 0px 3px 1px var(--button-shadow) !important;
+		background: var(--outline) !important;
+		box-shadow: inset 0px 0px 3px 1px var(--mini-button-shadow) !important;
 	}
 
   	:root > popup > option:empty {

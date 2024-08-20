@@ -15,7 +15,7 @@
     top: 20px;
     right: 70px;
 	text-align: center;
-	background-image: var(--settings-bg);
+	background-image: var(--settings-icon);
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 70%;
@@ -32,7 +32,7 @@
     top: 20px;
     right: 20px;
 	text-align: center;
-	background-image: var(--exit-bg);
+	background-image: var(--exit-icon);
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 70%;

@@ -72,10 +72,27 @@ function showAccountCreateError(message) {
     globalShowError(frameElement.frame.document, '.modal .create-account .wrapper .system', message);
     return;
 }
+
 function setLanguage(id) {
     setLang(id);
 }
 
+function setAttributesOnCharacterCreation(str, agi, int, chr, con) {
+    // Change the attributes on the character creation Window
+    frameElement.on('complete', function() {
+        const STR = frameElement.frame.document.$('.dices span:nth-child(1)');
+        const AGI = frameElement.frame.document.$('.dices span:nth-child(2)');
+        const INT = frameElement.frame.document.$('.dices span:nth-child(3)');
+        const CHR = frameElement.frame.document.$('.dices span:nth-child(4)');
+        const CON = frameElement.frame.document.$('.dices span:nth-child(5)');
+
+        STR.textContent = str;
+        AGI.textContent = agi;
+        INT.textContent = int;
+        CHR.textContent = chr;
+        CON.textContent = con;
+    });
+}
 
 function setCharacterInLobby(id, name, level, cClass, cLocation) {
     frameElement.on('complete', function() {
@@ -134,6 +151,7 @@ frameElement.on("document-created", function(event) {
     const newDocument = event.target;
 
 	newDocument.globalThis.globalShowError = globalShowError;
+    newDocument.globalThis.setAttributesOnCharacterCreation = setAttributesOnCharacterCreation;
 
     newDocument.globalThis.showMsgbox = showMsgbox;
     newDocument.globalThis.closeMsgbox = closeMsgbox;
@@ -147,4 +165,3 @@ globalThis.setAccountUsername = setAccountUsername;
 globalThis.showAccountLoginError = showAccountLoginError;
 globalThis.showAccountCreateError = showAccountCreateError;
 globalThis.setLanguage = setLanguage;
-

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="../assets/css/character_creation.css">
+        <style>@import url(../assets/css/lang.css);</style>
+        <script|module>
+            import {setLang} from "../js/lang.js";
+
+            document.on("change", "form", function(evt, form) {
+                setLang(form.value.lang);
+            });
+        </script>
+    </head>
+    <body>
+        <div class="window big-border">
+            <div class="tb"></div>
+            <div class="lr"></div>
+            <div class="ctb"></div>
+            <div class="clr"></div>
+
+            <div class="wrapper">
+                <div class="char">
+                    <h1.x>character_create_title</h1>
+                    
+                    <div class="box small-border">
+                        <div class="field">
+                            <span.x class="title">character_create_name</span>
+                            <input class="center-input" type="text" name="newchar_name" autofocus>
+                        </div>
+
+                        <div class="system">
+                            <p.x></p>
+                        </div>
+                    </div>
+
+
+                    <div class="box-trio small-border">
+                        <div class="gender">
+                            <h2.x>character_create_gender</h2>
+
+                            <select.x name="gender" as="integer">
+                                <option.x value="0">male</option>
+                                <option.x value="1">female</option>
+                            </select>
+                        </div>
+
+                        <div class="race">
+                            <h2.x>character_create_race</h2>
+
+                            <select.x name="race" as="integer">
+                                <option.x value="0">human</option>
+                                <option.x value="1">elf</option>
+                                <option.x value="2">darkelf</option>
+                                <option.x value="3">dwarf</option>
+                                <option.x value="4">gnome</option>
+                            </select>
+                        </div>
+
+                        <div class="class">
+                            <h2.x>character_create_class</h2>
+
+                            <select.x name="class" as="integer">
+                                <option.x value="0">mage</option>
+                                <option.x value="1">cleric</option>
+                                <option.x value="2">warrior</option>
+                                <option.x value="3">assassin</option>
+                                <option.x value="4">thief</option>
+                                <option.x value="5">bard</option>
+                                <option.x value="6">druid</option>
+                                <option.x value="7">bandit</option>
+                                <option.x value="8">paladin</option>
+                                <option.x value="9">hunter</option>
+                                <option.x value="10">fisher</option>
+                                <option.x value="11">blacksmith</option>
+                                <option.x value="12">lumberjack</option>
+                                <option.x value="13">miner</option>
+                                <option.x value="14">carpenter</option>
+                                <option.x value="15">pirat</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="render">
+                        <!-- Draw here -->
+                    </div>
+
+                    <div class="stats small-border">
+                        <h2.x>character_create_attributes</h2>
+
+                        <div class="titles">
+                            <span.x>strength</span>
+                            <span.x>agility</span>
+                            <span.x>intelligence</span>
+                            <span.x>charisma</span>
+                            <span.x>constitution</span>
+                        </div>
+
+                        <div class="dices">
+                            <span>18</span>
+                            <span>18</span>
+                            <span>18</span>
+                            <span>18</span>
+                            <span>18</span>
+                        </div>
+                    </div>
+
+                    <div class="button-holder">
+                        <button.x id="new_character_cancel" class="button">character_create_back</button>
+                        <button.x id="new_character_throw_dices" class="button">character_create_throwdices</button>
+                        <button.x id="new_character_create" class="button">character_create_next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script src="../js/character_creation.js"></script>
+    </body>    
+</html>

@@ -24,11 +24,27 @@ export function setLang(langName) {
 }
 
 export function translate() {
-    const key = this.innerText;
+    // Checks for child elements and translate them
+    if (this.children.length > 0) {
+        for(let child of this.children) {
+            let childKey = child.innerText;
+
+            child.translate = () => {
+                let childNewText = translation[childKey];
+                if(childNewText) child.innerText = childNewText;
+            }
+
+            child.translate();
+        }
+
+        this.children[0].click(); // Hack to re-paint the translated child
+    }
+
+    let key = this.innerText;
 
     this.translate = () => {
         const newText = translation[key];
-        if( newText ) this.innerText = newText;
+        if(newText) this.innerText = newText;
     }
 
     this.translate();

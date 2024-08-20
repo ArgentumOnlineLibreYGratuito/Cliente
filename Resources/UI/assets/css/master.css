@@ -31,6 +31,8 @@
 	--red: #410909;
 	--red-l: #b86464;
 	--red-d: #240505;
+	--plus: #139099;
+	--minus: #991713;
 
     --title-text: #a78668;
 	--title-text-h: #c09f81;
@@ -71,8 +73,8 @@
 	--window-border: url("../images/ui/window/wb.png");
 	--window-corner: url("../images/ui/window/wc.png");
 	--connect-bg: url('../images/backgrounds/connect.jpg');
-	--settings-bg: url('../images/ui/window/cog.png');
-	--exit-bg: url('../images/ui/window/exit.png');
+	--settings-icon: url('../images/ui/window/cog.png');
+	--exit-icon: url('../images/ui/window/exit.png');
     
 	font-family: var(--font);
 	font-size: 16px;
