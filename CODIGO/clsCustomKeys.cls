@@ -107,7 +107,6 @@ Public Enum eKeyType
     mKeyTamAnimal
     mKeySteal
     mKeyToggleSafeMode
-    mKeyToggleResuscitationSafe
     mKeyHide
     mKeyDropObject
     mKeyUseObject
@@ -252,7 +251,7 @@ Public Sub LoadCustomKeys()
     'Inits keyboard config with default configurations
     Call LoadDefaults
         
-    Open App.path & KEY_CONFIG_FILE For Binary Access Read Lock Read Write As FileNum
+    Open App.Path & KEY_CONFIG_FILE For Binary Access Read Lock Read Write As FileNum
     
     For i = 1 To NUM_CUSTOM_KEYS
         Get FileNum, , mappedKeys(i)
@@ -279,7 +278,7 @@ Public Sub SaveCustomKeys()
     Dim i As Long
     FileNum = FreeFile()
     
-    Open App.path & KEY_CONFIG_FILE For Binary Access Write As FileNum
+    Open App.Path & KEY_CONFIG_FILE For Binary Access Write As FileNum
     
     For i = 1 To NUM_CUSTOM_KEYS
         Put FileNum, , mappedKeys(i)
@@ -351,7 +350,6 @@ Public Sub LoadDefaults()
     mappedKeys(eKeyType.mKeyTamAnimal) = KeyCodeConstants.vbKeyD
     mappedKeys(eKeyType.mKeySteal) = KeyCodeConstants.vbKeyR
     mappedKeys(eKeyType.mKeyToggleSafeMode) = KeyCodeConstants.vbKeyMultiply
-    mappedKeys(eKeyType.mKeyToggleResuscitationSafe) = KeyCodeConstants.vbKeyEnd
     mappedKeys(eKeyType.mKeyHide) = KeyCodeConstants.vbKeyO
     mappedKeys(eKeyType.mKeyDropObject) = KeyCodeConstants.vbKeyT
     mappedKeys(eKeyType.mKeyUseObject) = KeyCodeConstants.vbKeyU
@@ -417,7 +415,7 @@ On Error GoTo ErrHand:
     Exit Sub
     
 ErrHand:
-    If Err.number = ERROR_NO_KEY_FILE Then
+    If Err.Number = ERROR_NO_KEY_FILE Then
         Call LoadDefaults
         Call SaveCustomKeys
         Resume Next

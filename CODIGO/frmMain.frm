@@ -512,6 +512,7 @@ Begin VB.Form frmMain
       _ExtentY        =   2646
       _Version        =   393217
       BackColor       =   0
+      Enabled         =   -1  'True
       ReadOnly        =   -1  'True
       ScrollBars      =   2
       DisableNoScroll =   -1  'True
@@ -781,8 +782,6 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
                     Else
                         Call WriteSafeToggle
                     End If
-                Case CustomKeys.BindedKey(eKeyType.mKeyToggleResuscitationSafe)
-                    Call WriteResuscitationToggle
             End Select
         End If
     End If
@@ -862,7 +861,7 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
     End Select
 End Sub
 
-Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     MouseBoton = Button
     MouseShift = Shift
 End Sub
@@ -955,14 +954,14 @@ Private Sub renderer_DblClick()
 Call Form_DblClick
 End Sub
 
-Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     MouseBoton = Button
     MouseShift = Shift
 End Sub
 
-Private Sub renderer_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    MouseX = x
-    MouseY = y
+Private Sub renderer_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    MouseX = X
+    MouseY = Y
 End Sub
 
 Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
@@ -1060,7 +1059,7 @@ Private Sub cmdLanzar_Click()
     End If
 End Sub
 
-Private Sub CmdLanzar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub CmdLanzar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     UsaMacro = False
     CnTd = 0
 End Sub
@@ -1186,10 +1185,10 @@ Private Sub Form_Load()
     
     frmMain.Caption = "Argentum Online" & " V " & App.Major & "." & _
     App.Minor & "." & App.Revision
-    PanelDer.Picture = LoadPicture(App.path & _
+    PanelDer.Picture = LoadPicture(App.Path & _
     "\Graficos\Principalnuevo_sin_energia.jpg")
     
-    InvEqu.Picture = LoadPicture(App.path & _
+    InvEqu.Picture = LoadPicture(App.Path & _
     "\Graficos\Centronuevoinventario.jpg")
     
    Me.Left = 0
@@ -1254,7 +1253,7 @@ End Sub
 Private Sub Label4_Click()
     Call modEngine_Audio.PlayInterface(SND_CLICK)
 
-    InvEqu.Picture = LoadPicture(App.path & "\Graficos\Centronuevoinventario.jpg")
+    InvEqu.Picture = LoadPicture(App.Path & "\Graficos\Centronuevoinventario.jpg")
 
     'DespInv(0).Visible = True
     'DespInv(1).Visible = True
@@ -1274,7 +1273,7 @@ End Sub
 Private Sub Label7_Click()
     Call modEngine_Audio.PlayInterface(SND_CLICK)
 
-    InvEqu.Picture = LoadPicture(App.path & "\Graficos\Centronuevohechizos.jpg")
+    InvEqu.Picture = LoadPicture(App.Path & "\Graficos\Centronuevohechizos.jpg")
     '%%%%%%OCULTAMOS EL INV&&&&&&&&&&&&
     'DespInv(0).Visible = False
     'DespInv(1).Visible = False
@@ -1301,7 +1300,7 @@ Private Sub picInv_DblClick()
     Call UsarItem
 End Sub
 
-Private Sub picInv_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub picInv_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Call modEngine_Audio.PlayInterface(SND_CLICK)
 End Sub
 

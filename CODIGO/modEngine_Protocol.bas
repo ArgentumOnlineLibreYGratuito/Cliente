@@ -18,7 +18,7 @@ Option Explicit
 
 
 Private Enum ServerPacketID
-    logged                                       ' LOGGED
+    Logged                                       ' LOGGED
     RemoveDialogs                                ' QTDL
     RemoveCharDialog                             ' QDL
     NavigateToggle                               ' NAVEG
@@ -38,8 +38,6 @@ Private Enum ServerPacketID
     UserSwing                                    ' U1
     SafeModeOn                                   ' SEGON
     SafeModeOff                                  ' SEGOFF
-    ResuscitationSafeOn
-    ResuscitationSafeOff
     NobilityLost                                 ' PN
     CantUseWhileMeditating                       ' M!
     UpdateSta                                    ' ASS
@@ -67,7 +65,7 @@ Private Enum ServerPacketID
     ObjectCreate                                 ' HO
     ObjectDelete                                 ' BO
     BlockPosition                                ' BQ
-    PlayMIDI                                     ' TM
+    PlayMidi                                     ' TM
     PlayWave                                     ' TW
     guildList                                    ' GL
     AreaChanged                                  ' CA
@@ -79,7 +77,7 @@ Private Enum ServerPacketID
     ChangeInventorySlot                          ' CSI
     ChangeBankSlot                               ' SBO
     ChangeSpellSlot                              ' SHS
-    Atributes                                    ' ATR
+    atributes                                    ' ATR
     BlacksmithWeapons                            ' LAH
     BlacksmithArmors                             ' LAR
     CarpenterObjects                             ' OBR
@@ -130,9 +128,7 @@ Private Enum ClientPacketID
     RequestPositionUpdate                        'RPU
     Attack                                       'AT
     PickUp                                       'AG
-    CombatModeToggle                             'TAB        - SHOULD BE HANLDED JUST BY THE CLIENT!!
     SafeToggle                                   '/SEG & SEG  (SEG's behaviour has to be coded in the client)
-    ResuscitationSafeToggle
     RequestGuildLeaderInfo                       'GLINFO
     RequestAtributes                             'ATR
     RequestFame                                  'FAMA
@@ -206,7 +202,7 @@ Private Enum ClientPacketID
     Information                                  '/INFORMACION
     Reward                                       '/RECOMPENSA
     RequestMOTD                                  '/MOTD
-    Uptime                                       '/UPTIME
+    UpTime                                       '/UPTIME
     PartyLeave                                   '/SALIRPARTY
     PartyCreate                                  '/CREARPARTY
     PartyJoin                                    '/PARTY
@@ -438,7 +434,7 @@ Public Sub handle(ByVal Message As BinaryReader)
     
         Select Case Message.ReadInt()
         
-        Case ServerPacketID.logged               ' LOGGED
+        Case ServerPacketID.Logged               ' LOGGED
             Call HandleLogged(Message)
                 
         Case ServerPacketID.RemoveDialogs        ' QTDL
@@ -497,13 +493,7 @@ Public Sub handle(ByVal Message As BinaryReader)
             
         Case ServerPacketID.SafeModeOff          ' SEGOFF
             Call HandleSafeModeOff(Message)
-                
-        Case ServerPacketID.ResuscitationSafeOff
-            Call HandleResuscitationSafeOff(Message)
-            
-        Case ServerPacketID.ResuscitationSafeOn
-            Call HandleResuscitationSafeOn(Message)
-            
+
         Case ServerPacketID.NobilityLost         ' PN
             Call HandleNobilityLost(Message)
             
@@ -585,7 +575,7 @@ Public Sub handle(ByVal Message As BinaryReader)
         Case ServerPacketID.BlockPosition        ' BQ
             Call HandleBlockPosition(Message)
             
-        Case ServerPacketID.PlayMIDI             ' TM
+        Case ServerPacketID.PlayMidi             ' TM
             Call HandlePlayMIDI(Message)
             
         Case ServerPacketID.PlayWave             ' TW
@@ -621,7 +611,7 @@ Public Sub handle(ByVal Message As BinaryReader)
         Case ServerPacketID.ChangeSpellSlot      ' SHS
             Call HandleChangeSpellSlot(Message)
             
-        Case ServerPacketID.Atributes            ' ATR
+        Case ServerPacketID.atributes            ' ATR
             Call HandleAtributes(Message)
             
         Case ServerPacketID.BlacksmithWeapons    ' LAH
@@ -1069,16 +1059,16 @@ End Sub
 Private Sub HandlePosUpdate(ByVal Message As BinaryReader)
     
     'Remove char from old position
-    If MapData(UserPos.x, UserPos.y).CharIndex = UserCharIndex Then
-        MapData(UserPos.x, UserPos.y).CharIndex = 0
+    If MapData(UserPos.X, UserPos.Y).CharIndex = UserCharIndex Then
+        MapData(UserPos.X, UserPos.Y).CharIndex = 0
     End If
     
     'Set new pos
-    UserPos.x = Message.ReadInt()
-    UserPos.y = Message.ReadInt()
+    UserPos.X = Message.ReadInt()
+    UserPos.Y = Message.ReadInt()
     
     'Set char
-    MapData(UserPos.x, UserPos.y).CharIndex = UserCharIndex
+    MapData(UserPos.X, UserPos.Y).CharIndex = UserCharIndex
     charlist(UserCharIndex).Pos = UserPos
     
     Call UpdateSceneCharacter(UserCharIndex)
@@ -1086,12 +1076,12 @@ Private Sub HandlePosUpdate(ByVal Message As BinaryReader)
 
     
     'Are we under a roof
-    bTecho = IIf(MapData(UserPos.x, UserPos.y).Trigger = 1 Or _
-                 MapData(UserPos.x, UserPos.y).Trigger = 2 Or _
-                 MapData(UserPos.x, UserPos.y).Trigger = 4, True, False)
+    bTecho = IIf(MapData(UserPos.X, UserPos.Y).Trigger = 1 Or _
+                 MapData(UserPos.X, UserPos.Y).Trigger = 2 Or _
+                 MapData(UserPos.X, UserPos.Y).Trigger = 4, True, False)
     
     'Update pos label
-    frmMain.Coord.Caption = "(" & UserMap & "," & UserPos.x & "," & UserPos.y & ")"
+    frmMain.Coord.Caption = "(" & UserMap & "," & UserPos.X & "," & UserPos.Y & ")"
 End Sub
 
 Private Sub HandleNPCHitUser(ByVal Message As BinaryReader)
@@ -1289,11 +1279,11 @@ Private Sub HandleUserCharIndexInServer(ByVal Message As BinaryReader)
     UserPos = charlist(UserCharIndex).Pos
     
     'Are we under a roof
-    bTecho = IIf(MapData(UserPos.x, UserPos.y).Trigger = 1 Or _
-                 MapData(UserPos.x, UserPos.y).Trigger = 2 Or _
-                 MapData(UserPos.x, UserPos.y).Trigger = 4, True, False)
+    bTecho = IIf(MapData(UserPos.X, UserPos.Y).Trigger = 1 Or _
+                 MapData(UserPos.X, UserPos.Y).Trigger = 2 Or _
+                 MapData(UserPos.X, UserPos.Y).Trigger = 4, True, False)
     
-    frmMain.Coord.Caption = "(" & UserMap & "," & UserPos.x & "," & UserPos.y & ")"
+    frmMain.Coord.Caption = "(" & UserMap & "," & UserPos.X & "," & UserPos.Y & ")"
 End Sub
 
 Private Sub HandleCharacterCreate(ByVal Message As BinaryReader)
@@ -1302,26 +1292,30 @@ Private Sub HandleCharacterCreate(ByVal Message As BinaryReader)
     Dim Body        As Integer
     Dim Head        As Integer
     Dim Heading     As E_Heading
-    Dim x           As Byte
-    Dim y           As Byte
+    Dim X           As Byte
+    Dim Y           As Byte
     Dim weapon      As Integer
     Dim shield      As Integer
     Dim helmet      As Integer
     Dim privs       As Integer
+    Dim Fx          As Integer
+    Dim FxLoops     As Integer
     
     CharIndex = Message.ReadInt()
     Body = Message.ReadInt()
     Head = Message.ReadInt()
     Heading = Message.ReadInt()
-    x = Message.ReadInt()
-    y = Message.ReadInt()
+    X = Message.ReadInt()
+    Y = Message.ReadInt()
     weapon = Message.ReadInt()
     shield = Message.ReadInt()
     helmet = Message.ReadInt()
+    Fx = Message.ReadInt()
+    FxLoops = Message.ReadInt()
     
 
     With charlist(CharIndex)
-        Call SetCharacterFx(CharIndex, Message.ReadInt(), Message.ReadInt())
+        Call SetCharacterFx(CharIndex, Fx, FxLoops)
         
         .Nombre = Message.ReadString16()
         .Criminal = Message.ReadInt()
@@ -1350,7 +1344,7 @@ Private Sub HandleCharacterCreate(ByVal Message As BinaryReader)
         End If
     End With
     
-    Call MakeChar(CharIndex, Body, Head, Heading, x, y, weapon, shield, helmet)
+    Call MakeChar(CharIndex, Body, Head, Heading, X, Y, weapon, shield, helmet)
     
     Call RefreshAllChars
     
@@ -1369,12 +1363,12 @@ End Sub
 Private Sub HandleCharacterMove(ByVal Message As BinaryReader)
     
     Dim CharIndex   As Integer
-    Dim x           As Byte
-    Dim y           As Byte
+    Dim X           As Byte
+    Dim Y           As Byte
     
     CharIndex = Message.ReadInt()
-    x = Message.ReadInt()
-    y = Message.ReadInt()
+    X = Message.ReadInt()
+    Y = Message.ReadInt()
     
     With charlist(CharIndex)
         If .FxIndex >= 40 And .FxIndex <= 49 Then 'If it's meditating, we remove the FX
@@ -1387,7 +1381,7 @@ Private Sub HandleCharacterMove(ByVal Message As BinaryReader)
         End If
     End With
     
-    Call Char_Move_by_Pos(CharIndex, x, y)
+    Call Char_Move_by_Pos(CharIndex, X, Y)
 
     Call RefreshAllChars
 End Sub
@@ -1440,19 +1434,19 @@ End Sub
 
 Private Sub HandleObjectCreate(ByVal Message As BinaryReader)
     
-    Dim x           As Byte
-    Dim y           As Byte
+    Dim X           As Byte
+    Dim Y           As Byte
     
-    x = Message.ReadInt()
-    y = Message.ReadInt()
+    X = Message.ReadInt()
+    Y = Message.ReadInt()
     
     With MapData(X, Y)
-        .ObjGrh.GrhIndex = Message.ReadInt()
+        .ObjGrh.grhindex = Message.ReadInt()
     
-        Call InitGrh(.ObjGrh, .ObjGrh.GrhIndex)
+        Call InitGrh(.ObjGrh, .ObjGrh.grhindex)
     
-        If (.ObjGrh.GrhIndex > 0) Then
-            Call UpdateSceneEntity(.OBJInfo.Node, -1, X, Y, 5, GrhData(.ObjGrh.GrhIndex).TileWidth, GrhData(.ObjGrh.GrhIndex).TileHeight)
+        If (.ObjGrh.grhindex > 0) Then
+            Call UpdateSceneEntity(.OBJInfo.Node, -1, X, Y, 5, GrhData(.ObjGrh.grhindex).TileWidth, GrhData(.ObjGrh.grhindex).TileHeight)
             Call Partitioner_.Insert(.OBJInfo.Node)
         End If
     End With
@@ -1461,11 +1455,11 @@ End Sub
 
 Private Sub HandleObjectDelete(ByVal Message As BinaryReader)
     
-    Dim x           As Byte
-    Dim y           As Byte
+    Dim X           As Byte
+    Dim Y           As Byte
     
-    x = Message.ReadInt()
-    y = Message.ReadInt()
+    X = Message.ReadInt()
+    Y = Message.ReadInt()
     
     
     With MapData(X, Y)
@@ -1473,23 +1467,23 @@ Private Sub HandleObjectDelete(ByVal Message As BinaryReader)
         
         ' TODO: Emitter
         
-        .ObjGrh.GrhIndex = 0
+        .ObjGrh.grhindex = 0
     End With
     
 End Sub
 
 Private Sub HandleBlockPosition(ByVal Message As BinaryReader)
     
-    Dim x           As Byte
-    Dim y           As Byte
+    Dim X           As Byte
+    Dim Y           As Byte
     
-    x = Message.ReadInt()
-    y = Message.ReadInt()
+    X = Message.ReadInt()
+    Y = Message.ReadInt()
     
     If Message.ReadBool() Then
-        MapData(x, y).Blocked = 1
+        MapData(X, Y).Blocked = 1
     Else
-        MapData(x, y).Blocked = 0
+        MapData(X, Y).Blocked = 0
     End If
 End Sub
 
@@ -1542,13 +1536,13 @@ End Sub
 
 Private Sub HandleAreaChanged(ByVal Message As BinaryReader)
     
-    Dim x           As Byte
-    Dim y           As Byte
+    Dim X           As Byte
+    Dim Y           As Byte
     
-    x = Message.ReadInt()
-    y = Message.ReadInt()
+    X = Message.ReadInt()
+    Y = Message.ReadInt()
     
-    Call CambioDeArea(x, y)
+    Call CambioDeArea(X, Y)
 End Sub
 
 Private Sub HandlePauseToggle(ByVal Message As BinaryReader)
@@ -1558,11 +1552,11 @@ End Sub
 
 Private Sub HandleRainToggle(ByVal Message As BinaryReader)
     
-    If Not InMapBounds(UserPos.x, UserPos.y) Then Exit Sub
+    If Not InMapBounds(UserPos.X, UserPos.Y) Then Exit Sub
     
-    bTecho = (MapData(UserPos.x, UserPos.y).Trigger = 1 Or _
-              MapData(UserPos.x, UserPos.y).Trigger = 2 Or _
-              MapData(UserPos.x, UserPos.y).Trigger = 4)
+    bTecho = (MapData(UserPos.X, UserPos.Y).Trigger = 1 Or _
+              MapData(UserPos.X, UserPos.Y).Trigger = 2 Or _
+              MapData(UserPos.X, UserPos.Y).Trigger = 4)
         
     bRain = Not bRain
     
@@ -1590,14 +1584,14 @@ End Sub
 Private Sub HandleCreateFX(ByVal Message As BinaryReader)
     
     Dim CharIndex   As Integer
-    Dim fX          As Integer
+    Dim Fx          As Integer
     Dim Loops       As Integer
     
     CharIndex = Message.ReadInt()
-    fX = Message.ReadInt()
+    Fx = Message.ReadInt()
     Loops = Message.ReadInt()
     
-    Call SetCharacterFx(CharIndex, fX, Loops)
+    Call SetCharacterFx(CharIndex, Fx, Loops)
 End Sub
 
 Private Sub HandleUpdateUserStats(ByVal Message As BinaryReader)
@@ -2350,10 +2344,10 @@ End Sub
 
 Private Sub HandlePong(ByVal Message As BinaryReader)
     
-    Dim Time As Long
-    Time = Message.ReadInt()
+    Dim time As Long
+    time = Message.ReadInt()
     
-    Call AddtoRichTextBox(frmMain.RecTxt, "El ping es " & (GetTickCount - Time) & " ms.", 255, 0, 0, True, False, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, "El ping es " & (GetTickCount - time) & " ms.", 255, 0, 0, True, False, False)
 
 End Sub
 
@@ -2386,13 +2380,13 @@ Public Sub WriteLoginExistingChar()
     Dim i           As Long
     
     Call Writer_.WriteInt(ClientPacketID.LoginExistingChar)
-    
-    Call Writer_.WriteString16(UserName)
-    Call Writer_.WriteString16(UserPassword)
-    
+        
     Call Writer_.WriteInt(App.Major)
     Call Writer_.WriteInt(App.Minor)
     Call Writer_.WriteInt(App.Revision)
+
+    Call Writer_.WriteString16(UserName)
+    Call Writer_.WriteString16(UserPassword)
 
     Call modEngine.NetWrite(Writer_)
 End Sub
@@ -2410,25 +2404,18 @@ Public Sub WriteLoginNewChar()
     
     Call Writer_.WriteInt(ClientPacketID.LoginNewChar)
     
-    Call Writer_.WriteString16(UserName)
-    Call Writer_.WriteString16(UserPassword)
-    
     Call Writer_.WriteInt(App.Major)
     Call Writer_.WriteInt(App.Minor)
     Call Writer_.WriteInt(App.Revision)
 
+    Call Writer_.WriteString16(UserName)
+    Call Writer_.WriteString16(UserPassword)
+    Call Writer_.WriteString16(UserEmail)
+
     Call Writer_.WriteInt(UserRaza)
     Call Writer_.WriteInt(UserSexo)
     Call Writer_.WriteInt(UserClase)
-    
-    For i = 1 To NUMSKILLS
-        Call Writer_.WriteInt(UserSkills(i))
-    Next i
-    
-    Call Writer_.WriteString16(UserEmail)
-    
-    Call Writer_.WriteInt(UserHogar)
-    
+
     Call modEngine.NetWrite(Writer_)
 End Sub
 
@@ -2494,12 +2481,6 @@ End Sub
 Public Sub WriteSafeToggle()
     
     Call Writer_.WriteInt(ClientPacketID.SafeToggle)
-    
-    Call modEngine.NetWrite(Writer_)
-End Sub
-
-Public Sub WriteResuscitationToggle()
-    Call Writer_.WriteInt(ClientPacketID.ResuscitationSafeToggle)
     
     Call modEngine.NetWrite(Writer_)
 End Sub
@@ -2593,22 +2574,22 @@ Public Sub WriteCastSpell(ByVal slot As Byte)
     Call modEngine.NetWrite(Writer_)
 End Sub
 
-Public Sub WriteLeftClick(ByVal x As Byte, ByVal y As Byte)
+Public Sub WriteLeftClick(ByVal X As Byte, ByVal Y As Byte)
     
     Call Writer_.WriteInt(ClientPacketID.LeftClick)
     
-    Call Writer_.WriteInt(x)
-    Call Writer_.WriteInt(y)
+    Call Writer_.WriteInt(X)
+    Call Writer_.WriteInt(Y)
     
     Call modEngine.NetWrite(Writer_)
 End Sub
 
-Public Sub WriteDoubleClick(ByVal x As Byte, ByVal y As Byte)
+Public Sub WriteDoubleClick(ByVal X As Byte, ByVal Y As Byte)
     
     Call Writer_.WriteInt(ClientPacketID.DoubleClick)
     
-    Call Writer_.WriteInt(x)
-    Call Writer_.WriteInt(y)
+    Call Writer_.WriteInt(X)
+    Call Writer_.WriteInt(Y)
     
     Call modEngine.NetWrite(Writer_)
 End Sub
@@ -2656,12 +2637,12 @@ Public Sub WriteCraftCarpenter(ByVal Item As Integer)
     Call modEngine.NetWrite(Writer_)
 End Sub
 
-Public Sub WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill As eSkill)
+Public Sub WriteWorkLeftClick(ByVal X As Byte, ByVal Y As Byte, ByVal Skill As eSkill)
     
     Call Writer_.WriteInt(ClientPacketID.WorkLeftClick)
     
-    Call Writer_.WriteInt(x)
-    Call Writer_.WriteInt(y)
+    Call Writer_.WriteInt(X)
+    Call Writer_.WriteInt(Y)
     
     Call Writer_.WriteInt(Skill)
     
@@ -3136,7 +3117,7 @@ End Sub
 
 Public Sub WriteUpTime()
     
-    Call Writer_.WriteInt(ClientPacketID.Uptime)
+    Call Writer_.WriteInt(ClientPacketID.UpTime)
     
     Call modEngine.NetWrite(Writer_)
 End Sub
@@ -3424,7 +3405,7 @@ Public Sub WriteWarpMeToTarget()
     Call modEngine.NetWrite(Writer_)
 End Sub
 
-Public Sub WriteWarpChar(ByVal UserName As String, ByVal map As Integer, ByVal x As Byte, ByVal y As Byte)
+Public Sub WriteWarpChar(ByVal UserName As String, ByVal map As Integer, ByVal X As Byte, ByVal Y As Byte)
     
     Call Writer_.WriteInt(ClientPacketID.WarpChar)
     
@@ -3432,8 +3413,8 @@ Public Sub WriteWarpChar(ByVal UserName As String, ByVal map As Integer, ByVal x
     
     Call Writer_.WriteInt(map)
     
-    Call Writer_.WriteInt(x)
-    Call Writer_.WriteInt(y)
+    Call Writer_.WriteInt(X)
+    Call Writer_.WriteInt(Y)
     
     Call modEngine.NetWrite(Writer_)
 End Sub
@@ -3762,14 +3743,14 @@ Public Sub WriteGuildOnlineMembers(ByVal guild As String)
     Call modEngine.NetWrite(Writer_)
 End Sub
 
-Public Sub WriteTeleportCreate(ByVal map As Integer, ByVal x As Byte, ByVal y As Byte)
+Public Sub WriteTeleportCreate(ByVal map As Integer, ByVal X As Byte, ByVal Y As Byte)
     
     Call Writer_.WriteInt(ClientPacketID.TeleportCreate)
     
     Call Writer_.WriteInt(map)
     
-    Call Writer_.WriteInt(x)
-    Call Writer_.WriteInt(y)
+    Call Writer_.WriteInt(X)
+    Call Writer_.WriteInt(Y)
     
     Call modEngine.NetWrite(Writer_)
 End Sub
@@ -3808,7 +3789,7 @@ Public Sub WriteForceMIDIToMap(ByVal midiID As Byte, ByVal map As Integer)
     Call modEngine.NetWrite(Writer_)
 End Sub
 
-Public Sub WriteForceWAVEToMap(ByVal waveID As Byte, ByVal map As Integer, ByVal x As Byte, ByVal y As Byte)
+Public Sub WriteForceWAVEToMap(ByVal waveID As Byte, ByVal map As Integer, ByVal X As Byte, ByVal Y As Byte)
     
     Call Writer_.WriteInt(ClientPacketID.ForceWAVEToMap)
     
@@ -3816,8 +3797,8 @@ Public Sub WriteForceWAVEToMap(ByVal waveID As Byte, ByVal map As Integer, ByVal
     
     Call Writer_.WriteInt(map)
     
-    Call Writer_.WriteInt(x)
-    Call Writer_.WriteInt(y)
+    Call Writer_.WriteInt(X)
+    Call Writer_.WriteInt(Y)
     
     Call modEngine.NetWrite(Writer_)
 End Sub
